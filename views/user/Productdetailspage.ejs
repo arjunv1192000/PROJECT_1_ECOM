@@ -1,0 +1,149 @@
+<div class="product-details-area pt-90 pb-90">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6 col-md-6">
+                <div class="product-details-img-left " id="img-container">
+                    <img class="zoompro" src="/product_img/<%= productDATA._id %>.jpg"data-zoom-image="/product_img/<%= productDATA._id %>.jpg" alt="product-details-img">
+                </div>
+            </div>
+            <div class="col-lg-6 col-md-6">
+                <div class="product-details-content pro-details-content-modify">
+                    <span>
+                        <%= productDATA.category %>
+                    </span>
+                    <h2>
+                        <%= productDATA.productname %>
+                    </h2>
+                    <div class="product-ratting-review">
+                        <div class="product-ratting">
+                            <i class="fa fa-star" aria-hidden="true"></i>
+                            <i class="fa fa-star" aria-hidden="true"></i>
+                            <i class="fa fa-star" aria-hidden="true"></i>
+                            <i class="fa fa-star" aria-hidden="true"></i>
+                            <i class="fa fa-star-half-o" aria-hidden="true"></i>
+                        </div>
+                        <div class="product-review">
+                            <span>40+ Reviews</span>
+                        </div>
+                    </div>
+                    <div class="pro-details-color-wrap">
+                        <span>Color:<%= productDATA.Color %></span>
+                        <div class="pro-details-color-content">
+                            <ul>
+                                <li></li>
+
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="pro-details-size">
+                        <span>Size: <%= productDATA.size %></span>
+                        <div class="pro-details-size-content">
+                            <ul>
+                                <li></li>
+
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="pro-details-price-wrap">
+                        <div class="product-price">
+                            <span>₹<%= productDATA.price %></span>
+                            <span class="old">$230.00</span>
+                        </div>
+                        <div class="dec-rang"><span>- 30%</span></div>
+                    </div>
+                    <div class="pro-details-quality">
+                        <div class="cart-plus-minus">
+                            <input class="cart-plus-minus-box" type="text" name="qtybutton" value="02">
+                        </div>
+                    </div>
+                    <div class="pro-details-compare-wishlist">
+
+                        <div class="pro-details-wishlist">
+                            <a title="Add To Wishlist" href="#"><i class="fa fa-heart-o" aria-hidden="true"></i> Add to
+                                wish list</a>
+                        </div>
+                    </div>
+                    <div class="pro-details-buy-now btn-hover btn-hover-radious">
+                        <a href="#">Add To Cart</a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+<div class="description-review-wrapper pb-90">
+    <div class="container">
+        <div class="row">
+            <div class="ms-auto me-auto col-lg-10">
+                <div class="dec-review-topbar nav mb-40">
+                    <a data-bs-toggle="tab" href="#des-details1">Description</a>
+                    <a class="active" data-bs-toggle="tab" href="#des-details2">Specification</a>
+                    
+                </div>
+                <div class="tab-content dec-review-bottom">
+                    <div id="des-details1" class="tab-pane">
+                        <div class="description-wrap">
+                            <p>
+                                <%= productDATA.description %>
+                            </p>
+                        </div>
+                    </div>
+                    <div id="des-details2" class="tab-pane active">
+                        <div class="specification-wrap table-responsive">
+                            <table>
+                                <tbody>
+                                    <tr>
+                                        <td class="width1">Name / Model</td>
+                                        <td>LaaVista Depro, FX 829 v1</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Type</td>
+                                        <td>Categories</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="width1">Models</td>
+                                        <td>FX 829 v1</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="width1">Categories</td>
+                                        <td>Product Type</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="width1">Size</td>
+                                        <td>60’’ x 40’’</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="width1">Display Port</td>
+                                        <td>Multi</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="width1">Media</td>
+                                        <td>Brightside</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="width1">Color</td>
+                                        <td>Black, White</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <script src="https://unpkg.com/js-image-zoom/js-image-zoom.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/js-image-zoom/js-image-zoom.min.js"></script>
+    <script>
+        var options = {
+            width: 600,
+            scale: 1,
+            zoomPosition: 'right' // required
+            // more options here
+        };
+        new ImageZoom(document.getElementById("img-container"), options);
+
+    </script>

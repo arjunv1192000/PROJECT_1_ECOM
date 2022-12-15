@@ -1,0 +1,40 @@
+<section class="h-100 gradient-custom "id="footer">
+    <div class="container h-100 py-5">
+      <div class="row d-flex justify-content-center align-items-center h-100">
+        <div class="col-10">
+          <div class="container">
+            <div class="row">
+              <div class="col-12">
+                <table class="table" id="example">
+                  <thead>
+                    <tr>
+                      <th></th>
+                      <th></th>
+                      <th></th>
+                      <th></th>
+                      <th></th>
+  
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <% userdata.forEach(function(user, i){ %>
+
+                    <tr>
+                      <td class="w-25">
+                        <img src="https://cdn-icons-png.flaticon.com/128/4205/4205906.png" class="img-fluid img-thumbnail"
+                          alt="Sheep">
+                      </td>
+                      <th scope="row"> <%= i+1 %></th>
+                      <td><%= user.username %></td>
+                      <td><%= user.useremail %></td>
+                      <td><%= user.userphone %></td>  
+                      <td><a href="/admin/Block"> <button type="button" class="btn btn-dark">Block</button></a></td>
+      
+                    </tr>
+                   <% }); %>
+  
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
