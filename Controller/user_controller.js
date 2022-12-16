@@ -13,6 +13,25 @@ module.exports={
    },
 
 
+   nocache(req, res, next){
+    res.header('Cache-Control', 'private, no-cache, no-store, must-revalidate');
+    res.header('Expires', '-1');
+    res.header('Pragma', 'no-cache');
+    next();
+  },
+
+  loginredirect(req,res,next){
+    if(!req.session.user){
+      req.session.loggedIn=false;
+  
+    }
+    if(req.session.user){ 
+      res.redirect('/')
+    }else{
+      next();
+    }
+  },
+
 
 
     userlogin(req, res, next) {
