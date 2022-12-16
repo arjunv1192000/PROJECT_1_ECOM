@@ -54,8 +54,9 @@ module.exports={
     Getproductdata:()=>{
         return new Promise(async(resolve,reject)=>{
             let product=await db.get().collection(collections.Product_Collecction).find().toArray()
-            console.log(product);
-            resolve(product)
+            let category=await db.get().collection(collections.category_Collecction).find().toArray()
+            console.log(product,category);
+            resolve(product,category)
         })
 
     },
@@ -148,6 +149,34 @@ module.exports={
             })
             
 
+        })
+
+    },
+    userblock:(useId,status)=>{
+        if(status=='true'){
+            status=false
+        }else{
+            status=true
+        }
+        return new Promise((resolve,reject)=>{
+            db.get().collection(collections.USER_Collection).updateOne({_id:ObjectId(useId)},{
+                $set:{
+                    isblocked:status
+                }
+            }).then((response)=>{
+                console.log(response);
+                resolve(response)
+            })
+            
+
+        })
+        
+
+    },Getcategorydata:()=>{
+        return new Promise(async(resolve,reject)=>{
+            let category=await db.get().collection(collections.category_Collecction).find().toArray()
+            console.log(category);
+            resolve(category)
         })
 
     }

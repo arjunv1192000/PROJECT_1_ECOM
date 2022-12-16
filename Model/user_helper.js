@@ -6,6 +6,7 @@ module.exports={
 
 
     userSignup:(userinfo)=>{
+        userinfo.isblocked=false
         return new Promise(async(resolve,reject)=>{
             
 
@@ -35,14 +36,21 @@ module.exports={
         return new Promise(async(resolve,reject)=>{
             let user=await db.get().collection(collections.USER_Collection).findOne({useremail:userinfo.useremail})
             if(user){
-                  bcrypt.compare(userinfo.pass,user.pass).then((status)=>{
-                    if(status){
-                        resolve()
-                    }else{
-                        reject({error:"password"})
-                    }
-
-                })
+                console.log(user);
+                 if(user.isblocked){
+                    reject({error:"user is blocked"})
+                 }else{
+                    bcrypt.compare(userinfo.pass,user.pass).then((status)=>{
+                        if(status){
+                            resolve()
+                        }else{
+                            reject({error:"password"})
+                        }
+    
+                    })
+                    
+                 }
+                  
 
             }else{
                 reject({error:"Email"})

@@ -17,6 +17,9 @@
                       <div id="lg1" class="tab-pane active">
                           <div class="login-form-container">
                               <div class="login-register-form">
+                                <% if(locals.error) { %>
+                                    <div class="alert alert-danger" role="alert"><%= error %></div>
+                                    <% } %>
                                   <form action="/userlog" method="post">
                                       <input type="text" name="useremail" placeholder="Email">
                                       <input type="password" name="pass" placeholder="Password">

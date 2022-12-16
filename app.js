@@ -7,6 +7,7 @@ var db=require('./Model/Connection');
 var expressLayouts =require('express-ejs-layouts')
 var bodyParser = require('body-parser')
 const fileupload=require('express-fileupload')
+var session = require('express-session')
 
 var userRouter = require('./routes/user');
 var adminRouter = require('./routes/admin');
@@ -23,11 +24,10 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(expressLayouts);
-app.use(bodyParser.urlencoded({
-  extended: true
-}));
+app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 app.use(fileupload());
+app.use(session({secret:"value",cookie:{maxAge:100000}}));
 
 
 db.connect((err)=>{

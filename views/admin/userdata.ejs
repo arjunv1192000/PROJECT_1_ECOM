@@ -28,7 +28,14 @@
                       <td><%= user.username %></td>
                       <td><%= user.useremail %></td>
                       <td><%= user.userphone %></td>  
-                      <td><a href="/admin/Block"> <button type="button" class="btn btn-dark">Block</button></a></td>
+                      <td>
+                        <form action="/admin/Block/<%= user._id %>" method="post">
+                          <input name="status" value="<%= user.isblocked %>" hidden>
+                          <button type="submit" class="btn btn-dark" >Block</button>
+                          <button type="submit" class="btn btn-dark" >unBlock</button>
+                        </form>
+                        
+                      </td>
       
                     </tr>
                    <% }); %>
@@ -38,3 +45,4 @@
               </div>
             </div>
           </div>
+        

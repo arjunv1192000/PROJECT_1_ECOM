@@ -1,6 +1,9 @@
-const {  Adminlogin,GetAlluserdata,adminadd,Getproductdata,adminedit,updateproduct,deleteproduct,addcategory,gettcategory,editsubmit,updatecategory,deletecategory} = require('../Model/admin_helper')
+const {  Adminlogin,GetAlluserdata,adminadd,Getproductdata,adminedit,updateproduct,deleteproduct,addcategory,gettcategory,editsubmit,updatecategory,deletecategory, userblock,Getcategorydata} = require('../Model/admin_helper')
 
 module.exports={
+
+
+
 
     adminloginpage(req, res, next) {
         res.render('admin/adminlog');
@@ -18,6 +21,14 @@ module.exports={
         
        
       },
+
+      adminhome(req,res){
+        
+        res.redirect('admin/login')
+
+      },
+
+
       userdata(req, res, next) {
         GetAlluserdata().then((userdata)=>{
           res.render('admin/userdata',{user:false,userdata})
@@ -27,7 +38,7 @@ module.exports={
        
       },
       productdata(req, res) {
-        Getproductdata().then((product)=>{
+        Getproductdata().then((product,)=>{
           res.render('admin/productdetails',{user:false,product})
       
       
@@ -40,8 +51,13 @@ module.exports={
        
       },
       productadd(req, res, next) {
+        Getcategorydata().then((category)=>{
+          res.render('admin/addproducts',{user:false,category})
+      
+      
+        })
         
-        res.render('admin/addproducts',{user:false})
+        
     
   
 
@@ -140,6 +156,15 @@ module.exports={
 
     })
 
+  },
+  blockmanager(req,res){
+    userblock(req.params.id,req.body.status).then(()=>{
+      res.redirect('/admin/userdetails')
+
+    })
+
+    console.log(req.body);
+    console.log(req.params.id);
   }
 
 

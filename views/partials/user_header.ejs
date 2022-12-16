@@ -8,7 +8,7 @@
                             <div class="row align-items-center">
                                 <div class="col-xl-2 col-lg-3">
                                     <div class="logo">
-                                        <a href="index.html"><img src="/images/logo/logo-1.png" alt="logo"></a>
+                                        <!-- <a href="index.html"><img src="/images/logo/logo-1.png" alt="logo"></a> -->
                                     </div>
                                 </div>
                                 <div class="col-xl-7 col-lg-6">
@@ -33,32 +33,75 @@
                                         </nav>
                                     </div>
                                 </div>
-                                <div class="col-xl-3 col-lg-3 position-relative">
-                                    <div class="header-right-wrap mt-10">
-                                        <div class="header-wishlist">
-                                            <a href="wishlist.html"><i class="fa fa-heart-o" aria-hidden="true"></i></a>
-                                        </div>
-                                        <div class="header-login ml-40">
-                                            <a href="/uselogin"><i class="fa fa-user-circle-o" aria-hidden="true"></i></a>
-                                        </div>
-                                        <div class="cart-wrap common-style ml-35">
-                                            <button class="cart-active cart-3"><i class="fa fa-shopping-bag" aria-hidden="true"></i></i>
-                                            </button>
-                                            <div class="shopping-cart-content">
-                                                <div class="shopping-cart-top">
-                                                    <h4>Your Cart</h4>
-                                                    <a class="cart-close" href="#"></a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
+                                <div class="col-xl-3 col-lg-3 position-relative ml-5">
+                                    <nav class="header-nav ms-auto">
+                                        <ul class="d-flex align-items-center">
+                                          <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications">
+                                            <li class="dropdown-header">
+                                            </ul>
+                                          <li class="nav-item dropdown">
+                                            <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow messages">
+                                            </ul>
+                                          </li>
+                                          <li class="nav-item dropdown pe-3">
+                                            <a class="nav-link nav-profile d-flex align-items-center pe-0" href="" data-bs-toggle="dropdown">
+                                              <img src="/assets/img/avatar.jpg" alt="Profile" class="rounded-circle">
+                                              <span class="d-none d-md-block dropdown-toggle ps-2">
+                                                <% if (users) { %>
+                                                    <%= users %>
+                                                    
+                                                    <%} else { %>
+                                                        Account
+                                                    
+                                                    <% } %>
+                                               </span>
+                                            </a>
+                                            <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
+                                              <li class="dropdown-header">
+                                                <h6><% if (users) { %>
+                                                    <%= users %>
+                                                    
+                                                    <%} else { %>
+                                                        Account
+                                                    
+                                                    <% } %></h6>
+                                              </li>
+                                              <!-- <li>
+                                                <a class="dropdown-item d-flex align-items-center" href="">
+                                                  <i class="bi bi-person"></i>
+                                                  <span>My Profile</span>
+                                                </a>
+                                              </li> -->
+                                              <% if (users) { %>
+                                                <li>
+                                                    <a class="dropdown-item d-flex align-items-center" href="/uselogout">
+                                                      <i class="bi bi-box-arrow-right"></i>
+                                                      <span>LogOut</span>
+                                                    </a>
+                                                  </li>
+                                                
+                                                <%} else { %>
+                                                    <li>
+                                                        <a class="dropdown-item d-flex align-items-center" href="/uselogin">
+                                                          <i class="bi bi-box-arrow-right"></i>
+                                                          <span>Log In</span>
+                                                        </a>
+                                                      </li>
+                                                
+                                                <% } %>
+                                              
+                                              
+                                  
+                                            </ul>
+                                          </li>
+                                  
+                                        </ul>
+                                      </nav>
                                 </div>
                             </div>
                         </div>
                     </div>
-
             </div>
         </div>
     </div>
-    </header>
 </div>

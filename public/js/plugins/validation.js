@@ -17,7 +17,7 @@
                 return false;
             }
             else{
-                nameError.innerHTML ='<i class="fa-solid fa-circle-check"></i>';
+                nameError.innerHTML ='<i class="fa fa-check-circle" aria-hidden="true"></i>';
                 return true;
             }
         
@@ -101,7 +101,7 @@
                 phoneError.innerHTML="not valid";
                 return false; 
             }else
-            phoneError.innerHTML='<i class="fa-solid fa-square-check"></i>';
+            phoneError.innerHTML='<i class="fa-solid fa-circle-check"></i>';
             return true;
 
         }
