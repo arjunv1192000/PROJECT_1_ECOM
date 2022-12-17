@@ -100,8 +100,14 @@ module.exports={
 
   },
   editsubmit(req,res){
+    var id=req.params.id
     updateproduct(req.params.id,req.body).then(()=>{
       res.redirect('/admin/products')
+      if(req.files.Image){
+        var image=req.files.Image
+        image.mv('./public/product_img/'+id+'.jpg')
+
+      }
 
     })
     

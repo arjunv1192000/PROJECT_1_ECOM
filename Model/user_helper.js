@@ -30,6 +30,7 @@ module.exports={
         })   
 
     },
+    
 
 
     Dologin:(userinfo)=>{
@@ -76,6 +77,33 @@ module.exports={
         })
        
             
+
+    },
+
+    Getcategory:()=>{
+        return new Promise(async(resolve,reject)=>{
+            let catdatas=await db.get().collection(collections.category_Collecction).find().toArray()
+            
+            resolve(catdatas)
+        }).catch((error)=>{
+                
+
+                reject() 
+            })
+
+    },
+    filterBycategory:(procate)=>{
+        return new Promise(async(resolve,reject)=>{
+            let showproduct=await db.get().collection(collections.Product_Collecction).find({category:procate.name}).toArray()
+            console.log(showproduct);
+           
+                resolve(showproduct)
+                           
+        }).catch((error)=>{
+                
+
+                reject() 
+            })
 
     }
 

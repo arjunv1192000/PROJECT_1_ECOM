@@ -1,4 +1,5 @@
-const { userSignup, Dologin ,showproducts, productAlldetails} = require('../Model/user_helper');
+const { Getcategorydata } = require('../Model/admin_helper');
+const { userSignup, Dologin ,showproducts, productAlldetails, Getcategory,filterBycategory} = require('../Model/user_helper');
 
 module.exports={
 
@@ -115,6 +116,44 @@ module.exports={
 
         res.render('user/cart',{user:true,users})
 
+      },
+      listproductpage(req,res){
+        let users=req.session.user
+        console.log(users);
+        showproducts().then((showproduct)=>{
+
+          Getcategory().then((catdatas)=>{
+
+            res.render('user/showproduct',{user:true,showproduct,users,catdatas})
+
+          })
+        
+
+        })
+
+
+      },
+      filterproduct(req,res){
+        let users=req.session.user
+        let name = req.body;
+        console.log(users);
+        console.log(name);
+        filterBycategory(name).then((showproduct)=>{
+
+          Getcategory().then((catdatas)=>{
+
+            res.render('user/showproduct',{user:true,showproduct,users,catdatas})
+
+          }).catch(()=>{
+
+            res.render('user/showproduct',{user:true,showproduct,users,catdatas})
+
+          })
+
+
+         
+
+        })
       }
 
 }
