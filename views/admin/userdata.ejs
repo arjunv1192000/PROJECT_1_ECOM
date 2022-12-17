@@ -20,10 +20,19 @@
                     <% userdata.forEach(function(user, i){ %>
 
                     <tr>
-                      <td class="w-25">
-                        <img src="https://cdn-icons-png.flaticon.com/128/4205/4205906.png" class="img-fluid img-thumbnail"
-                          alt="Sheep">
-                      </td>
+                       <% if (user.isblocked) { %>
+                        <td class="w-25">
+                          <img src="https://cdn.w600.comps.canstockphoto.com/blocked-red-stamp-text-clip-art-vector_csp21873666.jpg" class="img-fluid img-thumbnail w-50 "
+                            alt="Sheep">
+                        </td>
+                              <%} else { %>
+                                <td class="w-25">
+                                  <img src="https://cdn-icons-png.flaticon.com/128/4205/4205906.png" class="img-fluid img-thumbnail"
+                                    alt="Sheep">
+                                </td>
+
+                                <% } %>
+                      
                       <th scope="row"> <%= i+1 %></th>
                       <td><%= user.username %></td>
                       <td><%= user.useremail %></td>
@@ -31,8 +40,15 @@
                       <td>
                         <form action="/admin/Block/<%= user._id %>" method="post">
                           <input name="status" value="<%= user.isblocked %>" hidden>
-                          <button type="submit" class="btn btn-dark" >Block</button>
-                          <button type="submit" class="btn btn-dark" >unBlock</button>
+                          <% if (user.isblocked) { %>
+                            <button type="submit" class="btn btn-dark" >unBlock</button>
+                           
+                              <%} else { %>
+                               
+                                <button type="submit" class="btn btn-dark" >Block</button>
+
+
+                                <% } %>
                         </form>
                         
                       </td>

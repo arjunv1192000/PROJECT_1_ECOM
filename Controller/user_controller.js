@@ -109,6 +109,12 @@ module.exports={
 
         res.redirect('/')
 
+      },
+      cartpage(req,res){
+        let users=req.session.user
+
+        res.render('user/cart',{user:true,users})
+
       }
 
 }

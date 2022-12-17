@@ -1,107 +1,87 @@
 <div class="breadcrumb-area bg-img" style="background-image:url(/images/bg/breadcrumb.jpg);">
-    <div class="container">
-        <div class="breadcrumb-content text-center">
-            <div class="main-wrapper">
-                <header class="header-area transparent-bar sticky-bar pt-10">
-                    <div class="main-header-wrap">
-                        <div class="container">
-                            <div class="row align-items-center">
-                                <div class="col-xl-2 col-lg-3">
-                                    <div class="logo">
-                                        <!-- <a href="index.html"><img src="/images/logo/logo-1.png" alt="logo"></a> -->
-                                    </div>
-                                </div>
-                                <div class="col-xl-7 col-lg-6">
-                                    <div
-                                        class="main-menu menu-common-style menu-lh-1 menu-margin-4 menu-font-3 ml-20 menu-others-page">
-                                        <nav>
-                                            <ul>
-                                                <li class="angle-shape"><a href="">Home</a>
+  <div class="container">
+    <div class="breadcrumb-content text-center">
+      <div class="main-wrapper">
+        <header class="header-area transparent-bar sticky-bar pt-10">
+          <div class="main-header-wrap">
+            <div class="container">
+              <div class="row align-items-center ">
+                <!-- <div class="col-xl-2 col-lg-3">
+                  <div class="logo">
+                    <a href="index.html"><img src="/images/logo/logo-1.png" alt="logo"></a>
+                  </div>
+                </div> -->
+                <div class="col-xl-7 col-lg-6 ml-200">
+                  <div class="main-menu menu-common-style menu-lh-1 menu-margin-4 menu-font-3 ml-20 menu-others-page">
+                    <nav>
+                      <ul>
+                        <li class="angle-shape"><a href="">Home</a></li>
+                        <li class="angle-shape"><a href="">Shop </a></li>
+                        <li class="angle-shape"><a href="">Contact</a></li>
+                      </ul>
+                    </nav>
+                  </div>
+                </div>
+                <div class="col-xl-3 col-lg-3 ml-20">
+                  <nav class="header-nav ms-auto">
+                    <ul class="d-flex align-items-center">
+                      <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications">
+                        <li class="dropdown-header">
+                      </ul>
+                      <li class="nav-item dropdown">
+                        <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow messages">
+                        </ul>
+                      </li>
+                      <li class="nav-item dropdown pe-3">
+                        <a class="nav-link nav-profile d-flex align-items-center pe-0" href=""
+                          data-bs-toggle="dropdown">
+                          <img src="/assets/img/avatar.jpg" alt="Profile" class="rounded-circle">
+                          <span class="d-none d-md-block dropdown-toggle ps-2">
+                            <% if (users) { %>
+                              <%= users %>
 
-                                                </li>
-                                                <li class="angle-shape"><a href="">Shop </a>
-                                                </li>
-                                                <li class="angle-shape"><a href="">Mens</a></li>
-                                                <li class="angle-shape"><a href="">Pages</a>
+                                <%} else { %>
+                                  Account
 
-                                                </li>
-                                                <li class="angle-shape"><a href="">Blog</a>
+                                  <% } %>
+                          </span>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
+                          <li class="dropdown-header">
+                            <h6>
+                              <% if (users) { %>
+                                <%= users %>
+                                    <% } %>
+                            </h6>
+                          </li>
 
-                                                </li>
-                                                <li><a href="contact.html">Contact</a></li>
-                                            </ul>
-                                        </nav>
-                                    </div>
-                                </div>
-                                <div class="col-xl-3 col-lg-3 position-relative ml-5">
-                                    <nav class="header-nav ms-auto">
-                                        <ul class="d-flex align-items-center">
-                                          <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications">
-                                            <li class="dropdown-header">
-                                            </ul>
-                                          <li class="nav-item dropdown">
-                                            <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow messages">
-                                            </ul>
-                                          </li>
-                                          <li class="nav-item dropdown pe-3">
-                                            <a class="nav-link nav-profile d-flex align-items-center pe-0" href="" data-bs-toggle="dropdown">
-                                              <img src="/assets/img/avatar.jpg" alt="Profile" class="rounded-circle">
-                                              <span class="d-none d-md-block dropdown-toggle ps-2">
-                                                <% if (users) { %>
-                                                    <%= users %>
-                                                    
-                                                    <%} else { %>
-                                                        Account
-                                                    
-                                                    <% } %>
-                                               </span>
-                                            </a>
-                                            <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
-                                              <li class="dropdown-header">
-                                                <h6><% if (users) { %>
-                                                    <%= users %>
-                                                    
-                                                    <%} else { %>
-                                                        Account
-                                                    
-                                                    <% } %></h6>
-                                              </li>
-                                              <!-- <li>
-                                                <a class="dropdown-item d-flex align-items-center" href="">
-                                                  <i class="bi bi-person"></i>
-                                                  <span>My Profile</span>
-                                                </a>
-                                              </li> -->
-                                              <% if (users) { %>
-                                                <li>
-                                                    <a class="dropdown-item d-flex align-items-center" href="/uselogout">
-                                                      <i class="bi bi-box-arrow-right"></i>
-                                                      <span>LogOut</span>
-                                                    </a>
-                                                  </li>
-                                                
-                                                <%} else { %>
-                                                    <li>
-                                                        <a class="dropdown-item d-flex align-items-center" href="/uselogin">
-                                                          <i class="bi bi-box-arrow-right"></i>
-                                                          <span>Log In</span>
-                                                        </a>
-                                                      </li>
-                                                
-                                                <% } %>
-                                              
-                                              
-                                  
-                                            </ul>
-                                          </li>
-                                  
-                                        </ul>
-                                      </nav>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                          <% if (users) { %>
+                            <li>
+                              <a class="dropdown-item d-flex align-items-center" href="/uselogout"><i class="bi bi-box-arrow-right"></i><span>LogOut</span></a>
+                            </li>
+                            <li>
+                              <a class="dropdown-item d-flex align-items-center" href="/usercart"><i class="bi bi-box-arrow-right"></i><span>Cart</span></a>
+                            </li>
+                            <li>
+                              <a class="dropdown-item d-flex align-items-center" href="/usercart"><i class="bi bi-box-arrow-right"></i><span>whishlist</span></a>
+                            </li>
+                            <%} else { %>
+                              <li>
+                                <a class="dropdown-item d-flex align-items-center" href="/uselogin">
+                                  <span>LogIn </span>
+                                </a>
+                              </li>
+                              <% } %>
+                        </ul>
+                      </li>
+                    </ul>
+                  </nav>
+                </div>
+              </div>
             </div>
-        </div>
+          </div>
+        </header>
+      </div>
     </div>
+  </div>
 </div>
