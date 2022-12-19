@@ -22,7 +22,7 @@ module.exports={
             }).catch((error)=>{
                 
 
-                reject() 
+                reject(error) 
             })
 
             }
@@ -36,14 +36,16 @@ module.exports={
     Dologin:(userinfo)=>{
         return new Promise(async(resolve,reject)=>{
             let user=await db.get().collection(collections.USER_Collection).findOne({useremail:userinfo.useremail})
+            console.log(user);
             if(user){
-                console.log(user);
+                
                  if(user.isblocked){
                     reject({error:"user is blocked"})
                  }else{
                     bcrypt.compare(userinfo.pass,user.pass).then((status)=>{
+                        console.log(user);
                         if(status){
-                            resolve()
+                            resolve(user)
                         }else{
                             reject({error:"password"})
                         }

@@ -4,6 +4,7 @@ const { userSignup, Dologin ,showproducts, productAlldetails, Getcategory,filter
 module.exports={
 
    sessioncheck:(req,res,next)=>{
+    console.log(req.session.user);
     if(req.session.user){
       next();
     }else{
@@ -52,9 +53,9 @@ module.exports={
 
 
       signup(req,res){
-        userSignup(req.body).then((userinfo)=>{
+        userSignup(req.body).then((data)=>{
           req.session.loggledIn=true;
-          req.session.user=req.body.useremail
+          req.session.user=data
           res.redirect('/')
         }).catch((error)=>{
           res.render('user/signup',{ error: `${error.error}` })
@@ -68,10 +69,10 @@ module.exports={
 
 
       uselog(req,res){
-        Dologin(req.body).then((userinfo)=>{
+        Dologin(req.body).then((user)=>{
           req.session.loggledIn=true;
-          req.session.user=req.body.useremail
-          
+          req.session.user=user
+           console.log(req.session.user,'*************************');
           res.redirect('/')
           
         }).catch((error)=>{

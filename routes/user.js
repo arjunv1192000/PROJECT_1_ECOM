@@ -12,7 +12,7 @@ router.post('/userlog',uselog);
 router.get('/productdetails/:id',sessioncheck,productpage)
 router.get('/uselogout',acclogout)
 router.get('/usercart',cartpage)
-router.get('/showproduct',listproductpage)
+router.get('/showproduct',sessioncheck,listproductpage)
 router.post('/categoryfilter',filterproduct)
 
 

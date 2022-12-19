@@ -119,10 +119,9 @@
                                         <% catdatas.forEach(function(product, i){ %>
                                             <a href="">
                                                 <form action="/categoryfilter" method="post">
-                                                <input type="text" name="name" value="<%= product.name%>">
+                                                <input type="text" name="name" value="<%= product.name%>" hidden>
                                                 
-                                                <button type="submit" class="btn btn-secondary">
-                                                </button>
+                                                <button type="submit" class="catbtn">* <%= product.name%></button>
                                                 </form>
                                             </a>
                                             <!-- <li><a href="/categoryfilter/<%= product.name%>"><form action=""></form></a></li> -->
