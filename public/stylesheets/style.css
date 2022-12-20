@@ -62,6 +62,16 @@
   background-color: transparent;
 
 }
+.cartimg{
+  width: 150px;
+  height: 150px;
+}
+.incbtn{
+  height: 50px;
+  margin-top: -60px;
+  background-color: transparent;
+  border: transparent;
+}
 
 
 .button{
@@ -8772,7 +8782,7 @@ button, input, optgroup, select, textarea {
   right: 18px;
   top: 0;
 }
-.product-details-content .pro-details-quality .cart-plus-minus input.cart-plus-minus-box {
+.product-details-content .pro-details-quality .cart-plus-minus input .cart-plus-minus-box {
   background: transparent none repeat scroll 0 0;
   border: medium none;
   color: #333333;
@@ -8782,7 +8792,7 @@ button, input, optgroup, select, textarea {
   margin: 0;
   padding: 0;
   text-align: center;
-  width: 120px;
+  width: 50px;
 }
 .product-details-content .pro-details-compare-wishlist {
   display: -webkit-box;

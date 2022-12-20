@@ -38,7 +38,7 @@
                           <img src="/assets/img/avatar.jpg" alt="Profile" class="rounded-circle">
                           <span class="d-none d-md-block dropdown-toggle ps-2">
                             <% if (users) { %>
-                              <%= user %>
+                              <%= users.username %>
 
                                 <%} else { %>
                                   Account
@@ -50,7 +50,7 @@
                           <li class="dropdown-header">
                             <h6>
                               <% if (users) { %>
-                                <%= user %>
+                                <%= users.username %>
                                     <% } %>
                             </h6>
                           </li>
@@ -60,7 +60,7 @@
                               <a class="dropdown-item d-flex align-items-center" href="/uselogout"><i class="bi bi-box-arrow-right"></i><span>LogOut</span></a>
                             </li>
                             <li>
-                              <a class="dropdown-item d-flex align-items-center" href="/usercart"><i class="bi bi-box-arrow-right"></i><span>Cart</span></a>
+                              <a class="dropdown-item d-flex align-items-center" href="/usercart"><i class="bi bi-box-arrow-right"></i><span>Cart </span></a>
                             </li>
                             <li>
                               <a class="dropdown-item d-flex align-items-center" href="/usercart"><i class="bi bi-box-arrow-right"></i><span>whishlist</span></a>

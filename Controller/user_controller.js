@@ -1,11 +1,11 @@
 const { Getcategorydata } = require('../Model/admin_helper');
-const { userSignup, Dologin ,showproducts, productAlldetails, Getcategory,filterBycategory} = require('../Model/user_helper');
+const { userSignup, Dologin ,showproducts, productAlldetails, Getcategory,filterBycategory,productcart,Getcartproducts,changeproductquantity, removeproduct_cart} = require('../Model/user_helper');
 
 module.exports={
 
    sessioncheck:(req,res,next)=>{
-    console.log(req.session.user);
-    if(req.session.user){
+    console.log(req.session.users);
+    if(req.session.users){
       next();
     }else{
 
@@ -23,11 +23,11 @@ module.exports={
   },
 
   loginredirect(req,res,next){
-    if(!req.session.user){
+    if(!req.session.users){
       req.session.loggedIn=false;
   
     }
-    if(req.session.user){ 
+    if(req.session.users){ 
       res.redirect('/')
     }else{
       next();
@@ -53,13 +53,14 @@ module.exports={
 
 
       signup(req,res){
-        userSignup(req.body).then((data)=>{
+        userSignup(req.body).then((user)=>{
           req.session.loggledIn=true;
-          req.session.user=data
+          req.session.users=user
+          console.log(req.session.user);
           res.redirect('/')
         }).catch((error)=>{
           res.render('user/signup',{ error: `${error.error}` })
-      
+          
         })
 
         
@@ -71,10 +72,9 @@ module.exports={
       uselog(req,res){
         Dologin(req.body).then((user)=>{
           req.session.loggledIn=true;
-          req.session.user=user
-           console.log(req.session.user,'*************************');
+          req.session.users=user
           res.redirect('/')
-          
+
         }).catch((error)=>{
         
           
@@ -85,10 +85,9 @@ module.exports={
        
       },
       homerender(req,res){
-        let users=req.session.user
-        console.log(users);
+        let users=req.session.users
         showproducts().then((showproduct)=>{
-        res.render('user/home',{user:true,showproduct,users})
+        res.render('user/home',{users,user:true,showproduct})
 
         })
         
@@ -99,27 +98,32 @@ module.exports={
 
       },
       productpage(req,res){
-        let users=req.session.user
+        let users=req.session.users
         productAlldetails(req.params.id).then((productDATA)=>{
           res.render('user/Productdetailspage',{user:true,productDATA,users})
 
         })
       },
       acclogout(req,res){
-        req.session.user=null;
+        req.session.users=null;
         req.session.loggedIn=false;
 
         res.redirect('/')
 
       },
-      cartpage(req,res){
-        let users=req.session.user
+        cartpage (req,res){
+        let users=req.session.users
+        let product=Getcartproducts(req.session.users._id).then((product)=>{
+        
+          res.render('user/cart',{user:true,users,product})
 
-        res.render('user/cart',{user:true,users})
+        })
+
+       
 
       },
       listproductpage(req,res){
-        let users=req.session.user
+        let users=req.session.users
         console.log(users);
         showproducts().then((showproduct)=>{
 
@@ -135,7 +139,7 @@ module.exports={
 
       },
       filterproduct(req,res){
-        let users=req.session.user
+        let users=req.session.users
         let name = req.body;
         console.log(users);
         console.log(name);
@@ -153,6 +157,27 @@ module.exports={
 
 
          
+
+        })
+      },
+      cartaddd(req,res){
+        let users=req.session.users
+        productcart(req.params.id,req.session.users._id).then(()=>{
+          res.redirect('/showproduct')
+        })
+
+      },
+      quantityproduct(req,res,next){
+        console.log(req.body);
+        changeproductquantity(req.body).then((response)=>{
+          res.json(response)
+
+        })
+      },
+
+      removeitem(req,res){
+        removeproduct_cart(req.body).then((response)=>{
+          res.json(response)
 
         })
       }
