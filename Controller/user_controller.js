@@ -1,6 +1,6 @@
 const { response } = require('../app');
 const { Getcategorydata } = require('../Model/admin_helper');
-const { userSignup, Dologin ,showproducts, productAlldetails, Getcategory,filterBycategory,productcart,Getcartproducts,changeproductquantity, removeproduct_cart, gettotalamount} = require('../Model/user_helper');
+const { userSignup, Dologin ,showproducts, productAlldetails, Getcategory,filterBycategory,productcart,Getcartproducts,changeproductquantity, removeproduct_cart, gettotalamount,placeorder,getCartproductlist,getorderdetails} = require('../Model/user_helper');
 
 module.exports={
 
@@ -124,8 +124,6 @@ module.exports={
 
           })
 
-        }).catch(()=>{
-
         })
 
        
@@ -201,6 +199,34 @@ module.exports={
           })
 
         })
+      },
+      orderplace(req,res){
+        let users=req.session.users
+        getCartproductlist(req.body.userId).then((product)=>{
+        gettotalamount(req.body.userId).then((totalprice)=>{
+        placeorder(req.body,product,totalprice).then((response)=>{
+          res.render('user/orderplaced',{users})
+          
+
+
+        })
+      })
+    })
+        console.log(req.body);
+        
+      
+      },
+      orders(req,res){
+        let users=req.session.users
+        getorderdetails(req.session.users._id).then((orders)=>{
+          console.log(orders);
+          res.render('user/orders',{user:true,orders,users})
+
+        })
       }
 
 }
+
+
+
+  

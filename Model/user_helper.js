@@ -291,6 +291,65 @@ module.exports={
 
         })
 
+    },
+    
+    getCartproductlist:(userId)=>{
+        return new Promise((resolve,reject)=>{
+            let cart=db.get().collection(collections.CART_Collection).findOne({user:ObjectId(userId)}).then((cart)=>{ 
+            resolve(cart.product) 
+
+            })
+            
+        })
+
+
+    },
+    placeorder:(order,product,total)=>{
+        return new Promise((resolve,reject)=>{
+            console.log(order,product,total);
+            let status=order['payment_method']==='COD'?'order placed':'order pending'
+            let orderObj={
+                deliveryDetails:{
+                    Name:order.name,
+                    phone:order.phone,
+                    address:order.Address,
+                    city:order.City,
+                    State:order.State,
+                    Postcode:order.Postcode,
+                    Country:order.country
+                },
+                userId:ObjectId(order.userId),
+                paymentMethod:order['payment_method'],
+                products:product,
+                totaAmount:total,
+                status:status,
+                date:new Date()
+            }
+            db.get().collection(collections.ORDER_Collection).insertOne(orderObj).then((response)=>{
+
+                db.get().collection(collections.CART_Collection).deleteOne({user:ObjectId(order.userId)})
+
+
+
+                resolve()
+
+            })
+
+        })
+        
+
+    },
+    getorderdetails:(userId)=>{     
+        return new Promise((resolve,reject)=>{
+           let orders=db.get().collection(collections.ORDER_Collection).find({userId:ObjectId(userId)}).toArray()
+
+            resolve(orders) 
+
+
+          
+            
+        })
+
     }
 
 

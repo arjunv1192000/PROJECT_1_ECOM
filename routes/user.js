@@ -1,5 +1,5 @@
 var express = require('express');
-const { userlogin,usersignup,signup,uselog,homerender,acclog,productpage,sessioncheck,acclogout ,nocache,loginredirect,cartpage,listproductpage,filterproduct,cartaddd,quantityproduct,removeitem,checkout} = require('../Controller/user_controller');
+const { userlogin,usersignup,signup,uselog,homerender,acclog,productpage,sessioncheck,acclogout ,nocache,loginredirect,cartpage,listproductpage,filterproduct,cartaddd,quantityproduct,removeitem,checkout,orderplace,orders} = require('../Controller/user_controller');
 var router = express.Router();
 var user_controller=require('../Controller/user_controller')
 
@@ -17,7 +17,9 @@ router.post('/categoryfilter',sessioncheck,filterproduct)
 router.get('/add-tocart/:id',sessioncheck,cartaddd)
 router.post('/change_product-quantity',quantityproduct)
 router.post('/product_remove',removeitem)
-router.get('/checkout_order/',sessioncheck,checkout)
+router.get('/checkout_order',sessioncheck,checkout)
+router.post('/place-order',sessioncheck,orderplace)
+router.get('/userorders',sessioncheck,orders)
 
 
 

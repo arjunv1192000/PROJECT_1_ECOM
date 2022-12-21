@@ -16,40 +16,49 @@
                                     <th>action</th>
                                 </tr>
                             </thead>
-                            <% if (product) { %>
-                                <tbody>
-                                    <% product.forEach(function(cart, i){ %>
-    
+                            <tbody>
+                                <% product.forEach(function(cart, i){ %>
+
                                     <tr>
-                                        
+
                                         <td class="product-thumbnail">
-                                            <a href="#"><img class="cartimg" src="/product_img/<%= cart.product._id %>.jpg" alt=""></a>
+                                            <a href="#"><img class="cartimg"
+                                                    src="/product_img/<%= cart.product._id %>.jpg" alt=""></a>
                                         </td>
-                                        <td class="product-name"><a href="#"><%= cart.product.productname %></a></td>
-                                        <td class="product-price-cart"><span class="amount">₹<%= cart.product.price %></span></td>
-                                        
+                                        <td class="product-name"><a href="#">
+                                                <%= cart.product.productname %>
+                                            </a></td>
+                                        <td class="product-price-cart"><span class="amount">₹<%= cart.product.price %>
+                                                    </span></td>
+
                                         <td class="product-quantity">
                                             <div class="cart-plus-minus">
                                                 <div class="dec qtybutton">
-                                                    <button class="incbtn" onclick="changequantity('<%= cart._id %>','<%= cart.product._id %>',-1) ">-</button>
+                                                    <button class="incbtn"
+                                                        onclick="changequantity('<%= cart._id %>','<%= cart.product._id %>',-1) ">-</button>
                                                 </div>
-                                                <span i id="<%= cart.product._id %>"><%= cart.quantity %></span>
+                                                <span i id="<%= cart.product._id %>">
+                                                    <%= cart.quantity %>
+                                                </span>
                                                 <div class="inc qtybutton">
-                                                    <button  class="incbtn"  onclick="changequantity('<%= cart._id %>','<%= cart.product._id %>',1 ) ">+</button>
+                                                    <button class="incbtn"
+                                                        onclick="changequantity('<%= cart._id %>','<%= cart.product._id %>',1 ) ">+</button>
                                                 </div>
                                             </div>
                                         </td>
-                                        <td class="product-subtotal"> <span i id="<%= cart.product._id %>">₹<%= cart.quantity * cart.product.price %></span></td>
+                                        <td class="product-subtotal"> <span i id="<%= cart.product._id %>">₹<%=
+                                                    cart.quantity * cart.product.price %></span></td>
                                         <td class="product-remove">
-                                            <button type="button" class="btn btn-danger"  onclick="remove('<%= cart._id %>','<%= cart.product._id %>',) ">remove</button>
+                                            <button type="button" class="btn btn-danger"
+                                                onclick="remove('<%= cart._id %>','<%= cart.product._id %>',) ">remove</button>
                                         </td>
                                     </tr>
                                     <% }); %>
-                                </tbody>
-                              
-                                  <%} else { %>
-                                    
-                             
+                            </tbody>
+
+
+
+
                         </table>
                     </div>
                     <div class="row">
@@ -148,47 +157,47 @@
 </div>
 
 <script>
-    function changequantity(cartId,proId,count){
-        let quantity=parseInt(document.getElementById(proId).innerHTML)
-        
-        count=parseInt(count)
+    function changequantity(cartId, proId, count) {
+        let quantity = parseInt(document.getElementById(proId).innerHTML)
+
+        count = parseInt(count)
         $.ajax({
-            url:'/change_product-quantity',
-            data:{
-                cart:cartId,
-                product:proId,
-                count:count,
-                quantity:quantity,
-               
+            url: '/change_product-quantity',
+            data: {
+                cart: cartId,
+                product: proId,
+                count: count,
+                quantity: quantity,
+
             },
-            method:'post',
-            success:(response)=>{
-                if(response.removeproduct){
+            method: 'post',
+            success: (response) => {
+                if (response.removeproduct) {
                     alert('product remove from cart')
                     location.reload()
 
-                }else{
-                    document.getElementById(proId).innerHTML=quantity+count
-                   
-                    
+                } else {
+                    document.getElementById(proId).innerHTML = quantity + count
 
-                    
+
+
+
 
 
                 }
-               
+
             }
         })
     }
-    function remove(cartId,proId){
+    function remove(cartId, proId) {
         $.ajax({
-            url:'/product_remove',
-            data:{
-                cart:cartId,
-                product:proId
+            url: '/product_remove',
+            data: {
+                cart: cartId,
+                product: proId
             },
-            method:'post',
-            success:(response)=>{
+            method: 'post',
+            success: (response) => {
                 alert('product remove from cart')
                 location.reload()
 
@@ -196,11 +205,5 @@
         })
     }
 
-   
+
 </script>
-
-
-
-
-
-

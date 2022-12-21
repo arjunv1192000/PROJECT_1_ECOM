@@ -1,0 +1,36 @@
+<div class="catpage">
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th scope="col">OrderId</th>
+                <th scope="col">Date</th>
+                <th scope="col">Address</th>
+                <th scope="col">Pincode</th>
+                <th scope="col">phone</th>
+                <th scope="col">payment</th>
+                <th scope="col">Totalprice</th>
+                <th scope="col">status</th>
+                <th scope="col">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+         <% orders.forEach(function(data, i){ %>
+            <tr>
+                <td><%= data._id %></td>
+                <td><%= data.date %></td>
+                <td><%= data.deliveryDetails.address%></td>
+                <td><%= data.deliveryDetails.Postcode %></td>
+                <td><%= data.deliveryDetails.phone  %></td>
+                <td><%= data.paymentMethod %></td>
+                <td><%= data.totaAmount %></td>
+                <td><%= data.status %></td>
+                <td>
+                    <a href=""><button class="btn btn-danger" id="my-button" >Cancel</button></a>
+                </td>
+            </tr>
+         <% }); %>
+            
+         
+      </tbody>
+    </table>
+</div>
