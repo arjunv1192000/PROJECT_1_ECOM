@@ -230,6 +230,8 @@ module.exports={
             ).then((response)=>{
                 resolve(response)
 
+            }).catch(()=>{
+                reject()
             })
 
         })
@@ -277,9 +279,16 @@ module.exports={
         ]).toArray()
 
         console.log(totalprice);
-               
-        resolve(totalprice[0].totalprice)
-        
+        if (totalprice && totalprice.length > 0) {
+            resolve(totalprice[0].totalprice)
+
+        }else{
+            resolve(0);
+        }
+            
+        }).catch((error)=>{
+            reject(error)
+
         })
 
     }

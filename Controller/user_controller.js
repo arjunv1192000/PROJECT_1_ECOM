@@ -116,8 +116,15 @@ module.exports={
         let users=req.session.users
         console.log(req.session.users._id);
         Getcartproducts(req.session.users._id).then((product)=>{
+
+          gettotalamount(req.session.users._id).then((totalprice)=>{
         
-          res.render('user/cart',{user:true,users,product})
+          res.render('user/cart',{user:true,users,product,totalprice})
+          }).catch(()=>{
+
+          })
+
+        }).catch(()=>{
 
         })
 
@@ -174,6 +181,8 @@ module.exports={
         changeproductquantity(req.body).then((response)=>{
           res.json(response)
 
+        }).catch(()=>{
+
         })
       },
 
@@ -189,11 +198,7 @@ module.exports={
           Getcartproducts(req.session.users._id).then((product)=>{
             res.render('user/checkout',{user:true,users,totalprice,product})
         
-            
-  
           })
-
-         
 
         })
       }
