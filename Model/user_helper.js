@@ -188,7 +188,7 @@ module.exports={
         ]).toArray()
         console.log(cartItems);
                
-        resolve( cartItems)
+        resolve(cartItems)
         
         })
 
@@ -236,13 +236,59 @@ module.exports={
 
         
     },
-    
+    gettotalamount:(userId)=>{
+        return new Promise(async(resolve,reject)=>{
+            totalprice=await db.get().collection(collections.CART_Collection ).aggregate([
+            {
+                $match:{user:ObjectId(userId)}
+
+
+           },
+           {
+            $unwind:'$product'
+           },
+           {
+            $project:{
+                item:'$product.item',
+                quantity:'$product.quantity'
+            }
+
+           },
+           {
+            $lookup:{
+                from:collections.Product_Collecction,
+                localField:'item',
+                foreignField:'_id',
+                as:'product'
+            }
+           },
+           {
+            $project:{
+                item:1,quantity:1,product:{$arrayElemAt:['$product',0]}
+            }
+           },
+           {
+            $group:{
+                
+                _id:null,totalprice:{$sum:{$multiply:[{ $toDouble: "$quantity" },
+                { $toDouble: "$product.price" }]}}
+            }
+           }
+        ]).toArray()
+
+        console.log(totalprice);
+               
+        resolve(totalprice[0].totalprice)
+        
+        })
+
+    }
 
 
 
 
 }
    
-
+ 
 
     

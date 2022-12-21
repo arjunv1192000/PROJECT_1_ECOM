@@ -27,7 +27,7 @@ app.use(expressLayouts);
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 app.use(fileupload());
-app.use(session({secret:"value",cookie:{maxAge:100000}}));
+app.use(session({secret:"value",cookie:{maxAge:6000000}}));
 
 
 db.connect((err)=>{

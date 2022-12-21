@@ -39,7 +39,8 @@
                                                             <span>₹<%= product.price %></span>
                                                         </div>
                                                         <div class="product-addtocart">
-                                                            <a title="Add To Cart" href="/add-tocart/<%= product._id %>">+ Add To Cart</a>
+                                                            <button onclick="addtocart('<%= product._id %>')" class="btn btn-outline-danger btn-rounded" data-mdb-ripple-color="dark">+ Add To Cart</button>
+                                                            <!-- <a title="Add To Cart" href="/add-tocart/<%= product._id %>">+ Add To Cart</a> -->
                                                         </div>
                                                     </div>
                                                 </div>
@@ -81,8 +82,9 @@
                                                                         <span>₹<%= product.price %></span>
                                                                     </div>
                                                                     <div class="product-addtocart">
-                                                                        <a title="Add To Cart" href="/add-tocart/<%= product._id %>">+ Add To
-                                                                            Cart</a>
+                                                                         <button onclick="addtocart('<%= product._id %>')" class="btn btn-outline-danger btn-rounded" data-mdb-ripple-color="dark">+ Add To Cart</button>
+                                                                        <!-- <a title="Add To Cart" href="/add-tocart/<%= product._id %>">+ Add To
+                                                                            Cart</a> -->
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -124,7 +126,7 @@
                                                 <button type="submit" class="catbtn">* <%= product.name%></button>
                                                 </form>
                                             </a>
-                                            <!-- <li><a href="/categoryfilter/<%= product.name%>"><form action=""></form></a></li> -->
+                                            
                                             
                                             <% }); %>
                                     </ul>
@@ -137,3 +139,15 @@
         </div>          
     </div>
 </div>
+<script>
+    function addtocart(proId){
+        $.ajax({
+            url:'/add-tocart/'+proId,
+            method:'get',
+            success:(response)=>{
+                location.reload()
+
+            }
+        })
+    }
+</script>

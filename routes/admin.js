@@ -1,5 +1,5 @@
 var express = require('express');
-const { adminloginpage,adminlog,adminhome,userdata,productdata,productadd,editproduct,addproducts,editsubmit,removeproduct,categorymanage,categoryadd,categoryeditpage,categoryeditsubmit,removecategory,blockmanager} = require('../Controller/admin_controller');
+const { adminloginpage,adminlog,adminhome,userdata,productdata,productadd,editproduct,addproducts,editsubmit,removeproduct,categorymanage,categoryadd,categoryeditpage,categoryeditsubmit,removecategory,blockmanager,acclogout} = require('../Controller/admin_controller');
 var router = express.Router();
 
 /* GET users listing. */
@@ -35,6 +35,8 @@ router.post('/category-edit_submit/:id',categoryeditsubmit)
 router.get('/delete-category/:id',removecategory)
 
 router.post('/Block/:id',blockmanager)
+
+router.get('/adminlogout',acclogout)
 
 
 

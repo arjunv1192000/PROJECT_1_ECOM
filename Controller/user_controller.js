@@ -1,5 +1,6 @@
+const { response } = require('../app');
 const { Getcategorydata } = require('../Model/admin_helper');
-const { userSignup, Dologin ,showproducts, productAlldetails, Getcategory,filterBycategory,productcart,Getcartproducts,changeproductquantity, removeproduct_cart} = require('../Model/user_helper');
+const { userSignup, Dologin ,showproducts, productAlldetails, Getcategory,filterBycategory,productcart,Getcartproducts,changeproductquantity, removeproduct_cart, gettotalamount} = require('../Model/user_helper');
 
 module.exports={
 
@@ -113,7 +114,8 @@ module.exports={
       },
         cartpage (req,res){
         let users=req.session.users
-        let product=Getcartproducts(req.session.users._id).then((product)=>{
+        console.log(req.session.users._id);
+        Getcartproducts(req.session.users._id).then((product)=>{
         
           res.render('user/cart',{user:true,users,product})
 
@@ -161,9 +163,9 @@ module.exports={
         })
       },
       cartaddd(req,res){
-        let users=req.session.users
         productcart(req.params.id,req.session.users._id).then(()=>{
-          res.redirect('/showproduct')
+          res.json({status:true})
+          
         })
 
       },
@@ -178,6 +180,20 @@ module.exports={
       removeitem(req,res){
         removeproduct_cart(req.body).then((response)=>{
           res.json(response)
+
+        })
+      },
+      checkout(req,res){
+        let users=req.session.users
+        gettotalamount(req.session.users._id).then((totalprice)=>{
+          Getcartproducts(req.session.users._id).then((product)=>{
+            res.render('user/checkout',{user:true,users,totalprice,product})
+        
+            
+  
+          })
+
+         
 
         })
       }

@@ -171,6 +171,10 @@ module.exports={
 
     console.log(req.body);
     console.log(req.params.id);
+  },
+
+  acclogout(req,res){
+    res.redirect('/admin')
   }
 
 

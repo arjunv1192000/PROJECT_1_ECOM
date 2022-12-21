@@ -64,7 +64,8 @@
                         </div>
                     </div>
                     <div class="pro-details-buy-now btn-hover btn-hover-radious">
-                        <a href="#">Add To Cart</a>
+                        <button onclick="addtocart('<%= productDATA._id %>')" class="btn btn-outline-danger btn-rounded" data-mdb-ripple-color="dark">+ Add To Cart</button>
+                        <!-- <a href="/add-tocart/<%= productDATA._id %>">Add To Cart</a> -->
                     </div>
                 </div>
 
@@ -145,5 +146,17 @@
             // more options here
         };
         new ImageZoom(document.getElementById("img-container"), options);
+ 
+    function addtocart(proId){
+        $.ajax({
+            url:'/add-tocart/'+proId,
+            method:'get',
+            success:(response)=>{
+                location.reload()
+
+            }
+        })
+    }
+
 
     </script>
