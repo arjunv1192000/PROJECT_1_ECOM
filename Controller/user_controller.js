@@ -1,6 +1,6 @@
 const { response } = require('../app');
 const { Getcategorydata } = require('../Model/admin_helper');
-const { userSignup, Dologin ,showproducts, productAlldetails, Getcategory,filterBycategory,productcart,Getcartproducts,changeproductquantity, removeproduct_cart, gettotalamount,placeorder,getCartproductlist,getorderdetails} = require('../Model/user_helper');
+const { userSignup, Dologin ,showproducts, productAlldetails, Getcategory,filterBycategory,productcart,Getcartproducts,changeproductquantity, removeproduct_cart, gettotalamount,placeorder,getCartproductlist,getorderdetails,Cancelproduct_order} = require('../Model/user_helper');
 
 module.exports={
 
@@ -221,6 +221,13 @@ module.exports={
         getorderdetails(req.session.users._id).then((orders)=>{
           console.log(orders);
           res.render('user/orders',{user:true,orders,users})
+
+        })
+      },
+      cancelorder(req,res){
+        Cancelproduct_order(req.params.id,req.body.status).then(()=>{
+          res.redirect('/userorders')
+
 
         })
       }

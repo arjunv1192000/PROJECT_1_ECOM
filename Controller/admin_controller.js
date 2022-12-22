@@ -1,4 +1,4 @@
-const {  Adminlogin,GetAlluserdata,adminadd,Getproductdata,adminedit,updateproduct,deleteproduct,addcategory,gettcategory,editsubmit,updatecategory,deletecategory, userblock,Getcategorydata} = require('../Model/admin_helper')
+const {  Adminlogin,GetAlluserdata,adminadd,Getproductdata,adminedit,updateproduct,deleteproduct,addcategory,gettcategory,editsubmit,updatecategory,deletecategory, userblock,Getcategorydata,getAlluserorder} = require('../Model/admin_helper')
 
 module.exports={
 
@@ -175,6 +175,13 @@ module.exports={
 
   acclogout(req,res){
     res.redirect('/admin')
+  },
+  userorders(req,res){
+    getAlluserorder().then((Allorder)=>{
+
+      res.render('admin/ordermanagement_page',{user:false,Allorder})
+
+    })
   }
 
 

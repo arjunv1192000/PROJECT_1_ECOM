@@ -179,6 +179,14 @@ module.exports={
             resolve(category)
         })
 
+    },
+    getAlluserorder:()=>{
+        return new Promise(async(resolve,reject)=>{
+            let Allorder=await db.get().collection(collections.ORDER_Collection).find().toArray()
+
+            resolve(Allorder)
+        })
+
     }
     
 

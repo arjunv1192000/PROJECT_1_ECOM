@@ -350,6 +350,25 @@ module.exports={
             
         })
 
+    },
+    Cancelproduct_order:(Id,status)=>{
+        console.log(status);
+        if(status=='order placed'||status=='order pending'){
+            status='cancel order'
+        }
+        return new Promise((resolve,reject)=>{
+            db.get().collection(collections.ORDER_Collection).updateOne({_id:ObjectId(Id)},{
+                $set:{
+                    status:status
+                }
+            }).then((response)=>{
+                console.log(response);
+                resolve(response)
+            })
+            
+
+        })
+
     }
 
 
@@ -359,4 +378,4 @@ module.exports={
    
  
 
-    
+     
