@@ -12,16 +12,19 @@ module.exports={
         userinfo.isblocked=false
         return new Promise(async(resolve,reject)=>{
             
-
             let user=await db.get().collection(collections.USER_Collection).findOne({useremail:userinfo.useremail})
+            console.log(user);
             if(user){
                 
                 reject({error:'Email allready exist'})
             }else{
                 userinfo.pass=await bcrypt.hash(userinfo.pass,10)
-            db.get().collection(collections.USER_Collection).insertOne(userinfo).then((user)=>{
+
+            db.get().collection(collections.USER_Collection).insertOne(userinfo).then(( )=>{
                 
-                resolve(user)
+                 resolve( )
+
+
             }).catch((error)=>{
                 
 
@@ -368,6 +371,100 @@ module.exports={
             
 
         })
+
+    },
+     findByNumber:(num)=> {
+        return new Promise(async (resolve, reject) => {
+          const user = await db.get().collection(collections.USER_Collection).findOne({ userphone: num });
+          console.log(num);
+          if (user) {
+            if (user.isblocked) {
+              reject({ err: 'This account is block' });
+            } else {
+              resolve(user);
+            }
+          } else {
+            reject({ err: 'account not found' });
+          }
+        });
+      },
+      getAllorderproducts:(orderId)=>{
+        console.log(orderId,'>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>');
+        return new Promise(async(resolve,reject)=>{
+            let singleproduct=await db.get().collection(collections.ORDER_Collection).aggregate([
+                {
+                    $match:{_id:ObjectId(orderId)},
+
+                },
+                {
+                    $project:{
+                        products:1,
+                        deliveryDetails:1,
+                        
+                    },
+                },
+                {
+                    $unwind:'$products'
+                },
+                {
+                    $lookup: {
+                        from: 'productdata',
+                        localField: 'products.item',
+                        foreignField: '_id',
+                        as:'orders'
+                      },
+                },
+                {
+                    $unwind:'$orders'
+                },
+            ]).toArray();
+           
+            resolve(singleproduct)
+        });
+
+    },
+
+    product_wishlist:(proId,userId)=>{
+        let proObj={
+            item:ObjectId(proId),
+        }
+        return new Promise(async(resolve,reject)=>{
+            let wishlist=await db.get().collection(collections.WISHLIST_Collection).findOne({user:ObjectId(userId)})
+
+            if( wishlist){
+                let proExist=wishlist.product.findIndex(product=>product.item==proId)
+                console.log(proExist);
+                if(proExist!=-1){
+                    await  db.get().collection(collections.WISHLIST_Collection).updateOne({user:ObjectId(userId),'product.item':ObjectId(proId)},
+                    ).then(()=>{
+                        resolve()
+                    }).catch(()=>{
+                        reject()
+                    })
+
+                }else{
+                    await  db.get().collection(collections.WISHLIST_Collection).updateOne({user:ObjectId(userId)},
+                {
+                    $push:{product:proObj}
+                }
+                ).then((response)=>{
+                    resolve()
+                })
+
+                }
+               
+
+            }else{
+                WishObj={
+                    user:ObjectId(userId),
+                    product:[proObj]
+                }
+              await  db.get().collection(collections.WISHLIST_Collection).insertOne(WishObj).then((response)=>{
+                    resolve()
+                })
+            }
+        })
+        
 
     }
 

@@ -63,16 +63,30 @@
                                 wish list</a>
                         </div>
                     </div>
-                    <div class="pro-details-buy-now btn-hover btn-hover-radious">
+                    <% if (productDATA.stock) { %>
                         <button onclick="addtocart('<%= productDATA._id %>')" class="btn btn-outline-danger btn-rounded" data-mdb-ripple-color="dark">+ Add To Cart</button>
-                        <!-- <a href="/add-tocart/<%= productDATA._id %>">Add To Cart</a> -->
-                    </div>
+                      <% } else { %>
+                        <p class="h3 text-danger">Sorry, this product is currently out of stock</p>
+                       
+                      <% } %>
+                  
                 </div>
 
             </div>
         </div>
     </div>
 </div>
+
+
+
+
+
+
+
+
+
+
+
 <div class="description-review-wrapper pb-90">
     <div class="container">
         <div class="row">

@@ -23,14 +23,22 @@
                 <td><%= data.deliveryDetails.phone  %></td>
                 <td><%= data.paymentMethod %></td>
                 <td><%= data.totaAmount %></td>
-                <td><%= data.status %></td>
                 <td>
-                    <a href=""><button class="btn btn-danger" id="my-button" >Products</button></a>
+
+                    <%= data.status %>
+
+                    <form action="/admin/cancelorders/<%= data._id %>" method="post">
+                        <input name="status" value="<%= data.status %>" hidden>
+                          <button type="submit" class="btn btn-danger btn-sm" >Cancel</button>
+                           
+                      </form>
+
+                </td>
+                <td>
+                    <a href="/admin/orderproduct/<%= data._id %>"><button class="btn btn-success" id="my-button" >Products</button></a>
                 </td>
             </tr>
          <% }); %>
-            
-         
       </tbody>
     </table>
 </div>

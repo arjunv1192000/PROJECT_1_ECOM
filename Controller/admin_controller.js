@@ -1,4 +1,4 @@
-const {  Adminlogin,GetAlluserdata,adminadd,Getproductdata,adminedit,updateproduct,deleteproduct,addcategory,gettcategory,editsubmit,updatecategory,deletecategory, userblock,Getcategorydata,getAlluserorder} = require('../Model/admin_helper')
+const {  Adminlogin,GetAlluserdata,adminadd,Getproductdata,adminedit,updateproduct,deleteproduct,addcategory,gettcategory,editsubmit,updatecategory,deletecategory, userblock,Getcategorydata,getAlluserorder,getAllorderproducts,productstatus,Cancelproduct_orders} = require('../Model/admin_helper')
 
 module.exports={
 
@@ -165,6 +165,7 @@ module.exports={
   },
   blockmanager(req,res){
     userblock(req.params.id,req.body.status).then(()=>{
+      req.session.users=null
       res.redirect('/admin/userdetails')
 
     })
@@ -182,9 +183,36 @@ module.exports={
       res.render('admin/ordermanagement_page',{user:false,Allorder})
 
     })
-  }
+  },
+  orderproducts(req,res){
+    console.log(req.params.id,'****************************');
+    getAllorderproducts(req.params.id).then((singleproduct)=>{
+
+      res.render('admin/order_productdetails',{user:false,singleproduct})
 
 
+
+    })
+  },
+
+  productmanage(req,res){
+    productstatus(req.params.id,req.body.stock).then((response)=>{
+
+      res.redirect('/admin/products')
+
+    })
+  },
+  cancelorders(req,res){
+    Cancelproduct_orders(req.params.id,req.body.status).then(()=>{
+
+      res.redirect('/admin/orders')
+
+
+    })
+
+
+
+  },
 
       
         

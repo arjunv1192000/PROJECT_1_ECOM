@@ -37,6 +37,7 @@ module.exports={
 
     },
      adminadd(product){
+        product.stock=true
         return new Promise(async(resolve,reject)=>{
             var item=await db.get().collection(collections.Product_Collecction).insertOne(product)
             let data={
@@ -187,7 +188,84 @@ module.exports={
             resolve(Allorder)
         })
 
-    }
+    },
+    getAllorderproducts:(orderId)=>{
+        console.log(orderId,'>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>');
+        return new Promise(async(resolve,reject)=>{
+            let singleproduct=await db.get().collection(collections.ORDER_Collection).aggregate([
+                {
+                    $match:{_id:ObjectId(orderId)},
+
+                },
+                {
+                    $project:{
+                        products:1,
+                        deliveryDetails:1,
+                        
+                    },
+                },
+                {
+                    $unwind:'$products'
+                },
+                {
+                    $lookup: {
+                        from: 'productdata',
+                        localField: 'products.item',
+                        foreignField: '_id',
+                        as:'orders'
+                      },
+                },
+                {
+                    $unwind:'$orders'
+                },
+            ]).toArray();
+           
+            resolve(singleproduct)
+        });
+
+    },
+
+    productstatus:(proId,stock)=>{
+        console.log(proId,stock);
+        if(stock=='true'){
+            stock=false
+        }else{
+            stock=true
+        }
+        return new Promise((resolve,reject)=>{
+            db.get().collection(collections.Product_Collecction).updateOne({_id:ObjectId(proId)},{
+                $set:{
+                    stock:stock
+                }
+            }).then((response)=>{
+                console.log(response);
+                resolve(response)
+            })
+            
+
+        })
+
+
+    },
+    Cancelproduct_orders:(Id,status)=>{
+        console.log(status);
+        if(status=='order placed'||status=='order pending'){
+            status='cancel order'
+        }
+        return new Promise((resolve,reject)=>{
+            db.get().collection(collections.ORDER_Collection).updateOne({_id:ObjectId(Id)},{
+                $set:{
+                    status:status
+                }
+            }).then((response)=>{
+                console.log(response);
+                resolve(response)
+            })
+            
+
+        })
+
+    },
     
 
 

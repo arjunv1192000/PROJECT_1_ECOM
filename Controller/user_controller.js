@@ -1,6 +1,13 @@
 const { response } = require('../app');
+require('dotenv').config();
+const accountSid = process.env.TWILIO_ACCOUNT_SID;
+const authToken = process.env.TWILIO_TOKEN;
+const serviceToken = process.env.Service_ID;
+const client = require("twilio")(accountSid,authToken,serviceToken);
 const { Getcategorydata } = require('../Model/admin_helper');
-const { userSignup, Dologin ,showproducts, productAlldetails, Getcategory,filterBycategory,productcart,Getcartproducts,changeproductquantity, removeproduct_cart, gettotalamount,placeorder,getCartproductlist,getorderdetails,Cancelproduct_order} = require('../Model/user_helper');
+const { userSignup, Dologin ,showproducts, productAlldetails, Getcategory,filterBycategory,productcart,Getcartproducts,changeproductquantity, removeproduct_cart, gettotalamount,placeorder,getCartproductlist,getorderdetails,Cancelproduct_order,findByNumber,getAllorderproducts,product_wishlist} = require('../Model/user_helper');
+
+let usersession ;
 
 module.exports={
 
@@ -54,9 +61,10 @@ module.exports={
 
 
       signup(req,res){
+        console.log(req.body);
         userSignup(req.body).then((user)=>{
           req.session.loggledIn=true;
-          req.session.users=user
+          req.session.users=req.body
           console.log(req.session.user);
           res.redirect('/')
         }).catch((error)=>{
@@ -230,7 +238,77 @@ module.exports={
 
 
         })
+      },
+      otpnumberpage(req,res){
+        res.render('user/OTP')
+      },
+
+      otp_authentication(req,res){
+        number = req.body.phone;
+  if (number.substring(0, 3) !== '+91') {
+    number = `+91${number}`;
+  }
+  console.log(number);
+  // accound finding
+  findByNumber(req.body.phone).then((user) => { 
+  console.log(user);
+  usersession=user
+    client.verify
+      .services(process.env.Service_ID)
+      .verifications.create({
+        to: number,
+        channel: 'sms',
+      })
+      .then(() => {
+        res.render('user/verificationotp');
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  })
+    .catch((err) => {
+      res.render('user/OTP', { error: err });
+    });
+
+      },
+      otpverify(req,res){
+        console.log(req.body.otp);
+        client.verify
+    .services(process.env.Service_ID)
+    .verificationChecks.create({
+      to: number,
+      code: req.body.otp,
+    }).then(async (data) => {
+      if (data.status === 'approved') {
+        req.session.users=usersession
+         res.redirect('/');
+      } else {
+        console.log('OTP not matched');
+        res.render('user/verificationotp', { error: 'invalied OTP' });
       }
+    })
+      },
+      userorderproduct(req,res){
+        let users=req.session.users
+        getAllorderproducts(req.params.id).then((singleproduct)=>{
+
+          res.render('admin/order_productdetails',{user:true,singleproduct,users})
+    
+    
+    
+        })
+
+      },
+      addtowishlist(req,res){
+        console.log(req.params.id);
+        product_wishlist(req.params.id,req.session.users._id).then(()=>{
+          res.json({status:true})
+          
+        })
+
+
+      }
+      
 
 }
 

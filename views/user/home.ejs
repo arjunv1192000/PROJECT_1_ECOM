@@ -6,7 +6,7 @@
             <div class="row align-items-center">
                 <div class="col-lg-5 col-md-6 col-12 col-sm-6">
                     <div class="slider-sin-img-hm1 slider-sin-mrg1 slider-animated-1">
-                        <img class="animated" src="/images/slider/hm1-single-1.png" alt="">
+                        <img class="animated" src="/images/slider/hm1-single-1.png alt="">
                     </div>
                 </div>
                 <div class="col-lg-7 col-md-6 col-12 col-sm-6">
@@ -249,8 +249,12 @@
                                 <span>₹<%= product.price %></span>
                             </div>
                             <div class="product-addtocart">
-                                <button onclick="addtocart('<%= product._id %>')" class="btn btn-outline-danger btn-rounded" data-mdb-ripple-color="dark">+ Add To Cart</button>
-                                <!-- <a title="Add To Cart" href="/add-tocart/<%= product._id %>">+ Add To Cart</a> -->
+                                <% if (product.stock) { %>
+                                    <button onclick="addtocart('<%= product._id %>')" class="btn btn-outline-danger btn-rounded" data-mdb-ripple-color="dark">+ Add To Cart</button>
+                                  <% } else { %>
+                                    <p  class="ml-20 text-danger">Sorry, this product is currently out of stock.</p>
+                                  <% } %>
+                                
                             </div>
                         </div>
                     </div>

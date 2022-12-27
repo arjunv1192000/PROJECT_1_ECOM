@@ -1,5 +1,5 @@
 var express = require('express');
-const { adminloginpage,adminlog,adminhome,userdata,productdata,productadd,editproduct,addproducts,editsubmit,removeproduct,categorymanage,categoryadd,categoryeditpage,categoryeditsubmit,removecategory,blockmanager,acclogout,userorders} = require('../Controller/admin_controller');
+const { adminloginpage,adminlog,adminhome,userdata,productdata,productadd,editproduct,addproducts,editsubmit,removeproduct,categorymanage,categoryadd,categoryeditpage,categoryeditsubmit,removecategory,blockmanager,acclogout,userorders,orderproducts,productmanage,cancelorders} = require('../Controller/admin_controller');
 var router = express.Router();
 
 /* GET users listing. */
@@ -39,6 +39,12 @@ router.post('/Block/:id',blockmanager)
 router.get('/adminlogout',acclogout)
 
 router.get('/orders',userorders)
+
+router.get('/orderproduct/:id',orderproducts)
+
+router.post('/delete-pro/:id',productmanage)
+
+router.post('/cancelorders/:id',cancelorders)
 
 
 

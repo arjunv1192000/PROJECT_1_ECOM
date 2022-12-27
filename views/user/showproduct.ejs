@@ -11,7 +11,6 @@
                         <div id="shop-1" class="tab-pane active">
                             <div class="row">
                                 <% if (showproduct) { %>
-
                                     <% showproduct.forEach(function(product, i){ %>
                                         <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6">
                                             <div class="product-wrap mb-35">
@@ -19,80 +18,84 @@
                                                     <a href="/productdetails/<%= product._id %>"><img
                                                             src="/product_img/<%= product._id %>.jpg" alt="product"></a>
                                                     <div class="product-action">
-                                                        <a data-bs-toggle="modal" data-bs-target="#exampleModal"
+                                                        <!-- <a data-bs-toggle="modal" data-bs-target="#exampleModal"
                                                             title="Quick View" href="#"><i class="fa fa-plus"
                                                                 aria-hidden="true"></i></a>
-                                                        <a title="Wishlist" href="#"><i class="fa fa-heart-o"
-                                                                aria-hidden="true"></i></a>
+                                                        <a title="Wishlist" href=""><i class="fa fa-heart-o "aria-hidden="true"></i> <button onclick="addtowishlist('<%= product._id %>')" class="btn btn-outline-danger btn-rounded" data-mdb-ripple-color="dark" ></button></a> -->
+                                                        <!-- <button onclick="addtowishlist('<%= product._id %>')" class="btn btn-outline-danger btn-rounded" data-mdb-ripple-color="dark">+ Add To Cart</button> -->
+                                                        <a title="Wishlist" href="#" onclick="addtowishlist('<%= product._id %>')">
+                                                            <button class="btn btn-outline-danger btn-rounded" data-mdb-ripple-color="dark"><i class="fa fa-heart-o" aria-hidden="true"></i></button>
+                                                          </a>
+                                                          
 
                                                     </div>
                                                 </div>
                                                 <div class="product-content">
-                                                    <span>
-                                                        <%= product.category %>
-                                                    </span>
-                                                    <h4><a href="/productdetails/<%= product._id %>">
-                                                            <%= product.productname %>
-                                                        </a></h4>
+                                                    <span><%= product.category %></span>
+                                                    <h4><a href="/productdetails/<%= product._id %>"><%= product.productname %></a></h4>
                                                     <div class="price-addtocart">
                                                         <div class="product-price">
                                                             <span>₹<%= product.price %></span>
                                                         </div>
                                                         <div class="product-addtocart">
-                                                            <button onclick="addtocart('<%= product._id %>')" class="btn btn-outline-danger btn-rounded" data-mdb-ripple-color="dark">+ Add To Cart</button>
+                                                            <% if (product.stock) { %>
+                                                                <button onclick="addtocart('<%= product._id %>')" class="btn btn-outline-danger btn-rounded" data-mdb-ripple-color="dark">+ Add To Cart</button>
+                                                              <% } else { %>
+                                                                <p class="ml-20 text-danger">Sorry, this product is currently out of stock</p>
+                                                                <!-- <p class=".text-danger">Sorry, this product is currently out of stock.</p> -->
+                                                              <% } %>
+                                                            <!-- <button onclick="addtocart('<%= product._id %>')" class="btn btn-outline-danger btn-rounded" data-mdb-ripple-color="dark">+ Add To Cart</button> -->
                                                             <!-- <a title="Add To Cart" href="/add-tocart/<%= product._id %>">+ Add To Cart</a> -->
                                                         </div>
+
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                        <% }); %>
+                                    <% }); %>
+                                <%} else { %>
 
-
-                                            <%} else { %>
-
-                                                <% showproduct.forEach(function(product, i){ %>
+                                             <% showproduct.forEach(function(product, i){ %>
                                                     <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6">
                                                         <div class="product-wrap mb-35">
                                                             <div class="product-img mb-15">
-                                                                <a href="/productdetails/<%= product._id %>"><img
-                                                                        src="/product_img/<%= product._id %>.jpg"
-                                                                        alt="product"></a>
+                                                                <a href="/productdetails/<%= product._id %>"><imgsrc="/product_img/<%= product._id %>.jpg" alt="product"></a>
                                                                 <div class="product-action">
-                                                                    <a data-bs-toggle="modal"
-                                                                        data-bs-target="#exampleModal"
-                                                                        title="Quick View" href="#"><i
-                                                                            class="fa fa-plus"
-                                                                            aria-hidden="true"></i></a>
-                                                                    <a title="Wishlist" href="#"><i
-                                                                            class="fa fa-heart-o"
-                                                                            aria-hidden="true"></i></a>
+                                                                    <!-- <a data-bs-toggle="modal" data-bs-target="#exampleModal" title="Quick View" href="#"><i class="fa fa-plus" aria-hidden="true"></i></a> -->
+                                                                    <!-- <a title="Wishlist" href=""> <button onclick="addtowishlist('<%= product._id %>')" class="btn btn-outline-danger btn-rounded" data-mdb-ripple-color="dark"></button></a>"><i class="fa fa-heart-o "aria-hidden="true"></i></a> -->
+                                                                    <!-- <a title="Wishlist" href="#" onclick="addtowishlist('<%= product._id %>')"><button class="btn btn-outline-danger btn-rounded" data-mdb-ripple-color="dark"><i class="fa fa-heart-o" aria-hidden="true"></i></button>
+                                                                      </a>-->
+                                                                      <a title="Wishlist" href="#" onclick="addtowishlist('<%= product._id %>')">
+                                                                        <button class="btn btn-outline-danger btn-rounded" data-mdb-ripple-color="dark"><i class="fa fa-heart-o" aria-hidden="true"></i></button>
+                                                                      </a>
+                                                                      
 
-                                                                </div>
+                                                                 </div>
                                                             </div>
                                                             <div class="product-content">
                                                                 <span>
                                                                     <%= product.category %>
                                                                 </span>
-                                                                <h4><a href="/productdetails/<%= product._id %>">
-                                                                        <%= product.productname %>
-                                                                    </a></h4>
+                                                                <h4><a href="/productdetails/<%= product._id %>"><%= product.productname %></a></h4>
                                                                 <div class="price-addtocart">
                                                                     <div class="product-price">
                                                                         <span>₹<%= product.price %></span>
                                                                     </div>
                                                                     <div class="product-addtocart">
-                                                                         <button onclick="addtocart('<%= product._id %>')" class="btn btn-outline-danger btn-rounded" data-mdb-ripple-color="dark">+ Add To Cart</button>
-                                                                        <!-- <a title="Add To Cart" href="/add-tocart/<%= product._id %>">+ Add To
-                                                                            Cart</a> -->
+                                                                        <% if (product.stock) { %>
+                                                                            <button onclick="addtocart('<%= product._id %>')" class="btn btn-outline-danger btn-rounded" data-mdb-ripple-color="dark">+ Add To Cart</button>
+                                                                          <% } else { %>
+                                                                            <p class="h5 text-danger">Sorry, this product is currently out of stock</p>
+                                                                            
+                                                                          <% } %>
+                                                                        
                                                                     </div>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <% }); %>
-
-                                                        <% } %>
+                                             <% }); %>
+                                <% } %>
                             </div>
                         </div>
                     </div>
@@ -123,12 +126,10 @@
                                                 <form action="/categoryfilter" method="post">
                                                 <input type="text" name="name" value="<%= product.name%>" hidden>
                                                 
-                                                <button type="submit" class="catbtn">* <%= product.name%></button>
+                                                <button type="submit" class="catbtn"> <%= product.name%></button>
                                                 </form>
                                             </a>
-                                            
-                                            
-                                            <% }); %>
+                                        <% }); %>
                                     </ul>
                                 </li>
                             </ul>
@@ -143,6 +144,16 @@
     function addtocart(proId){
         $.ajax({
             url:'/add-tocart/'+proId,
+            method:'get',
+            success:(response)=>{
+                location.reload()
+
+            }
+        })
+    }
+    function addtowishlist(proId){
+        $.ajax({
+            url:'/add-towishlist/'+proId,
             method:'get',
             success:(response)=>{
                 location.reload()
