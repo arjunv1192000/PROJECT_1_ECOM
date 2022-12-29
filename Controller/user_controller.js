@@ -5,7 +5,7 @@ const authToken = process.env.TWILIO_TOKEN;
 const serviceToken = process.env.Service_ID;
 const client = require("twilio")(accountSid,authToken,serviceToken);
 const { Getcategorydata } = require('../Model/admin_helper');
-const { userSignup, Dologin ,showproducts, productAlldetails, Getcategory,filterBycategory,productcart,Getcartproducts,changeproductquantity, removeproduct_cart, gettotalamount,placeorder,getCartproductlist,getorderdetails,Cancelproduct_order,findByNumber,getAllorderproducts,product_wishlist} = require('../Model/user_helper');
+const { userSignup, Dologin ,showproducts, productAlldetails, Getcategory,filterBycategory,productcart,Getcartproducts,changeproductquantity, removeproduct_cart, gettotalamount,placeorder,getCartproductlist,getorderdetails,Cancelproduct_order,findByNumber,getAllorderproducts,product_wishlist, get_productwishlist,get_userdata,generateRazorpay,verifyPayment,changepaymentStatus} = require('../Model/user_helper');
 
 let usersession ;
 
@@ -124,11 +124,21 @@ module.exports={
         let users=req.session.users
         console.log(req.session.users._id);
         Getcartproducts(req.session.users._id).then((product)=>{
+          
 
           gettotalamount(req.session.users._id).then((totalprice)=>{
-        
+            if(product.length!=0){
           res.render('user/cart',{user:true,users,product,totalprice})
+
+
+            }else{
+              res.render('user/empty-cart',{user:true,users})
+
+
+            }
+        
           }).catch(()=>{
+            
 
           })
 
@@ -210,11 +220,22 @@ module.exports={
       },
       orderplace(req,res){
         let users=req.session.users
+        console.log(req.body);
         getCartproductlist(req.body.userId).then((product)=>{
-        gettotalamount(req.body.userId).then((totalprice)=>{
-        placeorder(req.body,product,totalprice).then((response)=>{
-          res.render('user/orderplaced',{users})
-          
+         totalprice= gettotalamount(req.body.userId).then((totalprice)=>{
+        placeorder(req.body,product,totalprice).then((orderId)=>{
+          if(req.body['payment_method']==='COD'){
+            res.json({CODsucess:true})
+
+          }else{
+            generateRazorpay(orderId,totalprice).then((response)=>{
+              res.json(response)
+
+            })
+
+          }
+         
+           
 
 
         })
@@ -292,7 +313,7 @@ module.exports={
         let users=req.session.users
         getAllorderproducts(req.params.id).then((singleproduct)=>{
 
-          res.render('admin/order_productdetails',{user:true,singleproduct,users})
+          res.render('user/order_productdetails',{user:true,singleproduct,users})
     
     
     
@@ -307,6 +328,46 @@ module.exports={
         })
 
 
+      },
+      wishlistpage(req,res){
+        let users=req.session.users
+        get_productwishlist(req.session.users._id).then((wishproduct)=>{
+          res.render('user/wishlist',{user:true,wishproduct,users})
+
+        })
+      },
+      userAcdata(req,res){
+        let users=req.session.users
+        get_userdata(req.session.users._id).then((userdata)=>{
+          console.log(userdata,"1>>>>>>>>>>>>>>>>>");
+          res.render('user/myaccountpage',{user:true,userdata,users})
+
+        })
+        
+        
+
+      },
+
+      sucesspage(req,res){
+        let users=req.session.users
+        res.render('user/orderplaced',{users})
+
+      },
+      paymentVerify(req,res){
+        console.log(req.body);
+
+        verifyPayment(req.body).then(()=>{
+
+          changepaymentStatus(req.body['order[receipt]']).then(()=>{
+            console.log("payment sucessfull");
+            res.json({status:true})
+          }).catch((err)=>{
+            res.json({status:false})
+
+          })
+
+        })
+        
       }
       
 

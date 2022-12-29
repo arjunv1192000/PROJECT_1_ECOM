@@ -1,6 +1,6 @@
 <div class="checkout-main-area pt-90 pb-90">
     <div class="container">
-        <form action="/place-order/<%= user._id %>" method="post">
+        <form action="" id="checkout-form">
             <div class="checkout-wrap pt-30">
                 <div class="row">
                     <div class="col-lg-7">
@@ -20,19 +20,6 @@
                                     </div>
                                 </div>
                                 <div class="col-lg-12">
-                                    <div class="billing-select mb-20">
-                                        <label>Country<abbr class="required" title="required">*</abbr></label>
-                                        <select>
-                                            <option>Select a country</option>
-                                            <option>Azerbaijan</option>
-                                            <option>Bahamas</option>
-                                            <option>Bahrain</option>
-                                            <option>Bangladesh</option>
-                                            <option>Barbados</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="col-lg-12">
                                     <div class="billing-info mb-20">
                                         <label>Street Address <abbr class="required" title="required">*</abbr></label>
                                         <input placeholder="Apartment, suite, unit etc." type="text" name="Address">
@@ -41,7 +28,8 @@
                                 <div class="col-lg-12">
                                     <div class="billing-info mb-20">
                                         <label>Town / City <abbr class="required" title="required">*</abbr></label>
-                                        <input type="text" name="City"> 
+                                        <input type="text" name="city">
+                                        <input type="text" name="userId" id="" value="<%= users._id %>" hidden>
                                     </div>
                                 </div>
                                 <div class="col-lg-12 col-md-12">
@@ -58,15 +46,14 @@
                                 </div>
                                 <div class="col-lg-12 col-md-12">
                                     <div class="billing-info mb-20">
-                                        <label>Phone <abbr class="required" title="required">*</abbr></label>
-                                        <input type="text" name="Phone">
+                                        <label>Phone<abbr class="required" title="required">*</abbr></label>
+                                        <input type="number" name="phonenumber">
                                     </div>
                                 </div>
                                 <div class="col-lg-12 col-md-12">
                                     <div class="billing-info mb-20">
                                         <label>Email Address <abbr class="required" title="required">*</abbr></label>
                                         <input type="text" name="email">
-                                        <input type="text" id="" name="userId" value="<%=users._id %>" hidden>
                                     </div>
                                 </div>
                             </div>
@@ -83,62 +70,156 @@
                                         </ul>
                                     </div>
                                     <% product.forEach(function(chekpro, i){ %>
-    
-                                    <div class="your-order-middle">
-                                        <ul>
-                                            <li><%= chekpro.product.productname %><span>₹<%= chekpro.product.price %>*<%= chekpro.quantity %></span></li>
-                                        </ul>
-                                    </div>
-                                    <% }); %>
-    
-                                    <div class="your-order-info order-subtotal">
-                                        <ul>
-                                            <li>Subtotal <span>₹<%= totalprice %></span></li>
-                                        </ul>
-                                    </div>
-                                    <div class="your-order-info order-shipping">
-                                        <ul>
-                                            <li>Shipping <p>Enter your full address </p>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                    <div class="your-order-info order-total">
-                                        <ul>
-                                            <li>Total <span>₹<%= totalprice %></span></li>
-                                        </ul>
-                                    </div>
+
+                                        <div class="your-order-middle">
+                                            <ul>
+                                                <li>
+                                                    <%= chekpro.product.productname %><span>₹<%= chekpro.product.price
+                                                                %>*<%= chekpro.quantity %></span>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                        <% }); %>
+
+                                            <div class="your-order-info order-subtotal">
+                                                <ul>
+                                                    <li>Subtotal <span>₹<%= totalprice %></span></li>
+                                                </ul>
+                                            </div>
+                                            <div class="your-order-info order-shipping">
+                                                <ul>
+                                                    <li>Shipping <p>Enter your full address </p>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                            <div class="your-order-info order-total">
+                                                <ul>
+                                                    <li>Total <span>₹<%= totalprice %></span></li>
+                                                </ul>
+                                            </div>
                                 </div>
                                 <div class="payment-method">
                                     <div class="pay-top sin-payment">
-                                        <input id="payment-method-3" class="input-radio" type="radio" value="COD" name="payment_method">
+                                        <input id="payment-method-3" class="input-radio" type="radio" value="COD"
+                                            name="payment_method">
                                         <label for="payment-method-3">Cash on delivery </label>
                                         <div class="payment-box payment_method_bacs">
-                                            <p>Make your payment directly into our bank account. Please use your Order ID as the payment reference.</p>
+                                            <p>Make your payment directly into our bank account. Please use your Order
+                                                ID as the payment reference.</p>
                                         </div>
                                     </div>
                                     <div class="pay-top sin-payment sin-payment-3">
-                                        <input id="payment-method-4" class="input-radio" type="radio" value="ONLINE" name="payment_method">
-                                        <label for="payment-method-4">PayPal <img alt="" src="assets/images/icon-img/payment.png"><a href="#">What is PayPal?</a></label>
+                                        <input id="payment-method-4" class="input-radio" type="radio" value="ONLINE"
+                                            name="payment_method">
+                                        <label for="payment-method-4">PayPal <img alt=""
+                                                src="assets/images/icon-img/payment.png"><a href="#">What is
+                                                PayPal?</a></label>
                                         <div class="payment-box payment_method_bacs">
-                                            <p>Make your payment directly into our bank account. Please use your Order ID as the payment reference.</p>
+                                            <p>Make your payment directly into our bank account. Please use your Order
+                                                ID as the payment reference.</p>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             <div class="Place-order mt-40">
                                 <button type="submit" class="btn btn-danger btn-lg btn-block">Place Order</button>
-                                
+
                             </div>
                         </div>
                     </div>
                 </div>
-            </div> 
+            </div>
         </form>
     </div>
 </div>
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+<script>
+
+    function RazorpayPayment(order) {
+        console.log("called 3");
+        var options = {
+            "key": "rzp_test_2OQT5vz8WgTGvO", // Enter the Key ID generated from the Dashboard
+            "amount": order.totaAmount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+            "currency": "INR",
+            "name": "Ecom",
+            "description": "Test Transaction",
+            "image": "https://example.com/your_logo",
+            "order_id": order.id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+            "callback_url": "https://eneqd3r9zrjok.x.pipedream.net/",
+            "handler": function (response) {
+                // alert(response.razorpay_payment_id);
+                // alert(response.razorpay_order_id);
+                // alert(response.razorpay_signature)
+
+                verifyPayment(response, order)
+
+
+            },
+
+
+            "prefill": {
+                "name": "Gaurav Kumar",
+                "email": "gaurav.kumar@example.com",
+                "contact": "9999999999"
+            },
+            "notes": {
+                "address": "Razorpay Corporate Office"
+            },
+            "theme": {
+                "color": "#3399cc"
+            }
+        };
+        var rzp1 = new Razorpay(options);
+        rzp1.open();
+
+    }
+    function verifyPayment(payment, order) {
+        console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+        $.ajax({
+            url: '/verify_payment',
+            data: {
+                payment,
+                order
+            },
+            method: 'post',
+            success: (response) => {
+                console.log(response);
+                if (response) {
+                    location.href = '/orderplaced'
+                } else {
+                   alert("payment failed")
+
+                }
+
+            }
+        })
+    }
+
+
+    $("#checkout-form").submit((e) => {
+        e.preventDefault()
+        $.ajax({
+            url: '/place-order',
+            method: 'post',
+            data: $('#checkout-form').serialize(),
+            success: (response) => {
+
+                if (response.CODsucess) {
+                    location.href = '/orderplaced'
+                } else {
+                    console.log("called 1");
+                    RazorpayPayment(response)
+                    console.log("called 2");
+
+                }
+
+            }
+        })
+    })
 
 
 
 
 
-
+</script>

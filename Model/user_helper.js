@@ -5,6 +5,9 @@ const { ObjectId } = require('mongodb')
 const { response } = require('../app')
 const { Product_Collecction } = require('./Collection')
 const { promiseImpl } = require('ejs')
+const Razorpay=require('razorpay')
+var instance = new Razorpay({ key_id: 'rzp_test_2OQT5vz8WgTGvO', key_secret: 'G6vMKKvkkG7mTw32cfp1ziP3' })
+
 module.exports={
 
 
@@ -308,15 +311,15 @@ module.exports={
 
     },
     placeorder:(order,product,total)=>{
-        return new Promise((resolve,reject)=>{
+        return new Promise(async(resolve,reject)=>{
             console.log(order,product,total);
             let status=order['payment_method']==='COD'?'order placed':'order pending'
             let orderObj={
                 deliveryDetails:{
                     Name:order.name,
-                    phone:order.phone,
+                    phone:order.phonenumber,
                     address:order.Address,
-                    city:order.City,
+                    city:order.city,
                     State:order.State,
                     Postcode:order.Postcode,
                     Country:order.country
@@ -328,14 +331,14 @@ module.exports={
                 status:status,
                 date:new Date()
             }
-            db.get().collection(collections.ORDER_Collection).insertOne(orderObj).then((response)=>{
+             placeorders=await db.get().collection(collections.ORDER_Collection).insertOne(orderObj).then((result)=>{
 
                 db.get().collection(collections.CART_Collection).deleteOne({user:ObjectId(order.userId)})
+                console.log(result);
+                resolve(result.insertedId)
 
-
-
-                resolve()
-
+            }).catch(()=>{
+                reject()
             })
 
         })
@@ -425,6 +428,7 @@ module.exports={
     },
 
     product_wishlist:(proId,userId)=>{
+        console.log(proId,userId);
         let proObj={
             item:ObjectId(proId),
         }
@@ -436,6 +440,9 @@ module.exports={
                 console.log(proExist);
                 if(proExist!=-1){
                     await  db.get().collection(collections.WISHLIST_Collection).updateOne({user:ObjectId(userId),'product.item':ObjectId(proId)},
+                    {
+                        $pull:{product:{item:ObjectId(proId)}}
+                    }
                     ).then(()=>{
                         resolve()
                     }).catch(()=>{
@@ -466,7 +473,116 @@ module.exports={
         })
         
 
+    },
+    get_productwishlist:(userId)=>{
+        return new Promise(async(resolve,reject)=>{
+            wishlistItems=await db.get().collection(collections.WISHLIST_Collection ).aggregate([
+            {
+                $match:{user:ObjectId(userId)}
+
+
+           },
+           {
+            $unwind:'$product'
+           },
+           {
+            $project:{
+                item:'$product.item',
+               
+            }
+
+           },
+           {
+            $lookup:{
+                from:collections.Product_Collecction,
+                localField:'item',
+                foreignField:'_id',
+                as:'product'
+            }
+           },
+           {
+            $project:{
+                item:1,product:{$arrayElemAt:['$product',0]}
+            }
+           }
+        ]).toArray()
+        console.log(wishlistItems);
+               
+        resolve(wishlistItems)
+        
+        })
+
+    },
+    get_userdata:(userId)=>{
+        console.log(userId);
+        return new Promise(async(resolve,reject)=>{
+            let userdata=await db.get().collection(collections.USER_Collection).findOne({_id:ObjectId(userId)})
+            console.log(userdata);
+            resolve(userdata)
+        })
+    },
+    generateRazorpay:(orderId,totalprice)=>{
+        return new Promise(async(resolve,reject)=>{
+            instance.orders.create({
+                amount: totalprice,
+                currency: "INR",
+                receipt:""+ orderId,
+                notes: {
+                  key1: "value3",
+                  key2: "value2"
+                }
+                
+              },(err,order)=>{
+                
+                    if (err) {
+                      console.log(err);
+                    } else {
+                      console.log(order);
+                      resolve(order);
+                    }
+            
+
+              })
+            
+        })
+
+    },
+    verifyPayment:(details)=>{
+        return new Promise(async(resolve,reject)=>{
+            const {createHmac,} = await import('node:crypto');
+            let hmac = createHmac('sha256', 'G6vMKKvkkG7mTw32cfp1ziP3' );
+            hmac.update(details['payment[razorpay_order_id]']+'|'+details['payment[razorpay_payment_id]']);
+            hmac=hmac.digest('hex') 
+            if(hmac==details[ 'payment[razorpay_signature]']){
+                resolve()
+            }else{
+                reject()
+            }    
+
+            
+        })
+
+
+    },
+    changepaymentStatus:(orderId)=>{
+        return new Promise(async(resolve,reject)=>{
+            db.get().collection(collections.ORDER_Collection).updateOne({_id:ObjectId(orderId)},
+            {
+                $set:{
+                    status:'order placed'
+                }
+            }
+            ).then(()=>{
+                resolve()
+            })
+
+            
+        })
+        
+
     }
+
+    
 
 
 

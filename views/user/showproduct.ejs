@@ -18,16 +18,8 @@
                                                     <a href="/productdetails/<%= product._id %>"><img
                                                             src="/product_img/<%= product._id %>.jpg" alt="product"></a>
                                                     <div class="product-action">
-                                                        <!-- <a data-bs-toggle="modal" data-bs-target="#exampleModal"
-                                                            title="Quick View" href="#"><i class="fa fa-plus"
-                                                                aria-hidden="true"></i></a>
-                                                        <a title="Wishlist" href=""><i class="fa fa-heart-o "aria-hidden="true"></i> <button onclick="addtowishlist('<%= product._id %>')" class="btn btn-outline-danger btn-rounded" data-mdb-ripple-color="dark" ></button></a> -->
-                                                        <!-- <button onclick="addtowishlist('<%= product._id %>')" class="btn btn-outline-danger btn-rounded" data-mdb-ripple-color="dark">+ Add To Cart</button> -->
-                                                        <a title="Wishlist" href="#" onclick="addtowishlist('<%= product._id %>')">
-                                                            <button class="btn btn-outline-danger btn-rounded" data-mdb-ripple-color="dark"><i class="fa fa-heart-o" aria-hidden="true"></i></button>
-                                                          </a>
-                                                          
-
+                                                        <button onclick="addtowishlist('<%= product._id %>')" type="button" class="btn bg-transparent"><i class="fa fa-heart-o"></i> </button>
+                                                       
                                                     </div>
                                                 </div>
                                                 <div class="product-content">
@@ -42,10 +34,9 @@
                                                                 <button onclick="addtocart('<%= product._id %>')" class="btn btn-outline-danger btn-rounded" data-mdb-ripple-color="dark">+ Add To Cart</button>
                                                               <% } else { %>
                                                                 <p class="ml-20 text-danger">Sorry, this product is currently out of stock</p>
-                                                                <!-- <p class=".text-danger">Sorry, this product is currently out of stock.</p> -->
+                                                               
                                                               <% } %>
-                                                            <!-- <button onclick="addtocart('<%= product._id %>')" class="btn btn-outline-danger btn-rounded" data-mdb-ripple-color="dark">+ Add To Cart</button> -->
-                                                            <!-- <a title="Add To Cart" href="/add-tocart/<%= product._id %>">+ Add To Cart</a> -->
+                                                           
                                                         </div>
 
                                                     </div>
@@ -59,17 +50,11 @@
                                                     <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6">
                                                         <div class="product-wrap mb-35">
                                                             <div class="product-img mb-15">
-                                                                <a href="/productdetails/<%= product._id %>"><imgsrc="/product_img/<%= product._id %>.jpg" alt="product"></a>
+                                                                <a href="/productdetails/<%= product._id %>"> <img src="/product_img/<%= product._id %>.jpg" alt="product"></a>
                                                                 <div class="product-action">
-                                                                    <!-- <a data-bs-toggle="modal" data-bs-target="#exampleModal" title="Quick View" href="#"><i class="fa fa-plus" aria-hidden="true"></i></a> -->
-                                                                    <!-- <a title="Wishlist" href=""> <button onclick="addtowishlist('<%= product._id %>')" class="btn btn-outline-danger btn-rounded" data-mdb-ripple-color="dark"></button></a>"><i class="fa fa-heart-o "aria-hidden="true"></i></a> -->
-                                                                    <!-- <a title="Wishlist" href="#" onclick="addtowishlist('<%= product._id %>')"><button class="btn btn-outline-danger btn-rounded" data-mdb-ripple-color="dark"><i class="fa fa-heart-o" aria-hidden="true"></i></button>
-                                                                      </a>-->
-                                                                      <a title="Wishlist" href="#" onclick="addtowishlist('<%= product._id %>')">
-                                                                        <button class="btn btn-outline-danger btn-rounded" data-mdb-ripple-color="dark"><i class="fa fa-heart-o" aria-hidden="true"></i></button>
-                                                                      </a>
+                                                                    <button onclick="addtowishlist('<%= product._id %>')" type="button" class="btn bg-transparent"><i class="fa fa-heart-o"></i> </button>
+                                                                     
                                                                       
-
                                                                  </div>
                                                             </div>
                                                             <div class="product-content">

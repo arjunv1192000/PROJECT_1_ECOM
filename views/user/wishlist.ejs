@@ -15,16 +15,27 @@
                                 </tr>
                             </thead>
                             <tbody>
+                                <% wishproduct.forEach(function(wishlist, i){ %>
+
                                 <tr>
                                     <td class="product-thumbnail">
-                                        <a href="#"><img src="assets/images/cart/cart-3.jpg" alt=""></a>
+                                        <a href="#"><img  class="cartimg" src="/product_img/<%= wishlist.product._id %>.jpg" alt=""></a>
                                     </td>
-                                    <td class="product-name"><a href="#">Demo Product Name</a></td>
-                                    <td class="product-price-cart"><span class="amount">$260.00</span></td>
+                                    <td class="product-name"><a href="#"> <%= wishlist.product.productname %></a></td>
+                                    <td class="product-price-cart"><span class="amount">₹<%= wishlist.product.price %></span></td>
                                     <td class="product-wishlist-cart">
-                                        <a href="#">add to cart</a>
+                                        <div class="product-addtocart">
+                                            <% if ( wishlist.product.stock) { %>
+                                                <button onclick="addtocart('<%= wishlist.product._id %>')" class="btn btn-outline-danger btn-rounded" data-mdb-ripple-color="dark">+ Add To Cart</button>
+                                              <% } else { %>
+                                                <p class="h5 text-danger">Sorry, this product is currently out of stock</p>
+                                                
+                                              <% } %>
+                                            
+                                        </div>
                                     </td>
                                 </tr>
+                                <% }); %>
                             </tbody>
                         </table>
                     </div>
@@ -33,3 +44,15 @@
         </div>
     </div>
 </div>
+<script>
+    function addtocart(proId){
+        $.ajax({
+            url:'/add-tocart/'+proId,
+            method:'get',
+            success:(response)=>{
+                location.reload()
+
+            }
+        })
+    }
+</script>
