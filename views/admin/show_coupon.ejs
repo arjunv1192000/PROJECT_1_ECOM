@@ -1,0 +1,31 @@
+<div class="catpage" id="footer">
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th scope="col">CouponCode</th>
+                <th scope="col">CouponName</th>
+                <th scope="col">Discount</th>
+                <th scope="col">Starting Date</th>
+                <th scope="col">Ending Date</th>
+                <th scope="col">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% coupons.forEach(function(coupontdata, i){ %>
+            <tr>
+                <td><%= coupontdata.CouponCode %></td>
+                <td><%= coupontdata.CouponName %></td>
+                <td><%= coupontdata.discount %></td>
+                <td><%= coupontdata.dateofpublish %></td> 
+                <td><%= coupontdata.dateofexpired %></td> 
+                
+                <td>
+                    <a href="/admin/edit-coupon/<%= coupontdata._id%>"><button class="btn btn-secondary" id="my-button" onclick="myFunction(this.id)">Edit</button></a>
+                    <a href="/admin/delete-coupon/<%=coupontdata._id%>"><button class="btn btn-danger" id="my-button" onclick="return confirm('Are you sure you want to delete this file? This action cannot be undone.')",myFunction(this.id)>Remove</button></a>
+                </td>
+            </tr>
+            <% }); %>
+
+        </tbody>
+    </table>
+</div>

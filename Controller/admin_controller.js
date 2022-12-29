@@ -1,4 +1,4 @@
-const {  Adminlogin,GetAlluserdata,adminadd,Getproductdata,adminedit,updateproduct,deleteproduct,addcategory,gettcategory,editsubmit,updatecategory,deletecategory, userblock,Getcategorydata,getAlluserorder,getAllorderproducts,productstatus,Cancelproduct_orders} = require('../Model/admin_helper')
+const {  Adminlogin,GetAlluserdata,adminadd,Getproductdata,adminedit,updateproduct,deleteproduct,addcategory,gettcategory,editsubmit,updatecategory,deletecategory, userblock,Getcategorydata,getAlluserorder,getAllorderproducts,productstatus,Cancelproduct_orders,addcoupons, Getcoupondata} = require('../Model/admin_helper')
 
 module.exports={
 
@@ -213,6 +213,20 @@ module.exports={
 
 
   },
+  couponpage(req,res){
+    res.render('admin/coupon_add',{user:false})
+  },
+  couponsubmit(req,res){
+    addcoupons(req.body).then(()=>{
+
+    })
+  },
+  coupondata(req,res){
+    Getcoupondata().then((coupons)=>{
+      res.render('admin/show_coupon',{user:false,coupons})
+
+    })
+  }
 
       
         

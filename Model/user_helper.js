@@ -580,6 +580,43 @@ module.exports={
         })
         
 
+    },
+    adduseraddress:(Address)=>{
+        console.log(Address);
+        return new Promise(async(resolve,reject)=>{
+            db.get().collection(collections.USER_Collection).updateOne({_id:ObjectId(Address.userId)},
+            {
+                $set:{
+                   username:Address.name,
+                   'Address':Address.Address,
+                   'City':Address.city,
+                   'State':Address.State,
+                   'Postcode':Address.Postcode,
+                   'phonenum':Address.phonenumber,
+                   'companyname':Address.companyname,
+                   'Addemail':Address.email,
+
+
+                }
+            }
+            ).then(()=>{
+                resolve()
+            })
+
+            
+        })
+        
+    },
+    GetUseraddress:(userId)=>{
+        return new Promise((resolve,reject)=>{
+             db.get().collection(collections.USER_Collection).findOne({_id:ObjectId(userId)}).then((userdata)=>{
+                console.log(userdata,">>>>>>>>>>>>>>>>>>>>>>>>");
+            resolve(userdata)
+
+            })
+            
+        })
+
     }
 
     

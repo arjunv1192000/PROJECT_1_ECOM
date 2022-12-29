@@ -10,52 +10,53 @@
                                 <div class="col-lg-6 col-md-6">
                                     <div class="billing-info mb-20">
                                         <label> Name <abbr class="required" title="required">*</abbr></label>
-                                        <input type="text" name="name">
+                                        <input type="text" name="name" id="ddAname">
                                     </div>
                                 </div>
                                 <div class="col-lg-12">
                                     <div class="billing-info mb-20">
                                         <label>Company Name <abbr class="required" title="required">*</abbr></label>
-                                        <input type="text" name="companyname">
+                                        <input type="text" name="companyname" id="Addcompanyname">
                                     </div>
                                 </div>
                                 <div class="col-lg-12">
                                     <div class="billing-info mb-20">
                                         <label>Street Address <abbr class="required" title="required">*</abbr></label>
-                                        <input placeholder="Apartment, suite, unit etc." type="text" name="Address">
+                                        <input placeholder="Apartment, suite, unit etc." type="text" name="Address" id="add">
                                     </div>
                                 </div>
                                 <div class="col-lg-12">
                                     <div class="billing-info mb-20">
                                         <label>Town / City <abbr class="required" title="required">*</abbr></label>
-                                        <input type="text" name="city">
+                                        <input type="text" name="city" id="city">
                                         <input type="text" name="userId" id="" value="<%= users._id %>" hidden>
                                     </div>
                                 </div>
                                 <div class="col-lg-12 col-md-12">
                                     <div class="billing-info mb-20">
                                         <label>State / County <abbr class="required" title="required">*</abbr></label>
-                                        <input type="text" name="State">
+                                        <input type="text" name="State" id="Addstate">
                                     </div>
                                 </div>
                                 <div class="col-lg-12 col-md-12">
                                     <div class="billing-info mb-20">
                                         <label>Postcode / ZIP <abbr class="required" title="required">*</abbr></label>
-                                        <input type="text" name="Postcode">
+                                        <input type="text" name="Postcode" id="pin">
                                     </div>
                                 </div>
                                 <div class="col-lg-12 col-md-12">
                                     <div class="billing-info mb-20">
                                         <label>Phone<abbr class="required" title="required">*</abbr></label>
-                                        <input type="number" name="phonenumber">
+                                        <input type="number" name="phonenumber" id="Addphone">
                                     </div>
                                 </div>
                                 <div class="col-lg-12 col-md-12">
                                     <div class="billing-info mb-20">
                                         <label>Email Address <abbr class="required" title="required">*</abbr></label>
-                                        <input type="text" name="email">
+                                        <input type="text" name="email" id="mail">
                                     </div>
                                 </div>
+                                
                             </div>
                         </div>
                     </div>
@@ -131,6 +132,14 @@
             </div>
         </form>
     </div>
+    <div class="col-lg-12 col-md-12">
+        <div class="billing-info mb-20">
+            <button onclick="addcurrent('<%= users._id %>')"
+                class="btn btn-outline-warning btn-rounded"
+                data-mdb-ripple-color="dark">Add_address</button>
+
+        </div>
+    </div>
 </div>
 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 
@@ -188,7 +197,7 @@
                 if (response) {
                     location.href = '/orderplaced'
                 } else {
-                   alert("payment failed")
+                    alert("payment failed")
 
                 }
 
@@ -217,6 +226,27 @@
             }
         })
     })
+
+    function addcurrent() {
+
+        $.ajax({
+            url: '/getAdd',
+            method: 'get',
+            success: (userdata => {
+                console.log(uerdata,'>>>>>>>>>>>>>>>>>>>>>>>>>>');
+                document.getElementById('Addname').value = userdata.username
+                document.getElementById('Addcompanyname').value = userdata.companyname
+                document.getElementById('add').value = userdata.Address
+                document.getElementById('city').value = userdata.City
+                document.getElementById('Addstate').value = userdata.State
+                document.getElementById('pin').value = userdata.Postcode
+                document.getElementById('Addphone').value = userdata.phonenum
+                document.getElementById('mail').value = userdata.Addemail
+
+            })
+        })
+
+    }
 
 
 

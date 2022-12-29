@@ -1,5 +1,5 @@
 var express = require('express');
-const { userlogin,usersignup,signup,uselog,homerender,acclog,productpage,sessioncheck,acclogout ,nocache,loginredirect,cartpage,listproductpage,filterproduct,cartaddd,quantityproduct,removeitem,checkout,orderplace,orders,cancelorder,otpnumberpage,otp_authentication,otpverify,userorderproduct,addtowishlist,wishlistpage,userAcdata,sucesspage,paymentVerify} = require('../Controller/user_controller');
+const { userlogin,usersignup,signup,uselog,homerender,acclog,productpage,sessioncheck,acclogout ,nocache,loginredirect,cartpage,listproductpage,filterproduct,cartaddd,quantityproduct,removeitem,checkout,orderplace,orders,cancelorder,otpnumberpage,otp_authentication,otpverify,userorderproduct,addtowishlist,wishlistpage,userAcdata,sucesspage,paymentVerify,getadd_page,Add_address,gettcurrentAddress} = require('../Controller/user_controller');
 var router = express.Router();
 var user_controller=require('../Controller/user_controller')
 
@@ -27,10 +27,12 @@ router.post('/verifyOTP',otpverify)
 router.get('/orderproduct/:id',userorderproduct)   
 router.get('/add-towishlist/:id',addtowishlist)
 router.get('/userwishlist',wishlistpage)
-router.get('/uaseraccount',userAcdata)
+router.get('/uaseraccount',sessioncheck,userAcdata)
 router.get('/orderplaced',sucesspage)
 router.post('/verify_payment',paymentVerify)
-
+router.get('/add_address',sessioncheck,getadd_page)
+router.post('/newaddaddress',Add_address)
+router.get('/getAdd/:id',gettcurrentAddress)
 
 
 

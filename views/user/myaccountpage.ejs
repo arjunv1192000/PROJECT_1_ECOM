@@ -24,9 +24,9 @@
                                     <div class="myaccount-content">
                                         <h3>Dashboard</h3>
                                         <div class="welcome">
-                                            <p>Hello, <strong><%= userdata.username %></strong></p>
-                                            <p>Email: <strong><%= userdata.useremail %></strong></p>
-                                            <p>Phone:<strong></strong><%= userdata.userphon %></p>
+                                            <p>Hello,  <strong><%= userdata.username %></strong></p>
+                                            <p>Email:  <strong><%= userdata.useremail %></strong></p>
+                                            <p>Phone:  <strong><%= userdata.userphone %></strong></p>
                                         </div>
 
                                         <!-- <p class="mb-0">From your account dashboard. you can easily check & view your recent orders, manage your shipping and billing addresses and edit your password and account details.</p> -->
@@ -43,33 +43,24 @@
                                                     <tr>
                                                         <th>Order</th>
                                                         <th>Date</th>
-                                                        <th>Status</th>
+                                                        <th>payment</th>
                                                         <th>Total</th>
+                                                        <th>Status</th>
                                                         <th>Action</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
+                                                    <% orders.forEach(function(data, i){ %>
                                                     <tr>
-                                                        <td>1</td>
-                                                        <td>Aug 22, 2018</td>
-                                                        <td>Pending</td>
-                                                        <td>$3000</td>
-                                                        <td><a href="cart.html" class="check-btn sqr-btn ">View</a></td>
+                                                        <td><%= data._id %></td>
+                                                        <td><%= data.date %></td>
+                                                        <td><%= data.paymentMethod %></td>
+                                                        <td><%= data.totaAmount %></td>
+                                                        <td><%= data.status %></td>
+                                                        <td><a href="/orderproduct/<%= data._id %>" class="check-btn sqr-btn ">View</a></td>
                                                     </tr>
-                                                    <tr>
-                                                        <td>2</td>
-                                                        <td>July 22, 2018</td>
-                                                        <td>Approved</td>
-                                                        <td>$200</td>
-                                                        <td><a href="cart.html" class="check-btn sqr-btn ">View</a></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>3</td>
-                                                        <td>June 12, 2017</td>
-                                                        <td>On Hold</td>
-                                                        <td>$990</td>
-                                                        <td><a href="cart.html" class="check-btn sqr-btn ">View</a></td>
-                                                    </tr>
+                                                    <% }); %>
+                                                    
                                                 </tbody>
                                             </table>
                                         </div>
@@ -82,12 +73,15 @@
                                     <div class="myaccount-content">
                                         <h3>Billing Address</h3>
                                         <address>
-                                            <p><strong>Alex Tuntuni</strong></p>
-                                            <p>1355 Market St, Suite 900 <br>
-                                            San Francisco, CA 94103</p>
-                                            <p>Mobile: (123) 456-7890</p>
+                                            <p><strong><%= userdata.username %></strong></p>
+                                            <p><%= userdata.companyname %> <br><p> <%= userdata.Address %></p></p>
+                                            <p>Mobile: <%= userdata.phonenum %></p>
+                                            <p>Email: <%= userdata.Addemail %></p>
+                                            <p>Pincode: <%= userdata.Postcode %></p>
+                                            <p>City: <%= userdata.City %></p>
+                                            <p>State: <%= userdata.State %></p>
                                         </address>
-                                        <a href="#" class="check-btn sqr-btn "><i class="fa fa-edit"></i> Edit Address</a>
+                                        <a href="/add_address" class="check-btn sqr-btn "><i class="fa fa-edit"></i> ADD Address</a>
                                     </div>
                                 </div>
                                 <!-- Single Tab Content End -->

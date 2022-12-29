@@ -5,7 +5,7 @@ const authToken = process.env.TWILIO_TOKEN;
 const serviceToken = process.env.Service_ID;
 const client = require("twilio")(accountSid,authToken,serviceToken);
 const { Getcategorydata } = require('../Model/admin_helper');
-const { userSignup, Dologin ,showproducts, productAlldetails, Getcategory,filterBycategory,productcart,Getcartproducts,changeproductquantity, removeproduct_cart, gettotalamount,placeorder,getCartproductlist,getorderdetails,Cancelproduct_order,findByNumber,getAllorderproducts,product_wishlist, get_productwishlist,get_userdata,generateRazorpay,verifyPayment,changepaymentStatus} = require('../Model/user_helper');
+const { userSignup, Dologin ,showproducts, productAlldetails, Getcategory,filterBycategory,productcart,Getcartproducts,changeproductquantity, removeproduct_cart, gettotalamount,placeorder,getCartproductlist,getorderdetails,Cancelproduct_order,findByNumber,getAllorderproducts,product_wishlist, get_productwishlist,get_userdata,generateRazorpay,verifyPayment,changepaymentStatus,adduseraddress,GetUseraddress} = require('../Model/user_helper');
 
 let usersession ;
 
@@ -339,8 +339,16 @@ module.exports={
       userAcdata(req,res){
         let users=req.session.users
         get_userdata(req.session.users._id).then((userdata)=>{
-          console.log(userdata,"1>>>>>>>>>>>>>>>>>");
-          res.render('user/myaccountpage',{user:true,userdata,users})
+
+          getorderdetails(req.session.users._id).then((orders)=>{
+            
+            res.render('user/myaccountpage',{user:true,userdata,orders,users})
+  
+          })
+          
+
+
+         
 
         })
         
@@ -368,7 +376,29 @@ module.exports={
 
         })
         
+      },
+      getadd_page(req,res){
+        let users=req.session.users
+        res.render('user/useraddressAdd',{users})
+
+      },
+      Add_address(req,res){
+        let users=req.session.users
+        adduseraddress(req.body).then(()=>{
+          redirect('/uaseraccount')
+
+        })
+      },
+      gettcurrentAddress(req,res){
+        console.log(req.params.id);
+        GetUseraddress(req.params.id).then((userdata)=>{
+          console.log(userdata,'++++++++++++++++++++++++++');
+          res.json(userdata)
+
+        })
+
       }
+
       
 
 }

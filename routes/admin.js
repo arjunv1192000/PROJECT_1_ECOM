@@ -1,5 +1,5 @@
 var express = require('express');
-const { adminloginpage,adminlog,adminhome,userdata,productdata,productadd,editproduct,addproducts,editsubmit,removeproduct,categorymanage,categoryadd,categoryeditpage,categoryeditsubmit,removecategory,blockmanager,acclogout,userorders,orderproducts,productmanage,cancelorders} = require('../Controller/admin_controller');
+const { adminloginpage,adminlog,adminhome,userdata,productdata,productadd,editproduct,addproducts,editsubmit,removeproduct,categorymanage,categoryadd,categoryeditpage,categoryeditsubmit,removecategory,blockmanager,acclogout,userorders,orderproducts,productmanage,cancelorders,couponpage,couponsubmit,coupondata} = require('../Controller/admin_controller');
 var router = express.Router();
 
 /* GET users listing. */
@@ -45,6 +45,12 @@ router.get('/orderproduct/:id',orderproducts)
 router.post('/delete-pro/:id',productmanage)
 
 router.post('/cancelorders/:id',cancelorders)
+
+router.get('/Couponadd_page',couponpage)
+
+router.post('/Coupon_add',couponsubmit)
+
+router.get('/coupon-page',coupondata)
 
 
 

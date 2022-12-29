@@ -266,6 +266,22 @@ module.exports={
         })
 
     },
+    addcoupons:(coupondata)=>{
+        return new Promise(async(resolve,reject)=>{
+            var category=await db.get().collection(collections.COUPON_Collection).insertOne(coupondata).then((response)=>{
+                resolve(response)
+            })
+            
+        })
+
+    },
+    Getcoupondata:()=>{
+        return new Promise(async(resolve,reject)=>{
+            let coupons=await db.get().collection(collections.COUPON_Collection).find().toArray()
+            console.log(coupons);
+            resolve(coupons)
+        })
+    }
     
 
 
