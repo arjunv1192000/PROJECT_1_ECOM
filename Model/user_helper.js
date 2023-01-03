@@ -524,7 +524,7 @@ module.exports={
     generateRazorpay:(orderId,totalprice)=>{
         return new Promise(async(resolve,reject)=>{
             instance.orders.create({
-                amount: totalprice,
+                amount: totalprice*100,
                 currency: "INR",
                 receipt:""+ orderId,
                 notes: {
@@ -610,12 +610,39 @@ module.exports={
     GetUseraddress:(userId)=>{
         return new Promise((resolve,reject)=>{
              db.get().collection(collections.USER_Collection).findOne({_id:ObjectId(userId)}).then((userdata)=>{
-                console.log(userdata,">>>>>>>>>>>>>>>>>>>>>>>>");
             resolve(userdata)
 
             })
             
         })
+
+    },
+    changepassword:(userId,pass)=>{
+        return new Promise(async(resolve,reject)=>{
+         let newwpass=pass.password=await bcrypt.hash(pass.password,10)
+
+            db.get().collection(collections.USER_Collection).updateOne({_id:ObjectId(userId)},
+            {
+                $set:{
+                    pass:newwpass
+                }
+            }
+            ).then(()=>{
+                resolve()
+            })
+
+            
+        })
+
+    },
+    getoffers:()=>{
+        return new Promise((resolve,reject)=>{
+            db.get().collection(collections.COUPON_Collection).find().toArray().then((response)=>{
+           resolve(response)
+
+           })
+           
+       })
 
     }
 

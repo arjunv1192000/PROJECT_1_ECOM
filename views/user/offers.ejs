@@ -1,0 +1,61 @@
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>Osahan Deel - Coupons, Deals & Discounts HTML Template</title>
+
+    <link rel="icon" type="image/png" href="images/logo.svg">
+
+    <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+
+    <link href="css/theme.css" rel="stylesheet">
+
+    <link href="vendor/icons/css/materialdesignicons.min.css" media="all" rel="stylesheet" type="text/css" />
+
+    <link href="vendor/select2/css/select2-bootstrap.css" />
+    <link href="vendor/select2/css/select2.min.css" rel="stylesheet" />
+
+    <link href="vendor/icofont/icofont.min.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="vendor/owl-carousel/owl.carousel.css">
+    <link rel="stylesheet" href="vendor/owl-carousel/owl.theme.css">
+
+    <link href="css/osahan.css" rel="stylesheet" id="theme-opt" />
+</head>
+<section class="bg-gradient-primary section-padding">
+    <div class="container">
+        <div class="row py-lg-5">
+            <div class="col-md-6 mx-auto text-center">
+                <h1 class="text-black mb-3">Coupans</h1>
+                <h6 class="text-black-50 mb-0">Build a beautiful, modern website with flexible Bootstrap components built from scratch.</h6>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="section-padding">
+    <div class="container">
+        <div class="row pt-lg-4">
+            <% coupondata.forEach(function(data, i){ %>
+
+            <div class="col-xl-3 col-md-12 mb-4">
+                <div class="bg-white p-4 shadow-sm text-center h-100 border-radius">
+                    <div class="all-coupon">
+                        <img class="mb-3 user-cou-img" src=""
+                            alt="Generic placeholder image">
+                            <h6 class="mb-4 mt-3 pb-2 text-secondary font-weight-normal"><%= data.CouponName %></h6>
+                        <h4 class="mt-1 h5 text-gray-900"> <%= data.discount %>% OFF</h4>
+                        <h6 class="mb-4 mt-3 pb-2 text-secondary font-weight-normal">Get Flat <%= data.discount %>% OFF On First Order</h6>
+                        <h4 class="mt-1 h5 text-gray-900"> <%= data.CouponCode%></h4>
+                    </div>
+                    <div class="mb-0">
+                        <p class="mb-0 text-info"><i class="fa fa-clock-o" aria-hidden="true"></i> Ends <%= data.dateofexpired%></p>
+                    </div>
+                </div>
+            </div>
+            <% }); %>
+
+        </div>
+    </div>
+</section>

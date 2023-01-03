@@ -281,8 +281,55 @@ module.exports={
             console.log(coupons);
             resolve(coupons)
         })
-    }
-    
+    },
+    updatecoupon:(Id)=>{
+        return new Promise((resolve,reject)=>{
+            db.get().collection(collections.COUPON_Collection).findOne({_id:ObjectId(Id)}).then((data)=>{
+                console.log(data);
+
+                resolve(data)
+            })
+           
+        })
+
+    },
+    couponupdate:(Id,editdata)=>{
+        return new Promise((resolve,reject)=>{
+            db.get().collection(collections.COUPON_Collection).updateOne({_id:ObjectId(Id)},{$set:{
+                CouponCode:editdata.CouponCode,
+                CouponName:editdata.CouponName,
+                discount:editdata.discount,
+                dateofpublish:editdata.dateofpublish,
+                dateofexpired:editdata.dateofexpired
+        
+            }}).then((response)=>{
+                resolve()
+            })
+        })
+
+    },
+    deletecoupon:(ID)=>{
+        return new Promise((resolve,reject)=>{
+            db.get().collection(collections.COUPON_Collection).deleteOne({_id:ObjectId(ID)}).then((response)=>{
+                console.log(response);
+                resolve(response)
+            })
+            
+
+        })
+
+    },
+    getbannerTopage:()=>{
+        return new Promise(async(resolve,reject)=>{
+            let bannerdata=await db.get().collection(collections.BANNER_Collection).find().toArray()
+            console.log(bannerdata);
+            resolve(bannerdata)
+        })
+        
+
+
+    },
+   
 
 
 

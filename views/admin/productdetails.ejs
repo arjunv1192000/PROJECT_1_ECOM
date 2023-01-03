@@ -5,7 +5,7 @@
          <a href="/admin/category-page"> <button class="btn btn-success mt-5">Categories</button></a>
     </div>
   
-         <table class="table table-bordered">
+         <table class="table table-bordered" id="example">
                   <thead>
                     <tr>
                       <th scope="col">Image</th>
@@ -21,7 +21,7 @@
                     <% product.forEach(function(product, i){ %>
                     <tr >
                       
-                      <td ><img class="product-image" src="/product_img/<%= product._id %>.jpg" alt="no"></td>
+                      <td ><img class="product-image" src="/product_img/<%= product._id %>.jpg" ></td>
                       <td><%= product.productname %></td>
                       <td><%= product.Color %></td>
                       <td><%= product.category %></td>
@@ -47,3 +47,4 @@
                   </tbody>
                 </table>
   </section>
+  

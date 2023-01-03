@@ -1,4 +1,8 @@
-const {  Adminlogin,GetAlluserdata,adminadd,Getproductdata,adminedit,updateproduct,deleteproduct,addcategory,gettcategory,editsubmit,updatecategory,deletecategory, userblock,Getcategorydata,getAlluserorder,getAllorderproducts,productstatus,Cancelproduct_orders,addcoupons, Getcoupondata} = require('../Model/admin_helper')
+
+const multer = require('multer');
+const upload = multer({ dest: './public/product_img/' });
+
+const {  Adminlogin,GetAlluserdata,adminadd,Getproductdata,adminedit,updateproduct,deleteproduct,addcategory,gettcategory,editsubmit,updatecategory,deletecategory, userblock,Getcategorydata,getAlluserorder,getAllorderproducts,productstatus,Cancelproduct_orders,addcoupons, Getcoupondata,updatecoupon,couponupdate,deletecoupon,getbannerTopage} = require('../Model/admin_helper')
 
 module.exports={
 
@@ -11,6 +15,8 @@ module.exports={
 
       adminlog(req, res, next) {
         Adminlogin(req.body).then((admininfo)=>{
+
+
           
           res.render('admin/admindashboard', {user:false});
         }).catch((error)=>{
@@ -66,9 +72,7 @@ module.exports={
 
     editproduct(req, res) {
       let productid=req.params.id
-      console.log(productid);
       adminedit(productid).then((product)=>{
-        
       res.render('admin/editproducts',{user:false,product})
 
     })
@@ -218,6 +222,7 @@ module.exports={
   },
   couponsubmit(req,res){
     addcoupons(req.body).then(()=>{
+      res.redirect('/admin/coupon-page')
 
     })
   },
@@ -226,7 +231,58 @@ module.exports={
       res.render('admin/show_coupon',{user:false,coupons})
 
     })
+  },
+  couponeditpage(req,res){
+    updatecoupon(req.params.id).then((coupondata)=>{
+
+      res.render('admin/coupon_edit',{user:false,coupondata})
+
+
+    })
+
+   
+  },
+  couponeditsubmit(req,res){
+    couponupdate(req.params.id,req.body).then(()=>{
+      res.redirect('/admin/coupon-page')
+
+    })
+
+  },
+  couponremove(req,res){
+    deletecoupon(req.params.id).then(()=>{
+      res.redirect('/admin/coupon-page')
+
+    })
+
+  },
+  bannerpage(req,res){
+    getbannerTopage().then((bannerdata)=>{
+      res.render('admin/showbanner',{user:false,bannerdata})
+
+    })
+   
+
+  },
+  editbannerpage(req,res){
+    res.render('admin/edit_banner',{user:false})
+    
+
+  },
+  submit_banner(req,res){
+    if(req.files.Image1){
+      var image1=req.files.Image1
+      image1.mv('./public/banner_img/63b278767079c39a64a170fb.jpg')
+      var image2=req.files.Image2
+  }else if(req.files.Image2){
+    var image2=req.files.Image2
+    image2.mv('./public/banner_img/63b278767079c39a64a170fb.jpg')
+  }else if(req.files.Image3){
+    var image3=req.files.Image3
+    image3.mv('./public/banner_img/63b278947079c39a64a170fd.jpg')
   }
+  res.redirect('/admin/banner-page')
+}
 
       
         

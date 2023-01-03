@@ -59,8 +59,8 @@
                     <div class="pro-details-compare-wishlist">
 
                         <div class="pro-details-wishlist">
-                            <a title="Add To Wishlist" href="#"><i class="fa fa-heart-o" aria-hidden="true"></i> Add to
-                                wish list</a>
+                            
+                        <button onclick="addtowishlist('<%= productDATA._id %>')" type="button" class="btn bg-transparent"><i class="fa fa-heart-o"></i> </button>
                         </div>
                     </div>
                     <% if (productDATA.stock) { %>
@@ -164,6 +164,17 @@
     function addtocart(proId){
         $.ajax({
             url:'/add-tocart/'+proId,
+            method:'get',
+            success:(response)=>{
+                location.reload()
+
+            }
+        })
+    }
+
+    function addtowishlist(proId){
+        $.ajax({
+            url:'/add-towishlist/'+proId,
             method:'get',
             success:(response)=>{
                 location.reload()

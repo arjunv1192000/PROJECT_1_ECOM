@@ -25,12 +25,22 @@
                                                     <input type="text" name="useremail" placeholder="Email">
                                                     <input type="password" name="pass" placeholder="Password">
                                                     <div class="button-box">
-                                                        <div class="login-toggle-btn">
-                                                            <a href="/otpnumber">OTP LOGIN</a>
-                                                        </div>
                                                         <button type="submit">Login</button>
                                                     </div>
+                                                    
                                                 </form>
+                                                <div class="login-toggle-btn ">
+                                                    <form action="/otpnumber" method="post">
+                                                    <button class="loginbtn" type="submit">OTP LOGIN</button>
+                                                    </form>
+                                                </div>
+                                                <div class="login-toggle-btn  ml-300">
+                                                    <form action="/otpnumber" method="post">
+                                                    <button class="loginbtn" type="submit">Forgot Password?</button>
+                                                    <input value="true" name="data" hidden>
+                                                </form>
+                                                </div>
+                                                
                                     </div>
                                 </div>
 

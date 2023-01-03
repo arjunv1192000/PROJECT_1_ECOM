@@ -17,12 +17,15 @@
                                                 <form action="/verifyOTP" method="post">
                                                     <input type="phone" name="otp" placeholder="enter otp">
                                                     
+                                                    
                                                     <div class="button-box">
                                                         <div class="login-toggle-btn">
                                                         </div>
                                                         <button type="submit">verify</button>
+                                                        <button type="button" id="resend-otp-button" disabled onclick="resendOTP()">Resend OTP</button>
                                                     </div>
                                               </form>
+                                              <div class="ml-5" id="timer-display"></div>
                                     </div>
                                 </div>
 
@@ -33,3 +36,29 @@
             </div>
         </div>
 </section>
+<script>
+
+    var timer = 60000;
+    var interval = setInterval(function() {
+      document.getElementById('timer-display').innerHTML = 'Resend OTP in ' + (timer / 1000) + ' seconds';
+      timer -= 1000;
+  
+    
+      if (timer <= 0) {
+        clearInterval(interval);
+        document.getElementById('resend-otp-button').disabled = false;
+        document.getElementById('timer-display').innerHTML = 'Resend OTP';
+      }
+    }, 1000);
+
+    function resendOTP() {
+  fetch('/numberverification', { method: 'POST' })
+    .then(response => {
+      console.log('OTP sent successfully!');
+    })
+    .catch(error => {
+    
+      console.error(error);
+    });
+}
+  </script>

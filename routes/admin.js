@@ -1,5 +1,5 @@
 var express = require('express');
-const { adminloginpage,adminlog,adminhome,userdata,productdata,productadd,editproduct,addproducts,editsubmit,removeproduct,categorymanage,categoryadd,categoryeditpage,categoryeditsubmit,removecategory,blockmanager,acclogout,userorders,orderproducts,productmanage,cancelorders,couponpage,couponsubmit,coupondata} = require('../Controller/admin_controller');
+const { adminloginpage,adminlog,adminhome,userdata,productdata,productadd,editproduct,addproducts,editsubmit,removeproduct,categorymanage,categoryadd,categoryeditpage,categoryeditsubmit,removecategory,blockmanager,acclogout,userorders,orderproducts,productmanage,cancelorders,couponpage,couponsubmit,coupondata,couponeditpage,couponeditsubmit,couponremove,bannerpage,editbannerpage,submit_banner} = require('../Controller/admin_controller');
 var router = express.Router();
 
 /* GET users listing. */
@@ -51,6 +51,19 @@ router.get('/Couponadd_page',couponpage)
 router.post('/Coupon_add',couponsubmit)
 
 router.get('/coupon-page',coupondata)
+
+router.get('/edit-coupon/:id',couponeditpage)
+
+router.post('/Coupon_edit/:id',couponeditsubmit)
+
+router.get('/delete-coupon/:id',couponremove)
+
+router.get('/banner-page',bannerpage)
+
+router.get('/add-banner-page/:id',editbannerpage)
+
+router.post('/add_banner_submit',submit_banner)
+
 
 
 

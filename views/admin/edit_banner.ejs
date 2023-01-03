@@ -1,0 +1,40 @@
+<section id="footer" class="mt-5">
+    <div class="container ">
+        <h1>Edit Banner</h1>
+        <form action="/admin/add_banner_submit" method="post"  enctype="multipart/form-data">
+            <img class="product-image" src="/banner_img/63b278807079c39a64a170fc.jpg" alt="no" id="imgview">
+            <div class="row mb-3">
+                <label for="inputNumber" class="col-sm-2 col-form-label">File Upload  Top Banner</label>
+                <div class="col-sm-10">
+                    <input class="form-control" type="file" name="Image1" id="formFile" value="">
+                </div>
+            </div>
+            <img class="product-image" src="/banner_img/63b278767079c39a64a170fb.jpg" alt="no" id="imgview">
+            <div class="row mb-3">
+                <label for="inputNumber" class="col-sm-2 col-form-label">File Upload Middle Banner</label>
+                <div class="col-sm-10">
+                    <input class="form-control" type="file" name="Image2" id="formFile" value="">
+                </div>
+            </div>
+            <img class="product-image" src="/banner_img/63b278947079c39a64a170fd.jpg" alt="no" id="imgview">
+            <div class="row mb-3">
+                <label for="inputNumber" class="col-sm-2 col-form-label">File Upload Bottom Image</label>
+                <div class="col-sm-10">
+                    <input class="form-control" type="file" name="Image3" id="formFile" value="">
+                </div>
+            </div>
+            <div class="row mb-3">
+                <!-- <label class="col-sm-2 col-form-label"></label> -->
+                <div class="col-sm-10">
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </div>
+            </div>
+
+        </form>
+    </div>
+</section>
+<script>
+    function viewImage(event){
+        document.getElementById('imgview').src=URL.createObjectURL(event.target.files[0])
+    }
+</script>

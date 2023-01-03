@@ -5,8 +5,9 @@ const authToken = process.env.TWILIO_TOKEN;
 const serviceToken = process.env.Service_ID;
 const client = require("twilio")(accountSid,authToken,serviceToken);
 const { Getcategorydata } = require('../Model/admin_helper');
-const { userSignup, Dologin ,showproducts, productAlldetails, Getcategory,filterBycategory,productcart,Getcartproducts,changeproductquantity, removeproduct_cart, gettotalamount,placeorder,getCartproductlist,getorderdetails,Cancelproduct_order,findByNumber,getAllorderproducts,product_wishlist, get_productwishlist,get_userdata,generateRazorpay,verifyPayment,changepaymentStatus,adduseraddress,GetUseraddress} = require('../Model/user_helper');
+const { userSignup, Dologin ,showproducts, productAlldetails, Getcategory,filterBycategory,productcart,Getcartproducts,changeproductquantity, removeproduct_cart, gettotalamount,placeorder,getCartproductlist,getorderdetails,Cancelproduct_order,findByNumber,getAllorderproducts,product_wishlist, get_productwishlist,get_userdata,generateRazorpay,verifyPayment,changepaymentStatus,adduseraddress,GetUseraddress,changepassword,getoffers} = require('../Model/user_helper');
 
+var forgote;
 let usersession ;
 
 module.exports={
@@ -261,6 +262,12 @@ module.exports={
         })
       },
       otpnumberpage(req,res){
+        console.log(req.body.data,">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+        if(req.body.data=="true"){
+           forgote=true
+        }else{
+           forgote=false
+        }
         res.render('user/OTP')
       },
 
@@ -274,6 +281,9 @@ module.exports={
   findByNumber(req.body.phone).then((user) => { 
   console.log(user);
   usersession=user
+  if(forgote){
+    var userdata=user._id
+  }
     client.verify
       .services(process.env.Service_ID)
       .verifications.create({
@@ -302,7 +312,14 @@ module.exports={
     }).then(async (data) => {
       if (data.status === 'approved') {
         req.session.users=usersession
-         res.redirect('/');
+        if(forgote){
+          res.render('user/changepassword',{usersession})
+
+        }else{
+          res.redirect('/');
+
+        }
+         
       } else {
         console.log('OTP not matched');
         res.render('user/verificationotp', { error: 'invalied OTP' });
@@ -391,12 +408,29 @@ module.exports={
       },
       gettcurrentAddress(req,res){
         console.log(req.params.id);
+       
         GetUseraddress(req.params.id).then((userdata)=>{
-          console.log(userdata,'++++++++++++++++++++++++++');
+
           res.json(userdata)
 
         })
 
+      },
+      password(req,res){
+        console.log(req.body);
+        changepassword(req.body.userId,req.body).then(()=>{
+          res.redirect('/uselogin')
+          
+
+
+        })
+      },
+      offerpage(req,res){
+        let users=req.session.users
+        getoffers().then((coupondata)=>{
+          res.render('user/offers',{user:true,users,coupondata})
+
+        })
       }
 
       

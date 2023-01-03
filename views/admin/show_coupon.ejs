@@ -7,6 +7,8 @@
                 <th scope="col">Discount</th>
                 <th scope="col">Starting Date</th>
                 <th scope="col">Ending Date</th>
+                <th scope="col">Minimun Amount</th>
+                <th scope="col">Maximum Amount</th>
                 <th scope="col">Action</th>
             </tr>
         </thead>
@@ -15,9 +17,11 @@
             <tr>
                 <td><%= coupontdata.CouponCode %></td>
                 <td><%= coupontdata.CouponName %></td>
-                <td><%= coupontdata.discount %></td>
+                <td><%= coupontdata.discount %>%</td>
                 <td><%= coupontdata.dateofpublish %></td> 
                 <td><%= coupontdata.dateofexpired %></td> 
+                <td><%= coupontdata.minimum %></td> 
+                <td><%= coupontdata.Maximum %></td> 
                 
                 <td>
                     <a href="/admin/edit-coupon/<%= coupontdata._id%>"><button class="btn btn-secondary" id="my-button" onclick="myFunction(this.id)">Edit</button></a>

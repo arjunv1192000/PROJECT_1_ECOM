@@ -60,7 +60,12 @@
 .catbtn{
   border: transparent;
   background-color: transparent;
+  
 
+}
+.loginbtn{
+  border:transparent;
+  background-color: transparent;
 }
 .cartimg{
   width: 150px;

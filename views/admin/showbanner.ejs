@@ -1,0 +1,27 @@
+<section class=" ml-300 mt-5" id="footer">
+    <div class="btns">
+  
+         
+         
+    </div>
+  
+         <table class="table table-bordered" id="example">
+                  <thead>
+                    <tr>
+                      <th scope="col"> Banners</th>
+                      <th scope="col">Action</th>
+                      
+                      
+                  </thead>
+                  <tbody>
+                    <% bannerdata.forEach(function(data, i){ %>
+                    
+                    <tr>
+                      <td ><img class="product-image" src="/banner_img/<%= data._id%>.jpg" ></td>
+                      <td><a href="/admin/add-banner-page/<%= data._id%>"> <button class="btn btn-success mt-5"> Edit Banner</button></a></td>
+                    </tr>
+                    <% }); %>
+                  </tbody>
+                </table>
+  </section>
+  
