@@ -644,6 +644,50 @@ module.exports={
            
        })
 
+    },
+    couponmanagement:(code,total)=>{
+        console.log(code);
+        console.log(total);
+        total = parseInt(total)
+        return new Promise(async(resolve,reject)=>{
+            const coupon = await db.get().collection(collections.COUPON_Collection).aggregate([
+                {
+                    $match: {
+                      $and: [
+                        { CouponCode: code },
+                        { Maximum:{ $gte: total } },
+                        { dateofexpired : { $gte: new Date() } },
+                        { dateofpublish: { $lte: new Date() } }
+                      ]
+                    }
+                  },
+                  {
+                    $project: {
+                      _id: null,
+                      offerAmount: {
+                        $subtract: [
+                          total,
+                          {
+                            $divide: [
+                              { $multiply: [total, "$discount"] },
+                              100
+                            ]
+                          }
+                        ]
+                      }
+                    }
+                  }
+              
+            ]).toArray()
+            console.log(coupon,">>>>>>>>>>>>>>>>>>>>>");
+            if(coupon.length !=0){
+              resolve(coupon[0]?.offerAmount)
+            }else{
+              reject()
+            }
+            
+          })
+
     }
 
     

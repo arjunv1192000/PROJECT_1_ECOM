@@ -329,6 +329,32 @@ module.exports={
 
 
     },
+    getttodaysale:()=>{
+        const currentDate = new Date();
+        return new Promise(async (resolve, reject) => {
+            try {
+                const order = await db.get().collection(collections.ORDER_Collection).aggregate([
+                  {
+                    $match: {
+                      date: {
+                        $gte: new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate()),
+                        $lt: new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate() + 1)
+                      }
+                    }
+                  },
+                
+                { $group: { _id: null, count: { $sum: 1 } } }
+                ]).toArray();
+               console.log(order);
+                resolve(order[0].count);
+              }catch (error) {
+                console.error(error);
+                reject(error);
+              }
+              
+        });
+
+    }
    
 
 

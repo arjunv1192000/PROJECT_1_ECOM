@@ -89,13 +89,28 @@
                                             </div>
                                             <div class="your-order-info order-shipping">
                                                 <ul>
-                                                    <li>Shipping <p>Enter your full address </p>
-                                                    </li>
+                                                    <div class="col-lg-4 col-md-6">
+                                                        <div class="">
+                                                            <div class="">
+                                                                <h6 class="">Use Coupon Code</h6>
+                                                            </div>
+                                                            <div class="">
+                                                                <p>Enter your coupon code if you have one.</p>
+                                                                <form>
+                                                                    <p id="error" style="color: red;"></p>
+                                                                    <input type="text" placeholder=" Coupon Code" id="code">
+                                                                    <input type="text"  name="totalprice" id="price" value="<%= totalprice %>" hidden>
+                                                                    <button class="cart-btn-2" type="button" onclick="checkCoupon()">Apply Coupon</button>
+                                                                </form>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    
                                                 </ul>
                                             </div>
                                             <div class="your-order-info order-total">
                                                 <ul>
-                                                    <li>Total <span>₹<%= totalprice %></span></li>
+                                                    <li>Total <span id="offer">₹<%= totalprice %></span></li>
                                                 </ul>
                                             </div>
                                 </div>
@@ -129,7 +144,7 @@
     </div>
     <div class="col-lg-12 col-md-12">
         <div class="billing-info mb-20 ml-100">
-            <button onclick="addcurrent('<%= users._id %>')"
+            <button onclick="addcurrent('<%= users._id %>')"    
                 class="btn btn-outline-warning btn-rounded"
                 data-mdb-ripple-color="dark">Add_address</button>
 
@@ -245,6 +260,29 @@
         })
 
     }
+    function checkCoupon() {
+        console.log("sknssdsddsdkdck");
+            var codes= document.getElementById('code').value
+            var total = document.getElementById('price').value
+            console.log(codes)
+            console.log(total);
+            $.ajax({
+                url: '/checkcoupon',
+                data: {
+                    data: codes,total
+                     
+                },
+                method: 'post',
+                success: (response => {
+                    console.log(response,"$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
+                    if (response) {
+                        document.getElementById('offer').innerHTML = +response
+                    } else {
+                        document.getElementById('error').innerHTML = 'Enter valied  coupon code'
+                    }
+                })
+            })
+        }
 
 
 

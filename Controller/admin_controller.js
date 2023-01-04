@@ -2,7 +2,7 @@
 const multer = require('multer');
 const upload = multer({ dest: './public/product_img/' });
 
-const {  Adminlogin,GetAlluserdata,adminadd,Getproductdata,adminedit,updateproduct,deleteproduct,addcategory,gettcategory,editsubmit,updatecategory,deletecategory, userblock,Getcategorydata,getAlluserorder,getAllorderproducts,productstatus,Cancelproduct_orders,addcoupons, Getcoupondata,updatecoupon,couponupdate,deletecoupon,getbannerTopage} = require('../Model/admin_helper')
+const {  Adminlogin,GetAlluserdata,adminadd,Getproductdata,adminedit,updateproduct,deleteproduct,addcategory,gettcategory,editsubmit,updatecategory,deletecategory, userblock,Getcategorydata,getAlluserorder,getAllorderproducts,productstatus,Cancelproduct_orders,addcoupons, Getcoupondata,updatecoupon,couponupdate,deletecoupon,getbannerTopage,getttodaysale} = require('../Model/admin_helper')
 
 module.exports={
 
@@ -16,8 +16,6 @@ module.exports={
       adminlog(req, res, next) {
         Adminlogin(req.body).then((admininfo)=>{
 
-
-          
           res.render('admin/admindashboard', {user:false});
         }).catch((error)=>{
           res.render('admin/adminlog')
@@ -282,11 +280,20 @@ module.exports={
     image3.mv('./public/banner_img/63b278947079c39a64a170fd.jpg')
   }
   res.redirect('/admin/banner-page')
+},
+
+saletoday(req,res){
+  getttodaysale(),then((response)=>{
+    console.log(response);
+    res.json(response)
+
+  })
 }
+
 
       
         
        
-      }
+ }
 
 

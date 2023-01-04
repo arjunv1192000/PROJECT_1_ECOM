@@ -5,7 +5,7 @@ const authToken = process.env.TWILIO_TOKEN;
 const serviceToken = process.env.Service_ID;
 const client = require("twilio")(accountSid,authToken,serviceToken);
 const { Getcategorydata } = require('../Model/admin_helper');
-const { userSignup, Dologin ,showproducts, productAlldetails, Getcategory,filterBycategory,productcart,Getcartproducts,changeproductquantity, removeproduct_cart, gettotalamount,placeorder,getCartproductlist,getorderdetails,Cancelproduct_order,findByNumber,getAllorderproducts,product_wishlist, get_productwishlist,get_userdata,generateRazorpay,verifyPayment,changepaymentStatus,adduseraddress,GetUseraddress,changepassword,getoffers} = require('../Model/user_helper');
+const { userSignup, Dologin ,showproducts, productAlldetails, Getcategory,filterBycategory,productcart,Getcartproducts,changeproductquantity, removeproduct_cart, gettotalamount,placeorder,getCartproductlist,getorderdetails,Cancelproduct_order,findByNumber,getAllorderproducts,product_wishlist, get_productwishlist,get_userdata,generateRazorpay,verifyPayment,changepaymentStatus,adduseraddress,GetUseraddress,changepassword,getoffers,couponmanagement} = require('../Model/user_helper');
 
 var forgote;
 let usersession ;
@@ -262,7 +262,6 @@ module.exports={
         })
       },
       otpnumberpage(req,res){
-        console.log(req.body.data,">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
         if(req.body.data=="true"){
            forgote=true
         }else{
@@ -431,6 +430,13 @@ module.exports={
           res.render('user/offers',{user:true,users,coupondata})
 
         })
+      },
+      checkcoupon(req,res){
+        couponmanagement(req.body.data,req.body.total).then((response)=>{
+          res.json(response)
+
+        })
+
       }
 
       
