@@ -1,5 +1,5 @@
 var express = require('express');
-const { adminloginpage,adminlog,adminhome,userdata,productdata,productadd,editproduct,addproducts,editsubmit,removeproduct,categorymanage,categoryadd,categoryeditpage,categoryeditsubmit,removecategory,blockmanager,acclogout,userorders,orderproducts,productmanage,cancelorders,couponpage,couponsubmit,coupondata,couponeditpage,couponeditsubmit,couponremove,bannerpage,editbannerpage,submit_banner,saletoday} = require('../Controller/admin_controller');
+const { adminloginpage,adminlog,adminhome,userdata,productdata,productadd,editproduct,addproducts,editsubmit,removeproduct,categorymanage,categoryadd,categoryeditpage,categoryeditsubmit,removecategory,blockmanager,acclogout,userorders,orderproducts,productmanage,cancelorders,couponpage,couponsubmit,coupondata,couponeditpage,couponeditsubmit,couponremove,bannerpage,editbannerpage,submit_banner,getreportpage,updateshipping,getadmindashbord} = require('../Controller/admin_controller');
 var router = express.Router();
 
 /* GET users listing. */
@@ -28,7 +28,6 @@ router.get('/category-page',categorymanage)
 router.post('/category-add',categoryadd)
 
 router.get('/edit-category/:id',categoryeditpage)
-
 
 router.post('/category-edit_submit/:id',categoryeditsubmit)
 
@@ -64,7 +63,13 @@ router.get('/add-banner-page/:id',editbannerpage)
 
 router.post('/add_banner_submit',submit_banner)
 
-router.get('/getTodaysale',saletoday)
+router.get('/report-page',getreportpage)
+
+router.post('/shippingStatus/:id',updateshipping)
+
+router.get('/getdashbord',getadmindashbord)
+
+
 
 
 

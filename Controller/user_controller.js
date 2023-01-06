@@ -5,7 +5,7 @@ const authToken = process.env.TWILIO_TOKEN;
 const serviceToken = process.env.Service_ID;
 const client = require("twilio")(accountSid,authToken,serviceToken);
 const { Getcategorydata } = require('../Model/admin_helper');
-const { userSignup, Dologin ,showproducts, productAlldetails, Getcategory,filterBycategory,productcart,Getcartproducts,changeproductquantity, removeproduct_cart, gettotalamount,placeorder,getCartproductlist,getorderdetails,Cancelproduct_order,findByNumber,getAllorderproducts,product_wishlist, get_productwishlist,get_userdata,generateRazorpay,verifyPayment,changepaymentStatus,adduseraddress,GetUseraddress,changepassword,getoffers,couponmanagement} = require('../Model/user_helper');
+const { userSignup, Dologin ,showproducts, productAlldetails, Getcategory,filterBycategory,productcart,Getcartproducts,changeproductquantity, removeproduct_cart, gettotalamount,placeorder,getCartproductlist,getorderdetails,Cancelproduct_order,findByNumber,getAllorderproducts,product_wishlist, get_productwishlist,get_userdata,generateRazorpay,verifyPayment,changepaymentStatus,adduseraddress,GetUseraddress,changepassword,getoffers,couponmanagement,getsearchproduct,showproductshome} = require('../Model/user_helper');
 
 var forgote;
 let usersession ;
@@ -96,7 +96,7 @@ module.exports={
       },
       homerender(req,res){
         let users=req.session.users
-        showproducts().then((showproduct)=>{
+        showproductshome().then((showproduct)=>{
         res.render('user/home',{users,user:true,showproduct})
 
         })
@@ -221,10 +221,21 @@ module.exports={
       },
       orderplace(req,res){
         let users=req.session.users
+        let finalprice
+        let a=totalprice
         console.log(req.body);
+        if(req.body.offerdata){
+         finalprice=req.body.offerdata;
+        }else{
+          finalprice=a;
+
+        }
+          
+
+        
         getCartproductlist(req.body.userId).then((product)=>{
          totalprice= gettotalamount(req.body.userId).then((totalprice)=>{
-        placeorder(req.body,product,totalprice).then((orderId)=>{
+        placeorder(req.body,product,finalprice).then((orderId)=>{
           if(req.body['payment_method']==='COD'){
             res.json({CODsucess:true})
 
@@ -401,7 +412,9 @@ module.exports={
       Add_address(req,res){
         let users=req.session.users
         adduseraddress(req.body).then(()=>{
-          redirect('/uaseraccount')
+
+          res.redirect('/uaseraccount');
+         
 
         })
       },
@@ -437,6 +450,14 @@ module.exports={
 
         })
 
+      },
+      searchproduct(req,res){
+        console.log(req.body.searchValue,"+++++++++++++++++++++++++++");
+        getsearchproduct(req.body.searchValue).then((data)=>{
+          console.log(data,"////////////////////////");
+          res.json(data)
+
+        })
       }
 
       

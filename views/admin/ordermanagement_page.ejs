@@ -11,34 +11,134 @@
                 <th scope="col">Totalprice</th>
                 <th scope="col">status</th>
                 <th scope="col">Products</th>
+                <th scope="col">shippingStatus</th>
             </tr>
         </thead>
         <tbody>
-         <% Allorder.forEach(function(data, i){ %>
-            <tr>
-                <td><%= data.deliveryDetails.Name %></td>
-                <td><%= data.date %></td>
-                <td><%= data.deliveryDetails.address%></td>
-                <td><%= data.deliveryDetails.Postcode %></td> 
-                <td><%= data.deliveryDetails.phone  %></td>
-                <td><%= data.paymentMethod %></td>
-                <td><%= data.totaAmount %></td>
-                <td>
+            <% Allorder.forEach(function(data, i){ %>
+                <tr>
+                    <td>
+                        <%= data.deliveryDetails.Name %>
+                    </td>
+                    <td>
+                        <%= data.date %>
+                    </td>
+                    <td>
+                        <%= data.deliveryDetails.address%>
+                    </td>
+                    <td>
+                        <%= data.deliveryDetails.Postcode %>
+                    </td>
+                    <td>
+                        <%= data.deliveryDetails.phone %>
+                    </td>
+                    <td>
+                        <%= data.paymentMethod %>
+                    </td>
+                    <td>
+                        <%= data.totaAmount %>
+                    </td>
+                    <td>
 
-                    <%= data.status %>
+                        <%= data.status %>
 
-                    <form action="/admin/cancelorders/<%= data._id %>" method="post">
-                        <input name="status" value="<%= data.status %>" hidden>
-                          <button type="submit" class="btn btn-danger btn-sm" >Cancel</button>
-                           
-                      </form>
+                            <form action="/admin/cancelorders/<%= data._id %>" method="post">
+                                <input name="status" value="<%= data.status %>" hidden>
+                                <button type="submit" class="btn btn-danger btn-sm">Cancel</button>
 
-                </td>
-                <td>
-                    <a href="/admin/orderproduct/<%= data._id %>"><button class="btn btn-success" id="my-button" >Products</button></a>
-                </td>
-            </tr>
-         <% }); %>
-      </tbody>
+                            </form>
+
+                    </td>
+                    <td>
+                        <a href="/admin/orderproduct/<%= data._id %>"><button class="btn btn-success"
+                                id="my-button">Products</button></a>
+                    </td>
+                    <td><%= data.shippingStatus %>
+
+                        <form action="/admin/shippingStatus/<%= data._id %>" method="post">
+                            <input name="Shippingstatus" value="<%= data.shippingStatus %>" hidden>
+                            <button type="submit" class="btn btn-success btn-sm">ChangeStatus</button>
+
+                        </form>
+                        
+
+                        
+                      </td>
+                    </form>
+                    
+                </tr>
+                <% }); %>
+        </tbody>
     </table>
 </div>
+
+
+<!-- <div class="col-12  mt-20" id="footer">
+    <div class="card recent-sales overflow-auto">
+        <div class="card-body" id="invoice">
+            <h5 class="card-title">Recent Orders <span></span></h5>
+
+            <table class="table table-borderless datatable">
+                <thead>
+                    <tr>
+                        <th scope="col">Name</th>
+                        <th scope="col">Date</th>
+                        <th scope="col">Address</th>
+                        <th scope="col">Pincode</th>
+                        <th scope="col">phone</th>
+                        <th scope="col">payment</th>
+                        <th scope="col">Totalprice</th>
+                        <th scope="col">status</th>
+                        <th scope="col">Products</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% Allorder.forEach(function(data, i){ %>
+                        <td>
+                            <%= data.deliveryDetails.Name %>
+                        </td>
+                        <td>
+                            <%= data.date %>
+                        </td>
+                        <td>
+                            <%= data.deliveryDetails.address%>
+                        </td>
+                        <td>
+                            <%= data.deliveryDetails.Postcode %>
+                        </td>
+                        <td>
+                            <%= data.deliveryDetails.phone %>
+                        </td>
+                        <td>
+                            <%= data.paymentMethod %>
+                        </td>
+                        <td>
+                            <%= data.totaAmount %>
+                        </td>
+                        <td>
+
+                            <%= data.status %>
+
+                                <form action="/admin/cancelorders/<%= data._id %>" method="post">
+                                    <input name="status" value="<%= data.status %>" hidden>
+                                    <button type="submit" class="btn btn-danger btn-sm">Cancel</button>
+                                    
+
+                                </form>
+
+                        </td>
+                        <td>
+                            <a href="/admin/orderproduct/<%= data._id %>"><button class="btn btn-success"
+                                    id="my-button">Products</button></a>
+                        </td>
+                        <% }); %>
+                </tbody>
+            </table>
+            <button type="button" id="download-button" class="btn btn-dark btn-lg"><i class="fab fa-apple"></i> Download
+            </button>
+
+        </div>
+
+
+    </div>
+</div> -->

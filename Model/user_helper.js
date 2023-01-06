@@ -314,6 +314,7 @@ module.exports={
         return new Promise(async(resolve,reject)=>{
             console.log(order,product,total);
             let status=order['payment_method']==='COD'?'order placed':'order pending'
+            let shippingStatus='orderd'
             let orderObj={
                 deliveryDetails:{
                     Name:order.name,
@@ -329,6 +330,7 @@ module.exports={
                 products:product,
                 totaAmount:total,
                 status:status,
+                shippingStatus:shippingStatus,
                 date:new Date()
             }
              placeorders=await db.get().collection(collections.ORDER_Collection).insertOne(orderObj).then((result)=>{
@@ -581,7 +583,8 @@ module.exports={
         
 
     },
-    adduseraddress:(Address)=>{
+    
+     adduseraddress:(Address)=>{
         console.log(Address);
         return new Promise(async(resolve,reject)=>{
             db.get().collection(collections.USER_Collection).updateOne({_id:ObjectId(Address.userId)},
@@ -687,6 +690,27 @@ module.exports={
             }
             
           })
+
+    },
+    getsearchproduct:(value)=>{
+        console.log(value,">>>>>>>>>>>>>>>>>>>>>>>>");
+        return new Promise((resolve,reject)=>{
+            db.get().collection(collections.Product_Collecction).findOne({$text: {$search: value}}).then((productDATA)=>{
+                    console.log(productDATA,"&&&&&&&&&&&&&&&&&&&&&&&&&&&&");
+
+                resolve(productDATA)
+
+            })
+        })
+        
+
+    },
+    showproductshome:()=>{
+        return new Promise(async(resolve,reject)=>{
+            let showproduct=await db.get().collection(collections.Product_Collecction).find().limit(4).toArray()
+            console.log(showproduct);
+            resolve(showproduct)
+        })
 
     }
 

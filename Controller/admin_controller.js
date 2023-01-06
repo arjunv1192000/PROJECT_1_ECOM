@@ -2,7 +2,8 @@
 const multer = require('multer');
 const upload = multer({ dest: './public/product_img/' });
 
-const {  Adminlogin,GetAlluserdata,adminadd,Getproductdata,adminedit,updateproduct,deleteproduct,addcategory,gettcategory,editsubmit,updatecategory,deletecategory, userblock,Getcategorydata,getAlluserorder,getAllorderproducts,productstatus,Cancelproduct_orders,addcoupons, Getcoupondata,updatecoupon,couponupdate,deletecoupon,getbannerTopage,getttodaysale} = require('../Model/admin_helper')
+const {  Adminlogin,GetAlluserdata,adminadd,Getproductdata,adminedit,updateproduct,deleteproduct,addcategory,gettcategory,editsubmit,updatecategory,deletecategory, userblock,Getcategorydata,getAlluserorder,getAllorderproducts,productstatus,Cancelproduct_orders,addcoupons, Getcoupondata,updatecoupon,couponupdate,deletecoupon,getbannerTopage,TotalSales,TodayOrders, ThisWeekOrders, ThisMonthOrders,ThisYearOrders,
+  totalRevenue, TodayRevenue,weekRevenue, yearRevenue, totaluser,monthRevenue,chartcount, allSalesreport,updateshippingstatus} = require('../Model/admin_helper')
 
 module.exports={
 
@@ -16,10 +17,7 @@ module.exports={
       adminlog(req, res, next) {
         Adminlogin(req.body).then((admininfo)=>{
 
-          res.render('admin/admindashboard', {user:false});
-        }).catch((error)=>{
-          res.render('admin/adminlog')
-      
+          res.render('admin/coupon_add',{user:false})
         })
 
         
@@ -27,7 +25,6 @@ module.exports={
       },
 
       adminhome(req,res){
-        
         res.redirect('admin/login')
 
       },
@@ -282,13 +279,104 @@ module.exports={
   res.redirect('/admin/banner-page')
 },
 
-saletoday(req,res){
-  getttodaysale(),then((response)=>{
-    console.log(response);
-    res.json(response)
+getreportpage(req,res){
+  allSalesreport().then((Allsales)=>{
+    res.render('admin/reportpage',{user:false,Allsales})
 
   })
+ 
+
+},
+updateshipping(req,res){
+  updateshippingstatus(req.params.id,req.body.Shippingstatus).then(()=>{
+
+    res.redirect('/admin/orders')
+
+  })
+
+},
+
+getadmindashbord(req,res){
+
+  TotalSales().then((totalS)=>{
+
+    TodayOrders().then((todayS)=>{
+
+      ThisWeekOrders().then((weeks)=>{
+
+        ThisMonthOrders().then((monthS)=>{
+
+          ThisYearOrders().then((yearS)=>{
+
+            totalRevenue().then((totalR)=>{
+
+              TodayRevenue().then((todayR)=>{
+
+                weekRevenue().then((weekR)=>{
+
+                  yearRevenue().then((yearR)=>{
+
+                    totaluser().then((users)=>{
+
+
+                      monthRevenue().then((monthR)=>{
+
+                        chartcount().then((data)=>{
+
+
+                          res.render('admin/admindashboard', {user:false,totalS,todayS,weeks,monthS,yearS,totalR,todayR,weekR,yearR,users,monthR,data});
+
+                        })
+
+
+                        
+
+                      })
+
+                     
+                    })
+
+                   
+
+                    
+
+                  })
+
+                  
+
+                  
+
+                })
+
+                
+
+                
+
+              })
+
+            
+
+              
+
+            })
+
+           
+
+        
+          })
+          
+        })
+    
+      })
+    
+    })
+
+  })
+  
+
 }
+
+
 
 
       
