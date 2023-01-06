@@ -5,7 +5,7 @@ const authToken = process.env.TWILIO_TOKEN;
 const serviceToken = process.env.Service_ID;
 const client = require("twilio")(accountSid,authToken,serviceToken);
 const { Getcategorydata } = require('../Model/admin_helper');
-const { userSignup, Dologin ,showproducts, productAlldetails, Getcategory,filterBycategory,productcart,Getcartproducts,changeproductquantity, removeproduct_cart, gettotalamount,placeorder,getCartproductlist,getorderdetails,Cancelproduct_order,findByNumber,getAllorderproducts,product_wishlist, get_productwishlist,get_userdata,generateRazorpay,verifyPayment,changepaymentStatus,adduseraddress,GetUseraddress,changepassword,getoffers,couponmanagement,getsearchproduct,showproductshome} = require('../Model/user_helper');
+const { userSignup, Dologin ,showproducts, productAlldetails, Getcategory,filterBycategory,productcart,Getcartproducts,changeproductquantity, removeproduct_cart, gettotalamount,placeorder,getCartproductlist,getorderdetails,Cancelproduct_order,findByNumber,getAllorderproducts,product_wishlist, get_productwishlist,get_userdata,generateRazorpay,verifyPayment,changepaymentStatus,adduseraddress,GetUseraddress,changepassword,getoffers,couponmanagement,getsearchproduct,showproductshome,getPriceFilter} = require('../Model/user_helper');
 
 var forgote;
 let usersession ;
@@ -167,8 +167,6 @@ module.exports={
       filterproduct(req,res){
         let users=req.session.users
         let name = req.body;
-        console.log(users);
-        console.log(name);
         filterBycategory(name).then((showproduct)=>{
 
           Getcategory().then((catdatas)=>{
@@ -459,7 +457,21 @@ module.exports={
 
         })
       },
-      
+      priceFilter(req,res){
+        console.log(req.body);
+        let users=req.session.users
+
+        getPriceFilter(req.body.min,req.body.max).then((showproduct)=>{
+
+          Getcategory().then((catdatas)=>{
+
+            res.render('user/showproduct',{user:true,showproduct,users,catdatas})
+
+          })
+    
+        })
+    
+       }
      
 
       

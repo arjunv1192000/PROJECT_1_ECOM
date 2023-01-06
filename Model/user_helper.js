@@ -713,6 +713,21 @@ module.exports={
         })
 
     },
+    getPriceFilter: (min,max) => {
+        console.log(min,max);
+          return new Promise(async (resolve, reject) => {
+            let priceFilter = await db.get().collection(collections.Product_Collecction).aggregate([
+              {
+                $match: {
+                    price: { $gte: min, $lte: max}
+                }
+              },
+
+            ]).toArray()
+              console.log(priceFilter);
+            resolve(priceFilter)
+          })
+        }
    
     
        
