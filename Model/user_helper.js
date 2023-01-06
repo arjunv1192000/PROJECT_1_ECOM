@@ -712,9 +712,16 @@ module.exports={
             resolve(showproduct)
         })
 
-    }
-
+    },
+   
     
+       
+    
+
+
+
+
+
 
 
 

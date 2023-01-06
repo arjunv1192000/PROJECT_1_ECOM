@@ -1,5 +1,5 @@
 var express = require('express');
-const { userlogin,usersignup,signup,uselog,homerender,acclog,productpage,sessioncheck,acclogout ,nocache,loginredirect,cartpage,listproductpage,filterproduct,cartaddd,quantityproduct,removeitem,checkout,orderplace,orders,cancelorder,otpnumberpage,otp_authentication,otpverify,userorderproduct,addtowishlist,wishlistpage,userAcdata,sucesspage,paymentVerify,getadd_page,Add_address,gettcurrentAddress,password,offerpage,checkcoupon,searchproduct} = require('../Controller/user_controller');
+const { usersignup,signup,uselog,homerender,acclog,productpage,sessioncheck,acclogout ,nocache,loginredirect,cartpage,listproductpage,filterproduct,cartaddd,quantityproduct,removeitem,checkout,orderplace,orders,cancelorder,otpnumberpage,otp_authentication,otpverify,userorderproduct,addtowishlist,wishlistpage,userAcdata,sucesspage,paymentVerify,getadd_page,Add_address,gettcurrentAddress,password,offerpage,checkcoupon,searchproduct} = require('../Controller/user_controller');
 var router = express.Router();
 var user_controller=require('../Controller/user_controller')
 
@@ -69,6 +69,9 @@ router.get('/showoffers',offerpage)
 router.post('/checkcoupon',checkcoupon)
 
 router.post('/search',searchproduct)
+
+
+
 
 
 

@@ -144,7 +144,13 @@
                             </ul>
                         </div>
                     </div>
-
+                    <form id="price-filter"  action="/price" method="post">
+                        <label for="min-price">Min price:</label>
+                        <input type="number" name="min" id="min-price" min="0" value="0">
+                        <label for="max-price">Max price:</label>
+                        <input type="number" name="max" id="max-price" min="0" value="100">
+                        <button type="submit">Filter</button>
+                      </form>
                 </div>
             </div>
         </div>
@@ -160,6 +166,8 @@
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
+   
+    
 
     function searchProducts() {
 
