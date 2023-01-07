@@ -80,23 +80,33 @@ module.exports={
   },
   addproducts(req,res){
     var image=req.files.Image
+    var image1=req.files.Image1
+    var image2=req.files.Image2
     console.log(req.body);
     adminadd(req.body).then((data)=>{
       console.log(req.file);
-      image.mv('./public/product_img/'+data.id+'.jpg',(err,done)=>{
-        if(err){
-          console.log(err);
+      image.mv('./public/product_img1/'+data.id+'.jpg',(err,done)=>{
+        image1.mv('./public/product_img2/'+data.id+'.jpg',(err,done)=>{
+          image2.mv('./public/product_img3/'+data.id+'.jpg',(err,done)=>{
 
-        }else{
-          res.redirect('/admin/products')
-
-        }
+            if(err){
+              console.log(err);
+        
+            }else{
+              res.redirect('/admin/products')
+        
+            }
+        
+          })
+        
+        })
+        
       })
     }).catch((err)=>{
       console.log(err);
     })
 
-
+   
   },
   editsubmit(req,res){
     var id=req.params.id

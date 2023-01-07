@@ -300,6 +300,12 @@ module.exports = {
 
     },
     couponupdate: (Id, editdata) => {
+        editdata.dateofpublish = new Date(editdata.dateofpublish)
+        editdata.dateofexpired = new Date(editdata.dateofexpired)
+        editdata.minimum = parseInt(editdata.minimum)
+        editdata.Maximum=parseInt(editdata.Maximum)
+        editdata.discount=parseInt( editdata.discount)
+
         return new Promise((resolve, reject) => {
             db.get().collection(collections.COUPON_Collection).updateOne({ _id: ObjectId(Id) }, {
                 $set: {
@@ -307,7 +313,9 @@ module.exports = {
                     CouponName: editdata.CouponName,
                     discount: editdata.discount,
                     dateofpublish: editdata.dateofpublish,
-                    dateofexpired: editdata.dateofexpired
+                    dateofexpired: editdata.dateofexpired,
+                    minimum:editdata.minimum,
+                    Maximum:editdata.Maximum
 
                 }
             }).then((response) => {

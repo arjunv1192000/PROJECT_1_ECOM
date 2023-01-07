@@ -10,13 +10,13 @@
                                 <div class="col-lg-6 col-md-6">
                                     <div class="billing-info mb-20">
                                         <label> Name <abbr class="required" title="required">*</abbr></label>
-                                        <input type="text" name="name" id="username">
+                                        <input type="text" name="name" id="use">
                                     </div>
                                 </div>
                                 <div class="col-lg-12">
                                     <div class="billing-info mb-20">
                                         <label>Company Name <abbr class="required" title="required">*</abbr></label>
-                                        <input type="text" name="companyname" id="companydata">
+                                        <input type="text" name="companyname" id="com">
                                     </div>
                                 </div>
                                 <div class="col-lg-12">
@@ -88,26 +88,20 @@
                                                     <li>Subtotal <span>₹<%= totalprice %></span></li>
                                                 </ul>
                                             </div>
-                                            <div class="your-order-info order-shipping">
-                                                <ul>
-                                                    <div class="col-lg-4 col-md-6">
-                                                        <div class="">
-                                                            <div class="">
-                                                                <h6 class="">Use Coupon Code</h6>
-                                                            </div>
-                                                            <div class="">
-                                                                <p>Enter your coupon code if you have one.</p>
-                                                                <form>
-                                                                    <p id="error" style="color: red;"></p>
-                                                                    <input type="text" placeholder=" Coupon Code" id="code">
-                                                                    <input type="text"  name="totalprice" id="price" value="<%= totalprice %>" hidden>
-                                                                    <button class="cart-btn-2" type="button" onclick="checkCoupon()">Apply Coupon</button>
-                                                                </form>
-                                                            </div>
+                                            <div class="card mb-3">
+                                                <div class="your-order-area bg-light">
+                                                    <form>
+                                                        <div class="form-group"> <label>Have coupon?</label>
+                                                            <p id="error" style="color: red;"></p>
+                                                            <div class="input-group"> 
+                                                            <input type="text" class="form-control coupon" name="" placeholder="Coupon code" id="code"> 
+                                                            <input type="text"  name="totalprice" id="price" value="<%= totalprice %>" hidden>
+                                                             <span class="input-group-append">
+                                                            
+                                                             <button class="btn btn-danger btn-apply coupon ml-20" type="button"  onclick="checkCoupon()">Apply</button> </span> </div>
                                                         </div>
-                                                    </div>
-                                                    
-                                                </ul>
+                                                    </form>
+                                                </div>
                                             </div>
                                             <div class="your-order-info order-total">
                                                 <ul>
@@ -249,14 +243,15 @@
             method: 'get',
             success: (userdata => {
                 console.log(userdata);
-                document.getElementById('username').innerHTML = userdata.username
-                document.getElementById('companydata').innerHTML = userdata.companyname
+                
                 document.getElementById('add').value = userdata.Address
                 document.getElementById('city').value = userdata.City
                 document.getElementById('Addstate').value = userdata.State
                 document.getElementById('pin').value = userdata.Postcode
                 document.getElementById('Addphone').value = userdata.phonenum
                 document.getElementById('mail').value = userdata.Addemail
+                document.getElementById('user').innerHTML = userdata.useremail
+                document.getElementById('company').innerHTML = userdata.City
 
             })
         })
@@ -276,7 +271,6 @@
                 },
                 method: 'post',
                 success: (response => {
-                    console.log(response,"$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
                     if (response) {
                         document.getElementById('offer').innerHTML = +response
                         document.getElementById("offeramount").value=response

@@ -9,6 +9,8 @@ const { userSignup, Dologin ,showproducts, productAlldetails, Getcategory,filter
 
 var forgote;
 let usersession ;
+let number;
+
 
 module.exports={
 
@@ -220,7 +222,7 @@ module.exports={
       orderplace(req,res){
         let users=req.session.users
         let finalprice
-        let a=totalprice
+        let a=req.body.totalprice
         console.log(req.body);
         if(req.body.offerdata){
          finalprice=req.body.offerdata;

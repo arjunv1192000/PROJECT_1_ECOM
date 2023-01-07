@@ -1,165 +1,107 @@
-<div class="product-details-area pt-90 pb-90">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-6 col-md-6">
-                <div class="product-details-img-left " id="img-container">
-                    <img class="zoompro" src="/product_img/<%= productDATA._id %>.jpg"data-zoom-image="/product_img/<%= productDATA._id %>.jpg" alt="product-details-img">
-                </div>
-            </div>
-            <div class="col-lg-6 col-md-6">
-                <div class="product-details-content pro-details-content-modify">
-                    <span>
-                        <%= productDATA.category %>
-                    </span>
-                    <h2>
-                        <%= productDATA.productname %>
-                    </h2>
-                    <div class="product-ratting-review">
-                        <div class="product-ratting">
-                            <i class="fa fa-star" aria-hidden="true"></i>
-                            <i class="fa fa-star" aria-hidden="true"></i>
-                            <i class="fa fa-star" aria-hidden="true"></i>
-                            <i class="fa fa-star" aria-hidden="true"></i>
-                            <i class="fa fa-star-half-o" aria-hidden="true"></i>
-                        </div>
-                        <div class="product-review">
-                            <span>40+ Reviews</span>
-                        </div>
-                    </div>
-                    <div class="pro-details-color-wrap">
-                        <span>Color:<%= productDATA.Color %></span>
-                        <div class="pro-details-color-content">
-                            <ul>
-                                <li></li>
 
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="pro-details-size">
-                        <span>Size: <%= productDATA.size %></span>
-                        <div class="pro-details-size-content">
-                            <ul>
-                                <li></li>
-
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="pro-details-price-wrap">
-                        <div class="product-price">
-                            <span>₹<%= productDATA.price %></span>
-                            <span class="old">$230.00</span>
-                        </div>
-                        <div class="dec-rang"><span>- 30%</span></div>
-                    </div>
-                    <div class="pro-details-quality">
-                        <div class="cart-plus-minus">
-                            <input class="cart-plus-minus-box" type="text" name="qtybutton" value="02">
-                        </div>
-                    </div>
-                    <div class="pro-details-compare-wishlist">
-
-                        <div class="pro-details-wishlist">
-                            
-                        <button onclick="addtowishlist('<%= productDATA._id %>')" type="button" class="btn bg-transparent"><i class="fa fa-heart-o"></i> </button>
-                        </div>
-                    </div>
-                    <% if (productDATA.stock) { %>
-                        <button onclick="addtocart('<%= productDATA._id %>')" class="btn btn-outline-danger btn-rounded" data-mdb-ripple-color="dark">+ Add To Cart</button>
-                      <% } else { %>
-                        <p class="h3 text-danger">Sorry, this product is currently out of stock</p>
-                       
-                      <% } %>
-                  
-                </div>
-
-            </div>
+    <div class = "product-imgs  "  style="width: 600px; margin-left:100px; margin-top:100px">
+        <div class = "img-display" >
+          <div class = "img-showcase" id="img-container">
+            <img src = "/product_img1/<%= productDATA._id %>.jpg" alt = "shoe image">
+            <img src = "/product_img2/<%= productDATA._id %>.jpg" alt = "shoe image">
+            <img src = "/product_img3/<%= productDATA._id %>.jpg" alt = "shoe image">
+          </div>
         </div>
-    </div>
-</div>
-
-
-
-
-
-
-
-
-
-
-
-<div class="description-review-wrapper pb-90">
-    <div class="container">
-        <div class="row">
-            <div class="ms-auto me-auto col-lg-10">
-                <div class="dec-review-topbar nav mb-40">
-                    <a data-bs-toggle="tab" href="#des-details1">Description</a>
-                    <a class="active" data-bs-toggle="tab" href="#des-details2">Specification</a>
-                    
-                </div>
-                <div class="tab-content dec-review-bottom">
-                    <div id="des-details1" class="tab-pane">
-                        <div class="description-wrap">
-                            <p>
-                                <%= productDATA.description %>
-                            </p>
-                        </div>
-                    </div>
-                    <div id="des-details2" class="tab-pane active">
-                        <div class="specification-wrap table-responsive">
-                            <table>
-                                <tbody>
-                                    <tr>
-                                        <td class="width1">Name / Model</td>
-                                        <td>LaaVista Depro, FX 829 v1</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Type</td>
-                                        <td>Categories</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="width1">Models</td>
-                                        <td>FX 829 v1</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="width1">Categories</td>
-                                        <td>Product Type</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="width1">Size</td>
-                                        <td>60’’ x 40’’</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="width1">Display Port</td>
-                                        <td>Multi</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="width1">Media</td>
-                                        <td>Brightside</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="width1">Color</td>
-                                        <td>Black, White</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div>
+        <div class = "img-select" style="width: 600px; margin-top:10px;">
+          <div class = "img-item" style="width: 100px; margin-top:10px;">
+            <a href = "#" data-id = "1">
+              <img src = "/product_img1/<%= productDATA._id %>.jpg" alt = "shoe image">
+            </a>
+          </div>
+          <div class = "img-item"style="width: 100px; margin-top:10px;">
+            <a href = "#" data-id = "2" >
+              <img src = "/product_img2/<%= productDATA._id %>.jpg" alt = "shoe image">
+            </a>
+          </div>
+          <div class = "img-item"style="width: 100px; margin-top:10px;">
+            <a href = "#" data-id = "3" >
+              <img src = "/product_img3/<%= productDATA._id %>.jpg" alt = "shoe image">
+            </a>
+          </div>
         </div>
+      </div>
+      <!-- card right -->
+      <div class = "product-content" style="width: 700px; margin-left:100px; margin-top:10px;">
+        <h2 class = "product-title"><%= productDATA.productname %></h2>
+        <a href = "#" class = "product-link">visit nike store</a>
+        <div class = "product-rating">
+            <i class="fa fa-star" aria-hidden="true"></i>
+            <i class="fa fa-star" aria-hidden="true"></i>
+            <i class="fa fa-star" aria-hidden="true"></i>
+            <i class="fa fa-star" aria-hidden="true"></i>
+            <i class="fa fa-star-half-o" aria-hidden="true"></i>
+          <span>4.7(21)</span>
+        </div>
+  
+        <div class = "product-price">
+          <p class = "last-price">Old Price: <span>₹<%= productDATA.price %></span></p>
+          <p class = "new-price">New Price: <span>₹<%= productDATA.price %>(5%)</span></p>
+        </div>
+  
+        <div class = "product-detail">
+          <h2>about this item: </h2>
+          <p> <%= productDATA.description %></p>
+          <ul>
+            <li>Color: <span><%= productDATA.Color %></span></li>
+
+            <li>Category: <span> <%= productDATA.category %></span></li>
+            <li>Size: <span><%= productDATA.size %></span></li>
+          </ul>
+        </div>
+  
+        <div class = "purchase-info">
+          <button type = "button" onclick="addtocart('<%= productDATA._id %>')" class = "btn">Add to Cart <i class = "fas fa-shopping-cart"></i></button>
+          <button onclick="addtowishlist('<%= productDATA._id %>')" type="button" class="btn "><i class="fa fa-heart-o"></i> </button>
+        </div>
+  
+      </div>
     </div>
+  </div>
+  <script src="https://unpkg.com/js-image-zoom/js-image-zoom.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/js-image-zoom/js-image-zoom.min.js"></script>
 
 
-    <script src="https://unpkg.com/js-image-zoom/js-image-zoom.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/js-image-zoom/js-image-zoom.min.js"></script>
-    <script>
-        var options = {
-            width: 600,
-            scale: 2,
+
+  <script>
+
+var options = {
+            width:400,
+            height:400,
+            scale: .5,
             zoomPosition: 'right' // required
             // more options here
         };
         new ImageZoom(document.getElementById("img-container"), options);
+
+
+
+
+    const imgs = document.querySelectorAll('.img-select a');
+   const imgBtns = [...imgs];
+    let imgId = 1;
+
+imgBtns.forEach((imgItem) => {
+    imgItem.addEventListener('click', (event) => {
+        event.preventDefault();
+        imgId = imgItem.dataset.id;
+        slideImage();
+    });
+});
+
+function slideImage(){
+    const displayWidth = document.querySelector('.img-showcase img:first-child').clientWidth;
+
+    document.querySelector('.img-showcase').style.transform = `translateX(${- (imgId - 1) * displayWidth}px)`;
+}
+
+window.addEventListener('resize', slideImage);
+
+
  
     function addtocart(proId){
         $.ajax({
@@ -182,6 +124,4 @@
             }
         })
     }
-
-
-    </script>
+  </script>
