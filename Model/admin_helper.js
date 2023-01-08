@@ -649,7 +649,69 @@ module.exports = {
 
         })
 
+    },
+    addprooffer:(prooff)=>{
+        console.log(prooff,"000000000000000000000000000000");
+        prooff.dateofexpired = new Date(prooff.dateofexpired)
+        prooff.proDiscount=parseInt( prooff.proDiscount)
+        return new Promise(async(resolve,reject)=>{
+            db.get().collection(collections.ProOffer_Collection).insertOne(prooff)
+            resolve()
+        })
+
+
+
+
+    },
+    Makediscount:(prodata)=>{
+        console.log(prodata,"eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");
+        let proId=prodata.proId;
+        prodata.proDiscount=parseInt( prodata.proDiscount)
+        let discount=prodata.proDiscount
+        return new Promise(async (resolve, reject) => {
+            console.log(collections.Product_Collecction,">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+            var offers=await db.get().collection(collections.Product_Collecction).aggregate([
+                {
+                  $match:{_id:ObjectId(proId)}
+                },
+                {
+                  $project:{price:1}
+                },
+          
+                {
+                  $addFields:{
+                    offer:{$subtract:['$price',{$divide:[{$multiply:['$price',discount]},100]}]}
+        
+                  }
+                }
+              ]).toArray()
+
+              console.log(offers,"kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk");
+              db.get().collection(collections.Product_Collecction).updateOne({ _id: ObjectId(proId) }, {
+                $set: {
+                    offerprice : offers[0].offer
+                }
+            }).then((response) => {
+                console.log(response);
+                resolve(response)
+            })
+
+        })
+        
+
+    },
+    getproductoffer:()=>{
+        return new Promise(async (resolve, reject) => {
+            let coupons = await db.get().collection(collections.ProOffer_Collection).find().toArray()
+            console.log(coupons);
+            resolve(coupons)
+        })
+
     }
+    
+
+    
+
 
 
 

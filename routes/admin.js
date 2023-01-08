@@ -1,5 +1,5 @@
 var express = require('express');
-const { adminloginpage,adminlog,adminhome,userdata,productdata,productadd,editproduct,addproducts,editsubmit,removeproduct,categorymanage,categoryadd,categoryeditpage,categoryeditsubmit,removecategory,blockmanager,acclogout,userorders,orderproducts,productmanage,cancelorders,couponpage,couponsubmit,coupondata,couponeditpage,couponeditsubmit,couponremove,bannerpage,editbannerpage,submit_banner,getreportpage,updateshipping,getadmindashbord} = require('../Controller/admin_controller');
+const { adminloginpage,adminlog,adminhome,userdata,productdata,productadd,editproduct,addproducts,editsubmit,removeproduct,categorymanage,categoryadd,categoryeditpage,categoryeditsubmit,removecategory,blockmanager,acclogout,userorders,orderproducts,productmanage,cancelorders,couponpage,couponsubmit,coupondata,couponeditpage,couponeditsubmit,couponremove,bannerpage,editbannerpage,submit_banner,getreportpage,updateshipping,getadmindashbord,getofferpage,getaddproduct,getprosubmit,productoffersub} = require('../Controller/admin_controller');
 var router = express.Router();
 
 /* GET users listing. */
@@ -69,6 +69,13 @@ router.post('/shippingStatus/:id',updateshipping)
 
 router.get('/getdashbord',getadmindashbord)
 
+router.get('/offer-page',getofferpage)
+
+router.get('/getproductof',getaddproduct)
+
+router.get('/Addpro_offer/:id',getprosubmit)
+
+router.post('/proOffer_add',productoffersub)
 
 
 

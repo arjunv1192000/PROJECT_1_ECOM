@@ -9,7 +9,7 @@ const { userSignup, Dologin ,showproducts, productAlldetails, Getcategory,filter
 
 var forgote;
 let usersession ;
-let number;
+// var otpnum=number;
 
 
 module.exports={
@@ -177,7 +177,7 @@ module.exports={
 
           }).catch(()=>{
 
-            res.render('user/showproduct',{user:true,showproduct,users,catdatas})
+            res.render('user/showproduct',{user:true,showproduct:false,users,catdatas})
 
           })
 
@@ -462,15 +462,25 @@ module.exports={
       priceFilter(req,res){
         console.log(req.body);
         let users=req.session.users
+      
 
         getPriceFilter(req.body.min,req.body.max).then((showproduct)=>{
 
-          Getcategory().then((catdatas)=>{
+        Getcategory().then((catdatas)=>{
 
             res.render('user/showproduct',{user:true,showproduct,users,catdatas})
 
           })
     
+        }).catch(()=>{
+
+          Getcategory().then((catdatas)=>{
+
+            res.render('user/showproduct',{user:true,showproduct:false,users,catdatas})
+
+          })
+      
+         
         })
     
        }

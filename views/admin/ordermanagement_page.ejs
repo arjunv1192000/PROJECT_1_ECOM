@@ -44,20 +44,20 @@
 
                             <form action="/admin/cancelorders/<%= data._id %>" method="post">
                                 <input name="status" value="<%= data.status %>" hidden>
-                                <button type="submit" class="btn btn-danger btn-sm">Cancel</button>
+                                <button type="submit" class="badge btn-danger btn-sm">Cancel</button>
 
                             </form>
 
                     </td>
                     <td>
-                        <a href="/admin/orderproduct/<%= data._id %>"><button class="btn btn-success"
+                        <a href="/admin/orderproduct/<%= data._id %>"><button class="badge btn-success"
                                 id="my-button">Products</button></a>
                     </td>
                     <td><%= data.shippingStatus %>
 
                         <form action="/admin/shippingStatus/<%= data._id %>" method="post">
                             <input name="Shippingstatus" value="<%= data.shippingStatus %>" hidden>
-                            <button type="submit" class="btn btn-success btn-sm">ChangeStatus</button>
+                            <button type="submit" class="badge btn-success btn-sm">ChangeStatus</button>
 
                         </form>
                         

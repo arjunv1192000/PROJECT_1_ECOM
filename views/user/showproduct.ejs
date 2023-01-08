@@ -16,11 +16,14 @@
                                             <div class="product-wrap mb-35">
                                                 <div class="product-img mb-15">
                                                     <a href="/productdetails/<%= product._id %>"><img
-                                                            src="/product_img1/<%= product._id %>.jpg" alt="product"></a>
+                                                            src="/product_img1/<%= product._id %>.jpg"
+                                                            alt="product"></a>
                                                     <div class="product-action">
-                                                        
-                                                 <button onclick="addtowishlist('<%= product._id %>')" type="button" class="btn "><i class="fa fa-heart-o"></i> </button>
-                                                 
+
+                                                        <button onclick="addtowishlist('<%= product._id %>')"
+                                                            type="button" class="btn "><i class="fa fa-heart-o"></i>
+                                                        </button>
+
                                                     </div>
                                                 </div>
                                                 <div class="product-content">
@@ -48,58 +51,25 @@
                                                         </div>
 
                                                     </div>
-                                                </div>
+                                                </div>  
                                             </div>
                                         </div>
                                         <% }); %>
                                             <%} else { %>
+                                                <div class="container "style=" margin-top:200px">
+                                                    <div class="row">
+                                                      <div class="col-md-12 text-center mt-4">
+                                                        <h1 class="display-4">Product not found</h1>
+                                                        <p class="lead">We couldn't find the product you were looking for. Please try again or go back to the homepage.</p>
+                                                      </div>
+                                                    </div>
+                                                  </div>
+                                                  
                                                
 
-                                                <!-- <% showproduct.forEach(function(product, i){ %>
-                                                    <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6">
-                                                        <div class="product-wrap mb-35">
-                                                            <div class="product-img mb-15">
-                                                                <a href="/productdetails/<%= product._id %>"> <img
-                                                                        src="/product_img/<%= product._id %>.jpg"
-                                                                        alt="product"></a>
-                                                                <div class="product-action">
-                                                            <button onclick="addtowishlist('<%= product._id %>')" type="button" class="btn "><i class="fa fa-heart-o"></i> </button>
 
 
-                                                                </div>
-                                                            </div>
-                                                            <div class="product-content">
-                                                                <span>
-                                                                    <%= product.category %>
-                                                                </span>
-                                                                <h4><a href="/productdetails/<%= product._id %>">
-                                                                        <%= product.productname %>
-                                                                    </a></h4>
-                                                                <div class="price-addtocart">
-                                                                    <div class="product-price">
-                                                                        <span>₹<%= product.price %></span>
-                                                                    </div>
-                                                                    <div class="product-addtocart">
-                                                                        <% if (product.stock) { %>
-                                                                            <button
-                                                                                onclick="addtocart('<%= product._id %>')"
-                                                                                class="btn btn-outline-danger btn-rounded"
-                                                                                data-mdb-ripple-color="dark">+ Add To
-                                                                                Cart</button>
-                                                                            <% } else { %>
-                                                                                <p class="h5 text-danger">Sorry, this
-                                                                                    product is currently out of stock
-                                                                                </p>
-
-                                                                                <% } %>
-
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <% }); %> -->
-                                                        <% } %>
+                                                <% } %>
                             </div>
                         </div>
                     </div>
@@ -142,13 +112,13 @@
                         </div>
                     </div>
                     <h4 class="sidebar-title">Filter By Price</h4>
-                    <form id="price-filter"  action="/price" method="post">
+                    <form id="price-filter" action="/price" method="post">
                         <label for="min-price">Min price:</label>
                         <input type="number" name="min" id="min-price" min="0" value="0">
                         <label for="max-price">Max price:</label>
                         <input type="number" name="max" id="max-price" min="0" value="10000">
                         <button type="submit" class="btn btn-primary btn-sm mt-4">Filter</button>
-                      </form>
+                    </form>
                 </div>
             </div>
         </div>
@@ -157,15 +127,15 @@
 <div id="overlay-container"
     style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(10, 6, 6, 0.7);">
 
-    
+
     <button id="close-button" onclick="closeOverlay()"></button>
 </div>
 
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
-   
-    
+
+
 
     function searchProducts() {
 
@@ -197,7 +167,7 @@
 
     function generateOverlayPageHTML(data) {
 
-  const html = `
+        const html = `
     <div class="col-xl-3 col-lg-4 col-md-6 ">
       <div class="product-wrap bg-light  " style="width: 400px; margin-left:600px; margin-top:100px;">
         <div class="product-img mb-15">
@@ -217,20 +187,19 @@
               <span>₹${data.price}</span>
             </div>
             <div class="product-addtocart">
-              ${
-                data.stock
-                  ? `<button onclick="addtocart('${data._id}')" class="btn btn-outline-danger btn-rounded " data-mdb-ripple-color="dark">+ Add To Cart</button>`
-                  : `<p class="h5 text-danger">Sorry, this product is currently out of stock</p>`
-              }
+              ${data.stock
+                ? `<button onclick="addtocart('${data._id}')" class="btn btn-outline-danger btn-rounded " data-mdb-ripple-color="dark">+ Add To Cart</button>`
+                : `<p class="h5 text-danger">Sorry, this product is currently out of stock</p>`
+            }
             </div>
           </div>
         </div>
       </div>
     </div>
   `;
-  // Inject the HTML into the overlay container
-  document.getElementById("overlay-container").innerHTML = html;
-}
+        // Inject the HTML into the overlay container
+        document.getElementById("overlay-container").innerHTML = html;
+    }
 
 
 
@@ -241,7 +210,9 @@
             url: '/add-tocart/' + proId,
             method: 'get',
             success: (response) => {
-                location.reload()
+                swal("Add to Cart", "", "success");
+                
+
 
             }
         })
@@ -252,6 +223,7 @@
             method: 'get',
             success: (response) => {
                 location.reload()
+                
 
             }
         })

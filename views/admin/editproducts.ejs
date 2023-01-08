@@ -44,12 +44,27 @@
                 </div>
             </div>
 
-            <img class="product-image" src="/product_img/<%= product._id %>.jpg" alt="no" id="imgview">
+            <img class="product-image" src="/product_img1/<%= product._id %>.jpg" alt="no" id="imgview1">
             
             <div class="row mb-3">
                 <label for="inputNumber" class="col-sm-2 col-form-label">File Upload</label>
                 <div class="col-sm-10">
                     <input class="form-control" type="file" name="Image" id="formFile" onchange="viewImage(event)">
+                </div>
+            </div>
+
+            <img class="product-image" src="/product_img2/<%= product._id %>.jpg" alt="no" id="imgview2">
+            <div class="row mb-3">
+                <label for="inputNumber" class="col-sm-2 col-form-label">File Upload</label>
+                <div class="col-sm-10">
+                    <input class="form-control" type="file" name="Image1" id="formFile" onchange="viewImage1(event)">
+                </div>
+            </div>
+            <img class="product-image" src="/product_img3/<%= product._id %>.jpg" alt="no" id="imgview3">
+            <div class="row mb-3">
+                <label for="inputNumber" class="col-sm-2 col-form-label">File Upload</label>
+                <div class="col-sm-10">
+                    <input class="form-control" type="file" name="Image2" id="formFile" onchange="viewImage2(event)">
                 </div>
             </div>
             <div class="row mb-3">
@@ -76,6 +91,15 @@
 </section>
 <script>
     function viewImage(event){
-        document.getElementById('imgview').src=URL.createObjectURL(event.target.files[0])
+        document.getElementById('imgview1').src=URL.createObjectURL(event.target.files[0])
+        
+    }
+    function viewImage1(event){
+        document.getElementById('imgview2').src=URL.createObjectURL(event.target.files[0])
+        
+    }
+    function viewImage2(event){
+        document.getElementById('imgview3').src=URL.createObjectURL(event.target.files[0])
+        
     }
 </script>

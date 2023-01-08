@@ -1,0 +1,52 @@
+<section class="  " id="footer" style= " margin-top:100px">
+    
+         <table class="table table-bordered" id="example">
+                  <thead>
+                    <tr>
+                      <th scope="col">Image</th>
+                      <th scope="col">Name</th>
+                      
+                      <th scope="col">Category</th>
+                        
+                      <th scope="col">Price</th>
+                      
+                      <th scope="col">Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <% product.forEach(function(product, i){ %>
+                    <tr >
+                      
+                      <td ><img class="product-image" src="/product_img1/<%= product._id %>.jpg" ></td>
+                      <td><%= product.productname %></td>
+                     
+                      <td><%= product.category %></td>
+                     
+                      <td>₹<%= product.price %></td>
+                      <td>
+                      </td>
+                      <td>
+                        
+                          <a href="/admin/Addpro_offer/<%= product._id%>" ><button class="badge btn-success mb-3" id="my-button" onclick="myFunction(this.id)">Add</button></a><br>
+
+                          <a href="/admin/Addoffer/<%= product._id%>" ><button class="badge btn-warning mb-3" id="my-button" onclick="myFunction(this.id)">Edit</button></a><br>
+
+                          <a href="/admin/Addoffer/<%= product._id%>" ><button class="badge btn-danger mb-3" id="my-button" onclick="myFunction(this.id)">Remove</button></a><br>
+
+
+                      </td>
+                    </tr>
+                    <% }); %>
+                  </tbody>
+                 
+  
+                </table>
+                
+               
+  </section>
+  
+
+
+
+
+  

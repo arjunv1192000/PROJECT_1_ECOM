@@ -272,7 +272,7 @@
                 method: 'post',
                 success: (response => {
                     if (response) {
-                        document.getElementById('offer').innerHTML = +response
+                        document.getElementById('offer').innerHTML = "₹"+response
                         document.getElementById("offeramount").value=response
                     } else {
                         document.getElementById('error').innerHTML = 'Enter valied  coupon code'

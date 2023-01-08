@@ -3,7 +3,7 @@ const multer = require('multer');
 const upload = multer({ dest: './public/product_img/' });
 
 const {  Adminlogin,GetAlluserdata,adminadd,Getproductdata,adminedit,updateproduct,deleteproduct,addcategory,gettcategory,editsubmit,updatecategory,deletecategory, userblock,Getcategorydata,getAlluserorder,getAllorderproducts,productstatus,Cancelproduct_orders,addcoupons, Getcoupondata,updatecoupon,couponupdate,deletecoupon,getbannerTopage,TotalSales,TodayOrders, ThisWeekOrders, ThisMonthOrders,ThisYearOrders,
-  totalRevenue, TodayRevenue,weekRevenue, yearRevenue, totaluser,monthRevenue,chartcount, allSalesreport,updateshippingstatus} = require('../Model/admin_helper')
+  totalRevenue, TodayRevenue,weekRevenue, yearRevenue, totaluser,monthRevenue,chartcount, allSalesreport,updateshippingstatus,addprooffer,Makediscount, getproductoffer} = require('../Model/admin_helper')
 
 module.exports={
 
@@ -111,12 +111,21 @@ module.exports={
   editsubmit(req,res){
     var id=req.params.id
     updateproduct(req.params.id,req.body).then(()=>{
-      res.redirect('/admin/products')
       if(req.files.Image){
         var image=req.files.Image
-        image.mv('./public/product_img/'+id+'.jpg')
+        image.mv('./public/product_img1/'+id+'.jpg')
+
+      }else if(req.files.Image1){
+        var image1=req.files.Image1
+        image1.mv('./public/product_img2/'+id+'.jpg')
+      }else if(req.files.Image2){
+        var image2=req.files.Image2
+        image2.mv('./public/product_img3/'+id+'.jpg')
+
 
       }
+      res.redirect('/admin/products')
+
 
     })
     
@@ -337,42 +346,14 @@ getadmindashbord(req,res){
                           res.render('admin/admindashboard', {user:false,totalS,todayS,weeks,monthS,yearS,totalR,todayR,weekR,yearR,users,monthR,data});
 
                         })
-
-
-                        
-
-                      })
-
-                     
+                      }) 
                     })
-
-                   
-
-                    
-
                   })
-
-                  
-
-                  
-
                 })
-
-                
-
-                
-
               })
-
-            
-
-              
 
             })
 
-           
-
-        
           })
           
         })
@@ -384,14 +365,56 @@ getadmindashbord(req,res){
   })
   
 
-}
+},
+getofferpage(req,res){
+  getproductoffer().then((offer)=>{
+    res.render('admin/offeraddpage',{user:false,offer})
+
+  })
+
+ 
+},
+
+getaddproduct(req,res){
+
+  Getproductdata().then((product,)=>{
+    res.render('admin/productoffer',{user:false,product})
 
 
+  })
 
 
-      
+},
+getprosubmit(req,res){
+   let productId = req.params.id;
+   console.log(productId,">>>>>>>>>>>>>>>>>>>>>>>>");
+
+  res.render('admin/productoffersubmit',{user:false,productId})   
         
        
- }
+ },
 
+ productoffersub(req,res){
+  console.log(req.body,"llllllllllllllllllllllllllllllllllllllll");
+
+  addprooffer(req.body).then(()=>{
+
+    Makediscount(req.body).then(()=>{
+
+      res.render('admin/offeraddpage',{user:false})
+
+    })
+    
+
+   
+
+  })  
+
+ }
+ 
+ 
+
+
+
+}
 

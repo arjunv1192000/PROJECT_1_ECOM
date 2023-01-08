@@ -105,8 +105,7 @@ module.exports={
     filterBycategory:(procate)=>{
         return new Promise(async(resolve,reject)=>{
             let showproduct=await db.get().collection(collections.Product_Collecction).find({category:procate.name}).toArray()
-            console.log(showproduct);
-           
+            
                 resolve(showproduct)
                            
         }).catch((error)=>{
@@ -695,10 +694,14 @@ module.exports={
     getsearchproduct:(value)=>{
         console.log(value,">>>>>>>>>>>>>>>>>>>>>>>>");
         return new Promise((resolve,reject)=>{
-            db.get().collection(collections.Product_Collecction).findOne({$text: {$search: value}}).then((productDATA)=>{
-                    console.log(productDATA,"&&&&&&&&&&&&&&&&&&&&&&&&&&&&");
-
-                resolve(productDATA)
+       let search=db.get().collection(collections.Product_Collecction).findOne({$text: {$search: value}}).then((productDATA)=>{
+                if(search.length!=0){
+                    resolve(productDATA)
+    
+                  }else{
+                    reject()
+                  }
+                
 
             })
         })
@@ -724,8 +727,13 @@ module.exports={
               },
 
             ]).toArray()
-              console.log(priceFilter);
-            resolve(priceFilter)
+              if(priceFilter.length!=0){
+                resolve(priceFilter)
+
+              }else{
+                reject()
+              }
+           
           })
         }
    

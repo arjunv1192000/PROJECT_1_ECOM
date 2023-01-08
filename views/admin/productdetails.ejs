@@ -1,8 +1,7 @@
 <section class=" ml-300 mt-5" id="footer">
     <div class="btns">
   
-         <a href="/admin/add-stock-page"> <button class="btn btn-success mt-5">Add Stocks</button></a>
-         <a href="/admin/category-page"> <button class="btn btn-success mt-5">Categories</button></a>
+        
     </div>
   
          <table class="table table-bordered" id="example">
@@ -14,7 +13,6 @@
                       <th scope="col">Category</th>
                       <th scope="col">size</th>
                       <th scope="col">Price</th>
-                      <th scope="col">Add offer</th>
                       <th scope="col">Action</th>
                     </tr>
                   </thead>
@@ -22,30 +20,23 @@
                     <% product.forEach(function(product, i){ %>
                     <tr >
                       
-                      <td ><img class="product-image" src="/product_img/<%= product._id %>.jpg" ></td>
+                      <td ><img class="product-image" src="/product_img1/<%= product._id %>.jpg" ></td>
                       <td><%= product.productname %></td>
                       <td><%= product.Color %></td>
                       <td><%= product.category %></td>
                       <td><%= product.size%></td>
                       <td>₹<%= product.price %></td>
                       <td>
-
-                        <a href="/admin/Addoffer/<%= product._id%>" ><button class="btn btn-warning mb-3" id="my-button" onclick="myFunction(this.id)">Add</button></a><br>
-
-                       
-
-                      </td>
-                      <td>
-                          <a href="/admin/edit-pro/<%= product._id%>" ><button class="btn btn-warning mb-3" id="my-button" onclick="myFunction(this.id)">Edit </button></a><br>
+                          <a href="/admin/edit-pro/<%= product._id%>" ><button class="badge btn-warning mb-3" id="my-button" onclick="myFunction(this.id)">Edit </button></a><br>
 
                           <form action="/admin/delete-pro/<%= product._id%>" method="post">
                             <input name="stock" value="<%= product.stock %>" hidden>
                             <% if ( product.stock) { %>
-                              <button type="submit" class="btn btn-danger" >Unlist</button>
+                              <button type="submit" class="badge btn-danger" >Unlist</button>
                              
                                 <%} else { %>
                                  
-                                  <button type="submit" class="btn btn-success" >List</button>
+                                  <button type="submit" class="badge btn-success" >List</button>
                                   <% } %>
                           </form>
 

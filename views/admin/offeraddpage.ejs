@@ -1,0 +1,44 @@
+<section class=" ml-300 mt-5" id="footer">
+    <div class="btns">
+  
+         <a href="/admin/getproductof"> <button class="btn btn-success mt-5">Product</button></a>
+         <a href="/admin/category-page"> <button class="btn btn-success mt-5">Category</button></a>
+    </div>
+  
+         <table class="table table-bordered" id="example">
+                  <thead>
+                    <tr>
+                      <th scope="col">Product ID</th>
+                      <th scope="col">Discount</th>
+                      <th scope="col">date of expired</th>
+                     
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <% offer.forEach(function(product, i){ %>
+                    <tr >
+                      
+                      <td ><%= product.proId %></td>
+                      <td><%= product.proDiscount %></td>
+                      <td><%= product.dateofexpired%></td>
+                     
+                     
+                      <td>
+                          
+
+                      </td>
+                    </tr>
+                    <% }); %>
+                  </tbody>
+                 
+  
+                </table>
+                
+               
+  </section>
+  
+
+
+
+
+  
