@@ -10,13 +10,13 @@
                                 <div class="col-lg-6 col-md-6">
                                     <div class="billing-info mb-20">
                                         <label> Name <abbr class="required" title="required">*</abbr></label>
-                                        <input type="text" name="name" id="use">
+                                        <input type="text" name="name" id="use" value="">
                                     </div>
                                 </div>
                                 <div class="col-lg-12">
                                     <div class="billing-info mb-20">
                                         <label>Company Name <abbr class="required" title="required">*</abbr></label>
-                                        <input type="text" name="companyname" id="com">
+                                        <input type="text" name="companyname" id="com" value="">
                                     </div>
                                 </div>
                                 <div class="col-lg-12">
@@ -244,14 +244,14 @@
             success: (userdata => {
                 console.log(userdata);
                 
-                document.getElementById('add').value = userdata.Address
-                document.getElementById('city').value = userdata.City
-                document.getElementById('Addstate').value = userdata.State
-                document.getElementById('pin').value = userdata.Postcode
-                document.getElementById('Addphone').value = userdata.phonenum
-                document.getElementById('mail').value = userdata.Addemail
-                document.getElementById('user').innerHTML = userdata.useremail
-                document.getElementById('company').innerHTML = userdata.City
+                document.getElementById('add').value = userdata.Addresses[0].Address
+                document.getElementById('city').value = userdata.Addresses[0].City
+                document.getElementById('Addstate').value = userdata.Addresses[0].State
+                document.getElementById('pin').value = userdata.Addresses[0].Postcode
+                document.getElementById('Addphone').value = userdata.Addresses[0].phonenum
+                document.getElementById('mail').value = userdata.Addresses[0].Addemail
+                document.getElementById('user').value = userdata.username
+                document.getElementById('company').value = userdata.Addresses[0].companyname
 
             })
         })

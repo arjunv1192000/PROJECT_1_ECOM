@@ -187,7 +187,7 @@ module.exports = {
     },
     getAlluserorder: () => {
         return new Promise(async (resolve, reject) => {
-            let Allorder = await db.get().collection(collections.ORDER_Collection).find().sort({date: -1}).toArray()
+            let Allorder = await db.get().collection(collections.ORDER_Collection).find().sort({ date: -1 }).toArray()
 
             resolve(Allorder)
         })
@@ -303,8 +303,8 @@ module.exports = {
         editdata.dateofpublish = new Date(editdata.dateofpublish)
         editdata.dateofexpired = new Date(editdata.dateofexpired)
         editdata.minimum = parseInt(editdata.minimum)
-        editdata.Maximum=parseInt(editdata.Maximum)
-        editdata.discount=parseInt( editdata.discount)
+        editdata.Maximum = parseInt(editdata.Maximum)
+        editdata.discount = parseInt(editdata.discount)
 
         return new Promise((resolve, reject) => {
             db.get().collection(collections.COUPON_Collection).updateOne({ _id: ObjectId(Id) }, {
@@ -314,8 +314,8 @@ module.exports = {
                     discount: editdata.discount,
                     dateofpublish: editdata.dateofpublish,
                     dateofexpired: editdata.dateofexpired,
-                    minimum:editdata.minimum,
-                    Maximum:editdata.Maximum
+                    minimum: editdata.minimum,
+                    Maximum: editdata.Maximum
 
                 }
             }).then((response) => {
@@ -409,7 +409,7 @@ module.exports = {
         return new Promise(async (resolve, reject) => {
             const Monthorders = await db.get().collection(collections.ORDER_Collection)
                 .find({
-                    $and: [
+                    $and: [       
                         { date: { $lte: new Date() } },
                         { date: { $gte: new Date(new Date().getDate() - 30) } },
 
@@ -452,10 +452,10 @@ module.exports = {
                 const TodayRevenue = await db.get().collection(collections.ORDER_Collection).aggregate([
                     {
                         $match: {
-                            shippingStatus :'delivered',
+                            shippingStatus: 'delivered',
                             date: {
                                 $gte: new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate()),
-                                $lt: new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate() + 1)
+                                $lt: new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate()+ 1)
                             }
                         }
                     },
@@ -470,7 +470,7 @@ module.exports = {
                 if (TodayRevenue.length > 0) {
                     resolve(TodayRevenue[0].total);
                 } else {
-                    resolve(0);
+                    resolve(0)
                 }
             } catch (error) {
                 console.error(error);
@@ -484,7 +484,7 @@ module.exports = {
         return new Promise(async (resolve, reject) => {
             const sales = await db.get().collection(collections.ORDER_Collection).aggregate([
                 {
-                    $match:{shippingStatus :'delivered'}
+                    $match: { shippingStatus: 'delivered' }
 
                 },
                 {
@@ -492,11 +492,11 @@ module.exports = {
                 },
             ]).toArray();
             if (sales.length > 0) {
-                console.log(sales,"totalR");
+                console.log(sales, "totalR");
                 resolve(sales[0].total);
 
             } else {
-                
+
                 resolve(0);
             }
         });
@@ -507,14 +507,14 @@ module.exports = {
         return new Promise(async (resolve, reject) => {
             const Weeksales = await db.get().collection(collections.ORDER_Collection).aggregate([
                 {
-                    $match: {shippingStatus :'delivered', date: { $gte: new Date(new Date().getDate() - 7) } },
+                    $match: { shippingStatus: 'delivered', date: { $gte: new Date(new Date().getDate() - 7) } },
                 },
                 {
                     $group: { _id: null, total: { $sum: '$totaAmount' } },
                 },
             ]).toArray();
             if (Weeksales.length !== 0) {
-                console.log(Weeksales,"WEEKr");
+                console.log(Weeksales, "WEEKr");
                 resolve(Weeksales[0].total);
             } else {
                 resolve(0);
@@ -529,7 +529,8 @@ module.exports = {
 
             const YearRevenue = await db.get().collection(collections.ORDER_Collection).aggregate([
                 {
-                    $match: {shippingStatus :'delivered',
+                    $match: {
+                        shippingStatus: 'delivered',
                         date: {
                             $gte: new Date(currentDate.getFullYear(), -365),
                             $lt: nextYear
@@ -544,8 +545,12 @@ module.exports = {
                 }
             ]).toArray();
 
-            console.log(YearRevenue,"yearR");
-            resolve(YearRevenue[0].total)
+            console.log(YearRevenue, "yearR");
+            if (YearRevenue.length > 0 && YearRevenue[0]) {
+                resolve(YearRevenue[0].total)
+            } else {
+                resolve(0)
+            }
 
         });
     },
@@ -556,90 +561,87 @@ module.exports = {
         });
 
     },
-    monthRevenue: () => {
+    // monthRevenue: () => {
+    //     return new Promise(async (resolve, reject) => {
+
+    //         const currentDate= new Date();
+    //         // const newDate = currentDate.getDate();
+    //         const monthStart = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
+    //         const monthEnd = new Date(new Date().getDate() - 30);
+
+    //         const monthRevenue = await db.get().collection(collections.ORDER_Collection).aggregate([
+    //             {
+    //                 $match: {
+    //                     date: {
+    //                         $gte: monthStart,
+    //                         $lt: monthEnd
+    //                     }
+    //                 }
+    //             },
+    //             {
+    //                 $group: {
+    //                     _id: null,
+    //                     total: { $sum: '$totalAmount' },
+    //                 }
+    //             }
+    //         ]).toArray();
+
+    //         console.log(monthRevenue[0].total, "monthR");
+    //         if (monthRevenue.length > 0 && monthRevenue[0]) {
+    //             resolve(monthRevenue[0].total)
+    //         } else {
+    //             resolve(0)
+    //         }
+
+
+    //     });
+
+
+    // },
+    chartcount: () => {
         return new Promise(async (resolve, reject) => {
+            let data = {}
+            data.ONLINE = await db.get().collection(collections.ORDER_Collection).find({ paymentMethod: "ONLINE" }).count()
+            data.COD = await db.get().collection(collections.ORDER_Collection).find({ paymentMethod: "COD" }).count()
+            data.PLACED = await db.get().collection(collections.ORDER_Collection).find({ status: "placed" }).count()
+            data.CANCEL = await db.get().collection(collections.ORDER_Collection).find({ status: "cancel order" }).count()
+            data.PENDING = await db.get().collection(collections.ORDER_Collection).find({ status: "order pending" }).count()
+            data.DELIVERED = await db.get().collection(collections.ORDER_Collection).find({ shippingStatus: "delivered" }).count()
 
-            const currentDate = new Date();
-            const monthStart = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
-            const monthEnd = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 1);
-
-            const monthRevenue = await db.get().collection(collections.ORDER_Collection).aggregate([
-                {
-                    $match: {
-                        date: {
-                            $gte: monthStart,
-                            $lt: monthEnd
-                        }
-                    }
-                },
-                {
-                    $group: {
-                        _id: null,
-                        total: { $sum: '$totalAmount' },
-                    }
-                }
-            ]).toArray();
-
-            console.log(monthRevenue[0].total,"monthR");
-
-            resolve(monthRevenue[0].total)
-        });
-
-
-    },
-    chartcount:()=>{
-        return new Promise(async(resolve,reject)=>{
-            let data={}
-            data.ONLINE=await db.get().collection(collections.ORDER_Collection).find({paymentMethod:"ONLINE"}).count()
-            data.COD=await db.get().collection(collections.ORDER_Collection).find({paymentMethod:"COD"}).count()
-            data.PLACED=await db.get().collection(collections.ORDER_Collection).find({ status:"placed"}).count()
-            data.CANCEL=await db.get().collection(collections.ORDER_Collection).find({ status :"cancel order" }).count()
-            data.PENDING=await db.get().collection(collections.ORDER_Collection).find({ status:"order pending" }).count()
-
-            console.log(data,"chart)))))))))))))))))))))))))))))))))))");
+            console.log(data, "chart)))))))))))))))))))))))))))))))))))");
 
             resolve(data)
-            
-            
+
+
         })
 
     },
-    allSalesreport:()=>{
-        return new Promise(async(resolve,reject)=>{
-            let salesReport=await db.get().collection(collections.ORDER_Collection).aggregate([
+    allSalesreport: () => {
+        return new Promise(async (resolve, reject) => {
+            let salesReport = await db.get().collection(collections.ORDER_Collection).aggregate([
                 {
-                    $match: {shippingStatus :'delivered'}
+                    $match: { shippingStatus: "delivered" }
                 },
                 {
-                    $unwind:'$products'
+                    $unwind: '$products'
                 },
-                {
-                    $lookup: {
-                        from: 'productdata',
-                        localField: 'price',
-                        foreignField: 'product.price',
-                        as: 'price'
-                    },
 
 
-                },
-                {
-                    $unwind:'$price'
-                }
+
             ]).toArray()
-            console.log(salesReport);
+            console.log(salesReport, "))))))))))))))))))))))))))))");
             resolve(salesReport)
 
         })
     },
-    updateshippingstatus:(Id,shipping)=>{
-        if (shipping == 'orderd' ) {
+    updateshippingstatus: (Id, shipping) => {
+        if (shipping == 'orderd') {
             shipping = 'delivered'
         }
         return new Promise((resolve, reject) => {
             db.get().collection(collections.ORDER_Collection).updateOne({ _id: ObjectId(Id) }, {
                 $set: {
-                    shippingStatus : shipping
+                    shippingStatus: shipping
                 }
             }).then((response) => {
                 console.log(response);
@@ -650,11 +652,10 @@ module.exports = {
         })
 
     },
-    addprooffer:(prooff)=>{
-        console.log(prooff,"000000000000000000000000000000");
+    addprooffer: (prooff) => {
         prooff.dateofexpired = new Date(prooff.dateofexpired)
-        prooff.proDiscount=parseInt( prooff.proDiscount)
-        return new Promise(async(resolve,reject)=>{
+        prooff.proDiscount = parseInt(prooff.proDiscount)
+        return new Promise(async (resolve, reject) => {
             db.get().collection(collections.ProOffer_Collection).insertOne(prooff)
             resolve()
         })
@@ -663,33 +664,33 @@ module.exports = {
 
 
     },
-    Makediscount:(prodata)=>{
-        console.log(prodata,"eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");
-        let proId=prodata.proId;
-        prodata.proDiscount=parseInt( prodata.proDiscount)
-        let discount=prodata.proDiscount
+    Makediscount: (prodata) => {
+        console.log(prodata);
+        let proId = prodata.proId;
+        prodata.proDiscount = parseInt(prodata.proDiscount)
+        let discount = prodata.proDiscount
         return new Promise(async (resolve, reject) => {
-            console.log(collections.Product_Collecction,">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
-            var offers=await db.get().collection(collections.Product_Collecction).aggregate([
+           
+            var offers = await db.get().collection(collections.Product_Collecction).aggregate([
                 {
-                  $match:{_id:ObjectId(proId)}
+                    $match: { _id: ObjectId(proId) }
                 },
                 {
-                  $project:{price:1}
+                    $project: { price: 1 }
                 },
-          
-                {
-                  $addFields:{
-                    offer:{$subtract:['$price',{$divide:[{$multiply:['$price',discount]},100]}]}
-        
-                  }
-                }
-              ]).toArray()
 
-              console.log(offers,"kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk");
-              db.get().collection(collections.Product_Collecction).updateOne({ _id: ObjectId(proId) }, {
+                {
+                    $addFields: {
+                        offer: { $subtract: ['$price', { $divide: [{ $multiply: ['$price', discount] }, 100] }] }
+
+                    }
+                }
+            ]).toArray()
+
+            console.log(offers);
+            db.get().collection(collections.Product_Collecction).updateOne({ _id: ObjectId(proId) }, {
                 $set: {
-                    offerprice : offers[0].offer
+                    offerprice: offers[0].offer
                 }
             }).then((response) => {
                 console.log(response);
@@ -697,20 +698,64 @@ module.exports = {
             })
 
         })
-        
+
 
     },
-    getproductoffer:()=>{
+    getproductoffer: () => {
         return new Promise(async (resolve, reject) => {
             let coupons = await db.get().collection(collections.ProOffer_Collection).find().toArray()
             console.log(coupons);
             resolve(coupons)
         })
 
-    }
-    
+    },
+    addcatoffer:(catoffer)=>{
+        catoffer.dateofexpired = new Date(catoffer.dateofexpired)
+        catoffer.proDiscount = parseInt(catoffer.proDiscount)
+        return new Promise(async (resolve, reject) => {
+            db.get().collection(collections.catOffer_Collection).insertOne(catoffer)
+            resolve()
+        })
 
-    
+
+    },
+    MakediscountonCat:(catdata)=>{
+        let catname = catdata.category;
+        catdata.proDiscount = parseInt(catdata.proDiscount)
+        let discount = catdata.proDiscount
+        return new Promise(async (resolve, reject) => {
+           
+            var offers = await db.get().collection(collections.Product_Collecction).aggregate([
+                {
+                    $match: { category: catname}
+                },
+                {
+                    $project: { price: 1 }
+                },
+
+                {
+                    $addFields: {
+                        offer: { $subtract: ['$price', { $divide: [{ $multiply: ['$price', discount] }, 100] }] }
+
+                    }
+                }
+                
+            ]).toArray()
+            console.log(offers);
+           offers.forEach(element => {
+                db.get().collection(collections.Product_Collecction).updateMany({_id:element._id},{
+                $set:{
+                  catoffer:element.offer
+                }
+              })
+        
+              });
+        })
+
+    }
+
+
+
 
 
 

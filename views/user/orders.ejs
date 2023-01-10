@@ -26,12 +26,12 @@
                 <td><%= data.totaAmount %></td>
                 <td><%= data.status %></td>
                 <td>
-                    <a href="/orderproduct/<%= data._id %>"><button class="btn btn-danger" id="my-button" >Products</button></a>
+                    <a href="/orderproduct/<%= data._id %>"><button class="badge btn-danger" id="my-button" >Products</button></a>
                 </td>
                 <td>
                     <form action="/cancelorder/<%= data._id %>" method="post">
                         <input name="status" value="<%= data.status %>" hidden>
-                          <button type="submit" class="btn btn-danger" >Cancel</button>
+                          <button type="submit" class="badge btn-danger" >Cancel</button>
                            
                       </form>
                 </td>

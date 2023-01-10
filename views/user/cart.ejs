@@ -36,19 +36,18 @@
                                             <div class="cart-plus-minus">
                                                 <div class="dec qtybutton">
                                                     <button class="incbtn"
-                                                        onclick="changequantity('<%= cart._id %>','<%= cart.product._id %>',-1) ">-</button>
+                                                        onclick="changequantity('<%= cart._id %>','<%= cart.product._id %>','<%= totalprice %>','<%=cart.product.price %>',-1) ">-</button>
                                                 </div>
                                                 <span  id="<%= cart.product._id %>">
                                                     <%= cart.quantity %>
                                                 </span>
                                                 <div class="inc qtybutton">
                                                     <button class="incbtn"
-                                                        onclick="changequantity('<%= cart._id %>','<%= cart.product._id %>',1 ) ">+</button>
+                                                        onclick="changequantity('<%= cart._id %>','<%= cart.product._id %>','<%= totalprice %>','<%=cart.product.price %>',1 ) ">+</button>
                                                 </div>
                                             </div>
                                         </td>
-                                        <td class="product-subtotal"> <span id="<%= cart.product._id %>">₹
-                                                <%=cart.product.price %></span></td>
+                                        <td class="product-subtotal"> <span id="<%= cart.product._id %>">₹<%=cart.product.price %></span></td>
                                         <td class="product-remove">
                                             <button type="button" class="btn btn-danger"
                                                 onclick="remove('<%= cart._id %>','<%= cart.product._id %>',) ">remove</button>
@@ -63,7 +62,7 @@
                         <div class="col-lg-12">
                             <div class="cart-shiping-update-wrapper">
                                 <div class="cart-shiping-update">
-                                    <a href="#">Continue Shopping</a>
+                                    <a href="/showproduct">Continue Shopping</a>
                                 </div>
 
                             </div>
@@ -76,11 +75,10 @@
                             <div class="title-wrap">
                                 <h4 class="cart-bottom-title section-bg-gary-cart">Cart Total</h4>
                             </div>
-                            <h5>Total products <span>₹<%= totalprice %></span></h5>
+                            <h5>Total products <span ><%= totalprice %></span></h5>
                             <div class="total-shipping">
 
-                                <h4 class="grand-totall-title">Grand Total <span id="total">₹<%= totalprice %></span>
-                                </h4>
+                                <h4 class="grand-totall-title">Grand Total <span id="totalprice"><%= totalprice %></span> </h4>
                                 <a href="/checkout_order">Proceed to Checkout</a>
                             </div>
                         </div>
@@ -91,12 +89,13 @@
     </div>
 
     <script>
-        function changequantity(cartId, proId, count) {
+        function changequantity(cartId, proId,totalprice,price,count) {
             let quantity = parseInt(document.getElementById(proId).innerHTML)
-            let proprice = parseInt(document.getElementById("proprice").innerHTML);
+           let carttotal= document.getElementById('totalprice').innerHTML
 
-            console.log(quantity);
-
+           console.log(carttotal);
+          
+            
 
             count = parseInt(count)
             $.ajax({
@@ -116,8 +115,7 @@
 
                     } else {
                         document.getElementById(proId).innerHTML = quantity + count
-                        document.getElementById(total).innerHTML = (quantity + count) * proprice;
-
+                        document.getElementById('totalprice').innerHTML= parseInt(carttotal)+(count*price)
                         
                         
 

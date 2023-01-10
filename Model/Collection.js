@@ -9,6 +9,7 @@ module.exports={
     COUPON_Collection:'coupons_data',
     BANNER_Collection:'banner_data',
     ProOffer_Collection:'productoffer_data',
+    catOffer_Collection:'categoryoffer_data',
 
    
 

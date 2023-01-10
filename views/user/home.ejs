@@ -65,9 +65,9 @@
 <div class="product-area pb-135">
     <div class="container">
         <div class="section-title text-center mb-40">
-            <h2>Best Sell</h2>
+            <!-- <h2>Best Sell</h2>
             <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the
-                industry's standard dummy text</p>
+                industry's standard dummy text</p> -->
         </div>
     </div>
 </div>
@@ -83,7 +83,7 @@
             </div>
             <div class="col-lg-5 col-md-6">
                 <div class="discount-content">
-                    <p>Lorem Ipsum is simply dummy text of the <br>printing and typesetting industry.</p>
+                    <!-- <p>Lorem Ipsum is simply dummy text of the <br>printing and typesetting industry.</p> -->
                     <h2>Winter Discount <br>Up to 30%</h2>
                     <p class="bright-color">It is a long established fact that a reader will be distracted by the
                         readable content of a page when looking at its layout.</p>
@@ -99,9 +99,9 @@
 <div class="product-area pb-60">
     <div class="container">
         <div class="section-title text-center mb-40">
-            <h2>All Products</h2>
-            <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the
-                industry's standard dummy text</p>
+            <h2>Best Sell</h2>
+            <!-- <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the
+                industry's standard dummy text</p> -->
         </div>
         <div class="row">
             <% showproduct.forEach(function(product, i){ %>
@@ -144,7 +144,8 @@
                 url:'/add-tocart/'+proId,
                 method:'get',
                 success:(response)=>{
-                    location.reload()
+                    swal("Add to Cart", "", "success");
+                
     
                 }
             })
@@ -155,6 +156,7 @@
             url:'/add-towishlist/'+proId,
             method:'get',
             success:(response)=>{
+               
                 location.reload()
 
             }

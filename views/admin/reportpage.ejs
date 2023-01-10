@@ -10,32 +10,49 @@
                         <th scope="col">OrderId</th>
                         <th scope="col">Date</th>
                         <th scope="col">Name</th>
-                        <th scope="col">Product</th>
                         <th scope="col">Price</th>
+                        <th scope="col">Payment</th>
                         <th scope="col">Status</th>
                     </tr>
                 </thead>
                 <tbody>
                     <% Allsales.forEach(function(data, i){ %>
-                    <tr>
-                        <th scope="row"><%= data._id %></th>
-                        <td><%= data.date %></td>
-                        <td><%= data.deliveryDetails.Name %></td>
-                        <td><%= data.price. productname %></td>
-                        <td><%= data.price. price %></td>
-                        <td><span class="badge bg-success"><%= data.status %></span></td>
-                    </tr>
-                    <% }); %>
+                        <tr>
+                            <th scope="row">
+                                <%= data._id %>
+                            </th>
+                            <td>
+                                <%= data.date %>
+                            </td>
+                            <td>
+                                <%= data.deliveryDetails.Name %>
+                            </td>
+                            <td>
+                                <%= data.totaAmount %>
+                            </td>
+                            <td>
+                                <%= data.paymentMethod %>
+                            </td>
+                            <td><span class="badge bg-success">
+                                    <%= data.shippingStatus %>
+                                </span></td>
+                        </tr>
+                        <% }); %>
                 </tbody>
             </table>
-            <button type="button" id="download-button" class="btn btn-dark btn-lg"><i class="fab fa-apple"></i> Download </button>
+            <button type="button" id="download-button" class="btn btn-dark rounded-pill"> Download PDF</button>
+
+            <button type="button" class="btn btn-primary rounded-pill" onclick="export_data()" value="Export to excel">Download as Excel</button>
 
         </div>
-        
+
 
     </div>
 </div><!-- End Recent Sales -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
+<!-- PDF AND EXCEL -->
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.0/xlsx.full.min.js"></script>
 <script>
     const button = document.getElementById('download-button');
 
@@ -47,4 +64,14 @@
     }
 
     button.addEventListener('click', generatePDF);
+
+    function export_data() {
+        let data = document.getElementById('invoice');
+        var fp = XLSX.utils.table_to_book(data, { sheet: 'arjun' });
+        XLSX.write(fp, {
+            bookType: 'xlsx',
+            type: 'base64'
+        });
+        XLSX.writeFile(fp, 'test.xlsx');
+    }
 </script>

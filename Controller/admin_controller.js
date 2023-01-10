@@ -3,7 +3,7 @@ const multer = require('multer');
 const upload = multer({ dest: './public/product_img/' });
 
 const {  Adminlogin,GetAlluserdata,adminadd,Getproductdata,adminedit,updateproduct,deleteproduct,addcategory,gettcategory,editsubmit,updatecategory,deletecategory, userblock,Getcategorydata,getAlluserorder,getAllorderproducts,productstatus,Cancelproduct_orders,addcoupons, Getcoupondata,updatecoupon,couponupdate,deletecoupon,getbannerTopage,TotalSales,TodayOrders, ThisWeekOrders, ThisMonthOrders,ThisYearOrders,
-  totalRevenue, TodayRevenue,weekRevenue, yearRevenue, totaluser,monthRevenue,chartcount, allSalesreport,updateshippingstatus,addprooffer,Makediscount, getproductoffer} = require('../Model/admin_helper')
+  totalRevenue, TodayRevenue,weekRevenue, yearRevenue, totaluser,monthRevenue,chartcount, allSalesreport,updateshippingstatus,addprooffer,Makediscount, getproductoffer, addcatoffer, MakediscountonCat} = require('../Model/admin_helper')
 
 module.exports={
 
@@ -113,14 +113,14 @@ module.exports={
     updateproduct(req.params.id,req.body).then(()=>{
       if(req.files.Image){
         var image=req.files.Image
-        image.mv('./public/product_img1/'+id+'.jpg')
+        image.mv('./public/product_img1/'+data.id+'.jpg')
 
       }else if(req.files.Image1){
         var image1=req.files.Image1
-        image1.mv('./public/product_img2/'+id+'.jpg')
+        image1.mv('./public/product_img2/'+data.id+'.jpg')
       }else if(req.files.Image2){
         var image2=req.files.Image2
-        image2.mv('./public/product_img3/'+id+'.jpg')
+        image2.mv('./public/product_img3/'+data.id+'.jpg')
 
 
       }
@@ -338,15 +338,15 @@ getadmindashbord(req,res){
                     totaluser().then((users)=>{
 
 
-                      monthRevenue().then((monthR)=>{
+                      // monthRevenue().then((monthR)=>{
 
                         chartcount().then((data)=>{
 
 
-                          res.render('admin/admindashboard', {user:false,totalS,todayS,weeks,monthS,yearS,totalR,todayR,weekR,yearR,users,monthR,data});
+                          res.render('admin/admindashboard', {user:false,totalS,todayS,weeks,monthS,yearS,totalR,todayR,weekR,yearR,users,data});
 
                         })
-                      }) 
+                      // }) 
                     })
                   })
                 })
@@ -396,12 +396,16 @@ getprosubmit(req,res){
 
  productoffersub(req,res){
   console.log(req.body,"llllllllllllllllllllllllllllllllllllllll");
-
   addprooffer(req.body).then(()=>{
-
     Makediscount(req.body).then(()=>{
+      getproductoffer(req.body).then((offer)=>{
+        res.render('admin/offeraddpage',{user:false,offer})
+  
+      })
 
-      res.render('admin/offeraddpage',{user:false})
+      
+
+      
 
     })
     
@@ -410,8 +414,35 @@ getprosubmit(req,res){
 
   })  
 
+ },
+ getcatofferform(req,res){
+  
+  let catId = req.body
+  console.log(catId,"???????????????????????????");
+  
+   
+  
+  res.render('admin/categoryoffer',{user:false,catId})   
+
+ },
+
+ catoffersubmit(req,res){
+  
+
+  addcatoffer(req.body).then(()=>{
+
+    MakediscountonCat(req.body).then(()=>{
+
+      res.render('admin/offeraddpage',{user:false})
+
+    })
+
+   
+
+  })
+
  }
- 
+
  
 
 

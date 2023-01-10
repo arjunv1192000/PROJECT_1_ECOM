@@ -1,130 +1,136 @@
-
-    <div class = "product-imgs" id="img-container"  style="width:600px;  margin-left:100px; margin-top:100px">
-        <div class = "img-display" >
-          <div class = "img-showcase" >
-            <img src = "/product_img1/<%= productDATA._id %>.jpg" alt = "shoe image">
-            <img src = "/product_img2/<%= productDATA._id %>.jpg" alt = "shoe image">
-            <img src = "/product_img3/<%= productDATA._id %>.jpg" alt = "shoe image">
-          </div>
-        </div>
-        <div class = "img-select" style="width: 600px; margin-top:10px;">
-          <div class = "img-item"  style="width: 100px; margin-top:10px;">
-            <a href = "#" data-id = "1">
-              <img src = "/product_img1/<%= productDATA._id %>.jpg" alt = "shoe image">
-            </a>
-          </div>
-          <div class = "img-item"style="width: 100px; margin-top:10px;">
-            <a href = "#" data-id = "2" >
-              <img src = "/product_img2/<%= productDATA._id %>.jpg" alt = "shoe image">
-            </a>
-          </div>
-          <div class = "img-item"style="width: 100px; margin-top:10px;">
-            <a href = "#" data-id = "3" >
-              <img src = "/product_img3/<%= productDATA._id %>.jpg" alt = "shoe image">
-            </a>
-          </div>
-        </div>
-      </div>
-      <!-- card right -->
-      <div class = "product-content" style="width: 700px; margin-left:100px; margin-top:10px;">
-        <h2 class = "product-title"><%= productDATA.productname %></h2>
-        <a href = "#" class = "product-link">visit store</a>
-        <!-- <div class = "product-rating">
-            <i class="fa fa-star" aria-hidden="true"></i>
-            <i class="fa fa-star" aria-hidden="true"></i>
-            <i class="fa fa-star" aria-hidden="true"></i>
-            <i class="fa fa-star" aria-hidden="true"></i>
-            <i class="fa fa-star-half-o" aria-hidden="true"></i>
-          <span>4.7(21)</span>
-        </div> -->
-  
-        <div class = "product-price">
-
-          <% if (productDATA.offerprice) { %>
-          <p class = "last-price">Old Price: <span>₹<%= productDATA.price %></span></p>
-          <p class = "new-price">New Price: <span>₹<%= productDATA.offerprice %>(5%)</span></p>
-          <% } else { %>
-            <p class = "last-price">Old Price: <span>₹<%= productDATA.price %></span></p>
-
-            <% } %>
-        </div>
-  
-        <div class = "product-detail">
-          <h2>about this item: </h2>
-          <p> <%= productDATA.description %></p>
-          <ul>
-            <li>Color: <span><%= productDATA.Color %></span></li>
-
-            <li>Category: <span> <%= productDATA.category %></span></li>
-            <li>Size: <span><%= productDATA.size %></span></li>
-          </ul>
-        </div>
-  
-        <div class = "purchase-info">
-          <button type = "button" onclick="addtocart('<%= productDATA._id %>')" class = "btn">Add to Cart <i class="fa fa-cart-arrow-down" aria-hidden="true"></i></button>
-          <button onclick="addtowishlist('<%= productDATA._id %>')" type="button" class="btn "><i class="fa fa-heart-o"></i> </button>
-        </div>
-  
-      </div>
+<div class="product-imgs" style="width:600px;  margin-left:100px; margin-top:100px">
+  <div class="img-display" >
+    <div class="img-showcase" >
+      <img src="/product_img1/<%= productDATA._id %>.jpg" alt="shoe image" id="product_img">
+      <img src="/product_img2/<%= productDATA._id %>.jpg" alt="shoe image" id="product_img1">
+      <img src="/product_img3/<%= productDATA._id %>.jpg" alt="shoe image"id="product_img2">
     </div>
   </div>
+  <div class="img-select" style="width: 600px; margin-top:10px;">
+    <div class="img-item" style="width: 100px; margin-top:10px;">
+      <a href="#" data-id="1">
+        <img src="/product_img1/<%= productDATA._id %>.jpg" alt="shoe image">
+      </a>
+    </div>
+    <div class="img-item" style="width: 100px; margin-top:10px;">
+      <a href="#" data-id="2">
+        <img src="/product_img2/<%= productDATA._id %>.jpg" alt="shoe image">
+      </a>
+    </div>
+    <div class="img-item" style="width: 100px; margin-top:10px;">
+      <a href="#" data-id="3">
+        <img src="/product_img3/<%= productDATA._id %>.jpg" alt="shoe image">
+      </a>
+    </div>
+  </div>
+</div>
+<!-- card right -->
+<div class="product-content" style="width: 700px; margin-left:100px; margin-top:10px;">
+  <h2 class="product-title">
+    <%= productDATA.productname %>
+  </h2>
+  <a href="#" class="product-link">visit store</a>
+  <div class="product-rating">
+    <i class="fa fa-star" aria-hidden="true"></i>
+    <i class="fa fa-star" aria-hidden="true"></i>
+    <i class="fa fa-star" aria-hidden="true"></i>
+    <i class="fa fa-star" aria-hidden="true"></i>
+    <i class="fa fa-star-half-o" aria-hidden="true"></i>
+    <span>4.7(21)</span>
+  </div>
+
+  <div class="product-price">
+
+    <% if (productDATA.offerprice) { %>
+      <p class="last-price">Old Price: <span>₹<%= productDATA.price %></span></p>
+      <p class="new-price">New Price: <span>₹<%= productDATA.offerprice %>(5%)</span></p>
+      <% } else { %>
+        <p class="new-price"> Price: <span>₹<%= productDATA.price %></span></p>
+
+        <% } %>
+  </div>
+
+  <div class="product-detail">
+    <h2>about this item: </h2>
+    <p>
+      <%= productDATA.description %>
+    </p>
+    <ul>
+      <li>Color: <span>
+          <%= productDATA.Color %>
+        </span></li>
+
+      <li>Category: <span>
+          <%= productDATA.category %>
+        </span></li>
+      <li>Size: <span>
+          <%= productDATA.size %>
+        </span></li>
+    </ul>
+  </div>
+
+  <div class="purchase-info">
+    <button type="button" onclick="addtocart('<%= productDATA._id %>')" class="btn">Add to Cart <i
+        class="fa fa-cart-arrow-down" aria-hidden="true"></i></button>
+    <button onclick="addtowishlist('<%= productDATA._id %>')" type="button" class="btn "><i class="fa fa-heart-o"></i>
+    </button>
+  </div>
+
+</div>
+</div>
+</div>
+
+
+
+
+
+<script>
+
   
 
-  <script src="https://cdn.jsdelivr.net/npm/js-image-zoom/js-image-zoom.min.js"></script>
-  
+ 
+  const imgs = document.querySelectorAll('.img-select a');
+  const imgBtns = [...imgs];
+  let imgId = 1;
 
-  <script>
-
-var options = {
-    width:400,
-    height:600,
-    scale: .5,
-    zoomPosition: ''
-  };
-  new ImageZoom(document.getElementById("img-container"), options);
-
-    const imgs = document.querySelectorAll('.img-select a');
-   const imgBtns = [...imgs];
-    let imgId = 1;
-
-imgBtns.forEach((imgItem) => {
+  imgBtns.forEach((imgItem) => {
     imgItem.addEventListener('click', (event) => {
-        event.preventDefault();
-        imgId = imgItem.dataset.id;
-        slideImage();
+      event.preventDefault();
+      imgId = imgItem.dataset.id;
+      slideImage();
     });
-});
+  });
 
-function slideImage(){
+  function slideImage() {
     const displayWidth = document.querySelector('.img-showcase img:first-child').clientWidth;
 
     document.querySelector('.img-showcase').style.transform = `translateX(${- (imgId - 1) * displayWidth}px)`;
-}
+  }
 
-window.addEventListener('resize', slideImage);
+  window.addEventListener('resize', slideImage);
 
 
- 
-    function addtocart(proId){
-        $.ajax({
-            url:'/add-tocart/'+proId,
-            method:'get',
-            success:(response)=>{
-              swal("Good job!", "You clicked the button!", "success");
-                location.reload()
 
-            }
-        })
-    }
+  function addtocart(proId) {
+    $.ajax({
+      url: '/add-tocart/' + proId,
+      method: 'get',
+      success: (response) => {
+        swal("Good job!", "You clicked the button!", "success");
+        location.reload()
 
-    function addtowishlist(proId){
-        $.ajax({
-            url:'/add-towishlist/'+proId,
-            method:'get',
-            success:(response)=>{
-                location.reload()
+      }
+    })
+  }
 
-            }
-        })
-    }
-  </script>
+  function addtowishlist(proId) {
+    $.ajax({
+      url: '/add-towishlist/' + proId,
+      method: 'get',
+      success: (response) => {
+        location.reload()
+
+      }
+    })
+  }
+</script>

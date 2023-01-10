@@ -42,6 +42,9 @@
 /*----------------------------------------*/
 /*-- Google Font --*/
 @import url("https://fonts.googleapis.com/css?family=Marck+Script|Poppins:300,400,500,600,700|Roboto+Mono:400,500,700|Roboto+Slab:300,400,700|Roboto:300,400,500,700,900");
+
+
+
 /*-- Common Style --*/
 @media only screen and (min-width: 1200px) {
   .container {
@@ -52,6 +55,7 @@
   margin-right: calc(var(--bs-gutter-x) * -.6);
   margin-left: calc(var(--bs-gutter-x) * -.6);
 }
+
 .product-image{
   width: 200px;
   height:200px;
@@ -8285,18 +8289,18 @@ button, input, optgroup, select, textarea {
 }
 .product-wrap .product-content .price-addtocart .product-price span {
   color: #373737;
-  font-size: 16px;
+  font-size: 12px;
   font-weight: 500;
 }
 .product-wrap .product-content .price-addtocart .product-price span.old {
   font-weight: 300;
-  font-size: 14px;
+  font-size: 10px;
   text-decoration: line-through;
   margin-left: 9px;
 }
 .product-wrap .product-content .price-addtocart .product-price span.old2 {
   font-weight: 500;
-  font-size: 14px;
+  font-size: 10px;
   text-decoration: line-through;
   margin-left: 9px;
 }
