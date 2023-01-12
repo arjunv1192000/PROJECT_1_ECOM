@@ -113,14 +113,14 @@ module.exports={
     updateproduct(req.params.id,req.body).then(()=>{
       if(req.files.Image){
         var image=req.files.Image
-        image.mv('./public/product_img1/'+data.id+'.jpg')
+        image.mv('./public/product_img1/'+id+'.jpg')
 
       }else if(req.files.Image1){
         var image1=req.files.Image1
-        image1.mv('./public/product_img2/'+data.id+'.jpg')
+        image1.mv('./public/product_img2/'+id+'.jpg')
       }else if(req.files.Image2){
         var image2=req.files.Image2
-        image2.mv('./public/product_img3/'+data.id+'.jpg')
+        image2.mv('./public/product_img3/'+id+'.jpg')
 
 
       }

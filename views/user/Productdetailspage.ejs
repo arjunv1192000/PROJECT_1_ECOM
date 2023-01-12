@@ -1,94 +1,149 @@
-<div class="product-imgs" style="width:600px;  margin-left:100px; margin-top:100px">
-  <div class="img-display" >
-    <div class="img-showcase" >
-      <img src="/product_img1/<%= productDATA._id %>.jpg" alt="shoe image" id="product_img">
-      <img src="/product_img2/<%= productDATA._id %>.jpg" alt="shoe image" id="product_img1">
-      <img src="/product_img3/<%= productDATA._id %>.jpg" alt="shoe image"id="product_img2">
-    </div>
-  </div>
-  <div class="img-select" style="width: 600px; margin-top:10px;">
-    <div class="img-item" style="width: 100px; margin-top:10px;">
-      <a href="#" data-id="1">
-        <img src="/product_img1/<%= productDATA._id %>.jpg" alt="shoe image">
-      </a>
-    </div>
-    <div class="img-item" style="width: 100px; margin-top:10px;">
-      <a href="#" data-id="2">
-        <img src="/product_img2/<%= productDATA._id %>.jpg" alt="shoe image">
-      </a>
-    </div>
-    <div class="img-item" style="width: 100px; margin-top:10px;">
-      <a href="#" data-id="3">
-        <img src="/product_img3/<%= productDATA._id %>.jpg" alt="shoe image">
-      </a>
+
+<div class="product-details-area pt-90 pb-90">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-6 col-md-7">
+        <div class="product-details-img">
+          <div class="img-display">
+            <div class="img-showcase">
+              <img src="/product_img1/<%= productDATA._id %>.jpg" alt="shoe image" id="product_img">
+              <img src="/product_img2/<%= productDATA._id %>.jpg" alt="shoe image" id="product_img1">
+              <img src="/product_img3/<%= productDATA._id %>.jpg" alt="shoe image" id="product_img2">
+            </div>
+          </div>
+          <div class="img-select" style="width: 600px; margin-top:10px;">
+            <div class="img-item" style="width: 100px; margin-top:10px;">
+              <a href="#" data-id="1">
+                <img src="/product_img1/<%= productDATA._id %>.jpg" alt="shoe image">
+              </a>
+            </div>
+            <div class="img-item" style="width: 100px; margin-top:10px;">
+              <a href="#" data-id="2">
+                <img src="/product_img2/<%= productDATA._id %>.jpg" alt="shoe image">
+              </a>
+            </div>
+            <div class="img-item" style="width: 100px; margin-top:10px;">
+              <a href="#" data-id="3">
+                <img src="/product_img3/<%= productDATA._id %>.jpg" alt="shoe image">
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-6 col-md-5">
+        <div class="product-details-content pro-details-content-modify">
+          <span> <%= productDATA.category %></span>
+          <h2> <%= productDATA.productname %></h2>
+          <div class="product-ratting-review">
+            <div class="product-ratting">
+              <i class="fa fa-star" aria-hidden="true"></i>
+              <i class="fa fa-star" aria-hidden="true"></i>
+              <i class="fa fa-star" aria-hidden="true"></i>
+              <i class="fa fa-star" aria-hidden="true"></i>
+              <i class="fa fa-star-half-o" aria-hidden="true"></i>
+            </div>
+            <div class="product-review">
+              <span>40+ Reviews</span>
+            </div>
+          </div>
+          <div class="pro-details-color-wrap">
+            <span>Color: <%= productDATA.Color %></span>
+          </div>
+          <div class="pro-details-size">
+            <span>Size:  <%= productDATA.size %>  </span>
+          </div>
+          <% if (productDATA.offerprice) { %>
+          <div class="pro-details-price-wrap">
+            <div class="product-price">
+              <span>₹<%= productDATA.offerprice %></span>
+              <span class="old">₹<%= productDATA.price %></span>
+            </div>
+          </div>
+          <% } else if (productDATA.catoffer) { %>
+            <div class="pro-details-price-wrap">
+              <div class="product-price">
+                <span>₹<%= productDATA.catoffer %></span>
+                <span class="old">₹<%= productDATA.price %></span>
+              </div>
+            </div>
+            <% } else { %>
+              <div class="pro-details-price-wrap">
+                <div class="product-price">
+                  <span>₹<%= productDATA.price %></span>
+                </div>
+              </div>
+          <% } %>
+          <div class="pro-details-compare-wishlist">
+            <div class="purchase-info">
+              <button type="button" onclick="addtocart('<%= productDATA._id %>')" class="btn">Add to Cart <i
+                  class="fa fa-cart-arrow-down" aria-hidden="true"></i></button>
+              <button onclick="addtowishlist('<%= productDATA._id %>')" type="button" class="btn "><i class="fa fa-heart-o"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>
-<!-- card right -->
-<div class="product-content" style="width: 700px; margin-left:100px; margin-top:10px;">
-  <h2 class="product-title">
-    <%= productDATA.productname %>
-  </h2>
-  <a href="#" class="product-link">visit store</a>
-  <div class="product-rating">
-    <i class="fa fa-star" aria-hidden="true"></i>
-    <i class="fa fa-star" aria-hidden="true"></i>
-    <i class="fa fa-star" aria-hidden="true"></i>
-    <i class="fa fa-star" aria-hidden="true"></i>
-    <i class="fa fa-star-half-o" aria-hidden="true"></i>
-    <span>4.7(21)</span>
-  </div>
+<div class="description-review-wrapper pb-90">
+  <div class="container">
+      <div class="row">
+          <div class="ms-auto me-auto col-lg-10">
+              <div class="dec-review-topbar nav mb-40">
+                  <a data-bs-toggle="tab" href="#des-details1">Description</a>
+                  <a class="active" data-bs-toggle="tab" href="#des-details2">Specification</a>
+              </div>
+              <div class="tab-content dec-review-bottom">
+                  <div id="des-details1" class="tab-pane">
+                      <div class="description-wrap">
+                          <p><%= productDATA.description %> </p>
+                      </div>
+                  </div>
+                  <div id="des-details2" class="tab-pane active">
+                      <div class="specification-wrap table-responsive">
+                          <table>
+                              <tbody>
+                                  <tr>
+                                      <td class="width1">Name / Model</td>
+                                      <td><%= productDATA.productname %></td>
+                                  </tr>
+                                  <tr>
+                                      <td>Categories</td>
+                                      <td> <%= productDATA.category %></td>
+                                  </tr>
+                                  <tr>
+                                      <td class="width1">Size</td>
+                                      <td> <%= productDATA.size %> </td>
+                                  </tr>
+                                  <tr>
+                                    <td class="width1">Color</td>
+                                    <td><%= productDATA.Color %></td>
+                                </tr>
+                                  
+                              </tbody>
+                          </table>
+                      </div>
+                  </div>
 
-  <div class="product-price">
 
-    <% if (productDATA.offerprice) { %>
-      <p class="last-price">Old Price: <span>₹<%= productDATA.price %></span></p>
-      <p class="new-price">New Price: <span>₹<%= productDATA.offerprice %>(5%)</span></p>
-      <% } else { %>
-        <p class="new-price"> Price: <span>₹<%= productDATA.price %></span></p>
 
-        <% } %>
-  </div>
 
-  <div class="product-detail">
-    <h2>about this item: </h2>
-    <p>
-      <%= productDATA.description %>
-    </p>
-    <ul>
-      <li>Color: <span>
-          <%= productDATA.Color %>
-        </span></li>
 
-      <li>Category: <span>
-          <%= productDATA.category %>
-        </span></li>
-      <li>Size: <span>
-          <%= productDATA.size %>
-        </span></li>
-    </ul>
-  </div>
 
-  <div class="purchase-info">
-    <button type="button" onclick="addtocart('<%= productDATA._id %>')" class="btn">Add to Cart <i
-        class="fa fa-cart-arrow-down" aria-hidden="true"></i></button>
-    <button onclick="addtowishlist('<%= productDATA._id %>')" type="button" class="btn "><i class="fa fa-heart-o"></i>
-    </button>
-  </div>
 
-</div>
-</div>
-</div>
 
+
+                 
 
 
 
 
 <script>
 
-  
 
- 
+
+
   const imgs = document.querySelectorAll('.img-select a');
   const imgBtns = [...imgs];
   let imgId = 1;

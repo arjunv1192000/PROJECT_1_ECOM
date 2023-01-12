@@ -34,9 +34,18 @@
                                                             <%= product.productname %>
                                                         </a></h4>
                                                     <div class="price-addtocart">
-                                                        
+                                                        <% if (product.offerprice) { %>
                                                         <div class="product-price">
-                                                            <span>₹<%= product.price %></span>
+                                                            <span>₹<%= product.offerprice %> </span>
+                                                            <span class="old">₹<%= product.price %></span>
+                                                        </div>
+                                                        <% } else { %>
+                                                            <div class="product-price">
+                                                                <span class="new-price ">₹<%= product.price %></span>
+                                                            </div>
+                                                        <% } %>
+                                                        <div class="product-price">
+                                                            <span></span>
                                                         </div>
                                                         <div class="product-addtocart">
                                                             <% if (product.stock) { %>
