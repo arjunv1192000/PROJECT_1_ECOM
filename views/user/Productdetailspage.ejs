@@ -1,4 +1,3 @@
-
 <div class="product-details-area pt-90 pb-90">
   <div class="container">
     <div class="row">
@@ -32,8 +31,12 @@
       </div>
       <div class="col-lg-6 col-md-5">
         <div class="product-details-content pro-details-content-modify">
-          <span> <%= productDATA.category %></span>
-          <h2> <%= productDATA.productname %></h2>
+          <span>
+            <%= productDATA.category %>
+          </span>
+          <h2>
+            <%= productDATA.productname %>
+          </h2>
           <div class="product-ratting-review">
             <div class="product-ratting">
               <i class="fa fa-star" aria-hidden="true"></i>
@@ -50,37 +53,38 @@
             <span>Color: <%= productDATA.Color %></span>
           </div>
           <div class="pro-details-size">
-            <span>Size:  <%= productDATA.size %>  </span>
+            <span>Size: <%= productDATA.size %> </span>
           </div>
           <% if (productDATA.offerprice) { %>
-          <div class="pro-details-price-wrap">
-            <div class="product-price">
-              <span>₹<%= productDATA.offerprice %></span>
-              <span class="old">₹<%= productDATA.price %></span>
-            </div>
-          </div>
-          <% } else if (productDATA.catoffer) { %>
             <div class="pro-details-price-wrap">
               <div class="product-price">
-                <span>₹<%= productDATA.catoffer %></span>
+                <span>₹<%= productDATA.offerprice %></span>
                 <span class="old">₹<%= productDATA.price %></span>
               </div>
             </div>
-            <% } else { %>
+            <% } else if (productDATA.catoffer) { %>
               <div class="pro-details-price-wrap">
                 <div class="product-price">
-                  <span>₹<%= productDATA.price %></span>
+                  <span>₹<%= productDATA.catoffer %></span>
+                  <span class="old">₹<%= productDATA.price %></span>
                 </div>
               </div>
-          <% } %>
-          <div class="pro-details-compare-wishlist">
-            <div class="purchase-info">
-              <button type="button" onclick="addtocart('<%= productDATA._id %>')" class="btn">Add to Cart <i
-                  class="fa fa-cart-arrow-down" aria-hidden="true"></i></button>
-              <button onclick="addtowishlist('<%= productDATA._id %>')" type="button" class="btn "><i class="fa fa-heart-o"></i>
-              </button>
-            </div>
-          </div>
+              <% } else { %>
+                <div class="pro-details-price-wrap">
+                  <div class="product-price">
+                    <span>₹<%= productDATA.price %></span>
+                  </div>
+                </div>
+                <% } %>
+                  <div class="pro-details-compare-wishlist">
+                    <div class="purchase-info">
+                      <button type="button" onclick="addtocart('<%= productDATA._id %>')" class="btn">Add to Cart <i
+                          class="fa fa-cart-arrow-down" aria-hidden="true"></i></button>
+                      <button onclick="addtowishlist('<%= productDATA._id %>')" type="button" class="btn "><i
+                          class="fa fa-heart-o"></i>
+                      </button>
+                    </div>
+                  </div>
         </div>
       </div>
     </div>
@@ -88,53 +92,62 @@
 </div>
 <div class="description-review-wrapper pb-90">
   <div class="container">
-      <div class="row">
-          <div class="ms-auto me-auto col-lg-10">
-              <div class="dec-review-topbar nav mb-40">
-                  <a data-bs-toggle="tab" href="#des-details1">Description</a>
-                  <a class="active" data-bs-toggle="tab" href="#des-details2">Specification</a>
-              </div>
-              <div class="tab-content dec-review-bottom">
-                  <div id="des-details1" class="tab-pane">
-                      <div class="description-wrap">
-                          <p><%= productDATA.description %> </p>
-                      </div>
-                  </div>
-                  <div id="des-details2" class="tab-pane active">
-                      <div class="specification-wrap table-responsive">
-                          <table>
-                              <tbody>
-                                  <tr>
-                                      <td class="width1">Name / Model</td>
-                                      <td><%= productDATA.productname %></td>
-                                  </tr>
-                                  <tr>
-                                      <td>Categories</td>
-                                      <td> <%= productDATA.category %></td>
-                                  </tr>
-                                  <tr>
-                                      <td class="width1">Size</td>
-                                      <td> <%= productDATA.size %> </td>
-                                  </tr>
-                                  <tr>
-                                    <td class="width1">Color</td>
-                                    <td><%= productDATA.Color %></td>
-                                </tr>
-                                  
-                              </tbody>
-                          </table>
-                      </div>
-                  </div>
+    <div class="row">
+      <div class="ms-auto me-auto col-lg-10">
+        <div class="dec-review-topbar nav mb-40">
+          <a data-bs-toggle="tab" href="#des-details1">Description</a>
+          <a class="active" data-bs-toggle="tab" href="#des-details2">Specification</a>
+        </div>
+        <div class="tab-content dec-review-bottom">
+          <div id="des-details1" class="tab-pane">
+            <div class="description-wrap">
+              <p>
+                <%= productDATA.description %>
+              </p>
+            </div>
+          </div>
+          <div id="des-details2" class="tab-pane active">
+            <div class="specification-wrap table-responsive">
+              <table>
+                <tbody>
+                  <tr>
+                    <td class="width1">Name / Model</td>
+                    <td>
+                      <%= productDATA.productname %>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Categories</td>
+                    <td>
+                      <%= productDATA.category %>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="width1">Size</td>
+                    <td>
+                      <%= productDATA.size %>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="width1">Color</td>
+                    <td>
+                      <%= productDATA.Color %>
+                    </td>
+                  </tr>
+
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
 
 
 
-
-
-
-
-
-                 
 
 
 

@@ -70,6 +70,7 @@
                                 <!-- Single Tab Content Start -->
                                
                                 <div class="tab-pane fade" id="address-edit" role="tabpanel">
+                                    <a href="/add_address" class="check-btn sqr-btn "><i class="fa fa-edit"></i> ADD Address</a>
                                     <%userdata.Addresses.forEach(function(userdata, i){ %>
                                     <div class="myaccount-content">
                                         <h3>Billing Address</h3>
@@ -82,14 +83,11 @@
                                             <p>City:<%= userdata.City %></p>
                                             <p>State:<%= userdata.State %></p>
                                         </address>
-                                        <a href="/add_address" class="check-btn sqr-btn "><i class="fa fa-edit"></i> ADD Address</a>
+                                        
                                     </div>
                                     <% }); %>
                                 </div>
-                                <!-- Single Tab Content End -->
-                                <!-- Single Tab Content Start -->
-                                
-                                 <!-- Single Tab Content End -->
+                               
                             </div>
                         </div> <!-- My Account Tab Content End -->
                     </div>

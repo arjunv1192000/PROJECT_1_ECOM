@@ -140,7 +140,7 @@
 
             </div>
           </div <!-- Revenue Card -->
-          <!-- <div class="col-xxl-4 col-md-6">
+          <div class="col-xxl-4 col-md-6">
             <div class="card info-card revenue-card">
               <div class="filter">
                 <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
@@ -164,8 +164,8 @@
               </div>
 
             </div>
-          </div> -->
-          <!-- <div class="col-xxl-4 col-md-6">
+          </div>
+          <div class="col-xxl-4 col-md-6">
             <div class="card info-card revenue-card">
 
               <div class="filter">
@@ -245,7 +245,7 @@
               </div>
 
             </div>
-          </div> -->
+          </div>
           <div class="col-xxl-4 col-xl-12">
 
             <div class="card info-card customers-card">
@@ -336,16 +336,16 @@
                           name: 'placed'
                         },
                         {
-                          value: <%= data.PENDING %>,
-                          name: 'pending'
+                          value: <%= data.DELIVERED%>,
+                          name: 'delivered'
                         },
                         {
                           value: <%= data.CANCEL %>,
                           name: 'cancel'
                         },
                         {
-                          value: <%= data.DELIVERED%>,
-                          name: 'delivered'
+                          value: <%= data.PENDING %>,
+                          name: 'pending'
                         },
 
                         ]
@@ -383,6 +383,9 @@
 
       ['COD',  <%= data.COD %>],
       ['ONLINE', <%= data.ONLINE %>],
+      ['PAYPAL',  <%= data.PAYPAL %>],
+      ['RAZORPAY', <%= data.RAZORPAY %>],
+
 
     ]);
 

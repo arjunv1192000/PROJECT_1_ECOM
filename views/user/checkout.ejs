@@ -115,15 +115,17 @@
                                         <input id="payment-method-3" class="input-radio" type="radio" value="COD"
                                             name="payment_method">
                                         <label for="payment-method-3">Cash on delivery </label>
-                                        <div class="payment-box payment_method_bacs">
-                                            <p>Make your payment directly into our bank account. Please use your Order
-                                                ID as the payment reference.</p>
-                                        </div>
                                     </div>
                                     <div class="pay-top sin-payment sin-payment-3">
-                                        <input id="payment-method-4" class="input-radio" type="radio" value="ONLINE"
+                                        <input id="payment-method-4" class="input-radio" type="radio" value="Razorpay"
                                             name="payment_method">
-                                        <label for="payment-method-4">Online payment <img alt=""
+                                        <label for="payment-method-4"> Razorpay <img alt=""
+                                                src="assets/images/icon-img/payment.png"></label>
+                                    </div>
+                                    <div class="pay-top sin-payment sin-payment-3">
+                                        <input id="payment-method-4" class="input-radio" type="radio" value="paypal"
+                                            name="payment_method">
+                                        <label for="payment-method-4">paypal<img alt=""
                                                 src="assets/images/icon-img/payment.png"></label>
                                     </div>
                                 </div>
@@ -138,15 +140,32 @@
             </div>
         </form>
     </div>
+    <strong class="ml-120">select Address</strong>
+  
     <div class="col-lg-12 col-md-12">
-        <div class="billing-info mb-20 ml-100">
-            <button onclick="addcurrent('<%= users._id %>')"    
-                class="btn btn-outline-warning btn-rounded"
-                data-mdb-ripple-color="dark">Add_address</button>
+        <div class="container d-flex">
+            <%userdata.Addresses.forEach(function(userdata, i){ %>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="<%= userdata.addressId%>" onclick="fillAddressData('<%= JSON.stringify(userdata) %>')">
 
-        </div>
+               <label class="form-check-label" for="exampleRadios1">
+                <address>
+                        <p><strong><%= userdata.username %></strong></p>
+                        <p><%= userdata.companyname %> <br><p> <%= userdata.Address %></p></p>
+                        <p>Mobile:<%= userdata.phonenum %></p>
+                        <p>Email:<%= userdata.Addemail %></p>
+                        <p>Pincode:<%= userdata.Postcode %></p>
+                        <p>City:<%= userdata.City %></p>
+                        <p>State:<%= userdata.State %></p>
+                    
+                </address>
+
+               </label>
+            </div>
+            <% }); %>
     </div>
 </div>
+
 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>  
 
@@ -222,41 +241,22 @@
             data: $('#checkout-form').serialize(),
             success: (response) => {
 
-                if (response.CODsucess) {
+                if (response.status=="COD") {
                     location.href = '/orderplaced'
-                } else {
+                } else if
+                (response.status=="razorpay") {
                     console.log("called 1");
-                    RazorpayPayment(response)
+                    RazorpayPayment(response.response)
                     console.log("called 2");
+
+                }else if(response.status=="paypal"){
+                    window.location = response.forwardLink
 
                 }
 
             }
         })
     })
-
-    function addcurrent(Id) {
-        console.log(Id);
-
-        $.ajax({
-            url: '/getAdd/'+Id,
-            method: 'get',
-            success: (userdata => {
-                console.log(userdata);
-                
-                document.getElementById('add').value = userdata.Addresses[0].Address
-                document.getElementById('city').value = userdata.Addresses[0].City
-                document.getElementById('Addstate').value = userdata.Addresses[0].State
-                document.getElementById('pin').value = userdata.Addresses[0].Postcode
-                document.getElementById('Addphone').value = userdata.Addresses[0].phonenum
-                document.getElementById('mail').value = userdata.Addresses[0].Addemail
-                document.getElementById('user').value = userdata.username
-                document.getElementById('company').value = userdata.Addresses[0].companyname
-
-            })
-        })
-
-    }
     function checkCoupon() {
         console.log("sknssdsddsdkdck");
             var codes= document.getElementById('code').value
@@ -281,7 +281,25 @@
             })
         }
 
+  function fillAddressData(userdata) {
+   
+  
+  let selectedAddress =JSON.parse(userdata);
+  console.log(selectedAddress,"LLLLLLLLLLLLLLLLLLLLLLLLL");
+  
+  document.getElementById('add').value = selectedAddress.Address;
+  document.getElementById('city').value = selectedAddress.City;
+  document.getElementById('Addstate').value =selectedAddress.State;
+  document.getElementById('pin').value = selectedAddress.Postcode;
+  document.getElementById('Addphone').value = selectedAddress.phonenum;
+  document.getElementById('mail').value = selectedAddress.Addemail;
+  document.getElementById('user').value = selectedAddress.username;
+  document.getElementById('company').value = selectedAddress.companyname;
+}
 
+
+
+     
 
 
 

@@ -1,4 +1,4 @@
-
+<!-- 
 <div class="breadcrumb-area bg-img" style="background-image:url(/images/bg/breadcrumb.jpg);">
   <header class="header-area transparent-bar ">
     <div class="main-header-wrap ">
@@ -350,4 +350,61 @@
           <a class="google" href="#"><i class="ti-google"></i></a>
       </div>
   </div>
-</div> 
+</div>  -->
+
+
+
+
+
+
+
+
+  <nav class="navbar navbar-expand-lg navbar-light bg-light  custom-navbar"  style="background-image:url(/images/bg/breadcrumb.jpg); ">
+    <div class="container-fluid" >
+      <a class="navbar-brand" href="#"><img src="/OAKWoods.png" alt="" style="width: 100px;height: 100px;"></a>
+      
+      
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mx-auto mb-2 mb-lg-0 justify-content-center ">
+          <li class="nav-item ml-20">
+            <a class="nav-link active" aria-current="page" href="/">Home</a>
+            
+          </li>
+          <li class="nav-item ml-20">
+            <a class="nav-link active" aria-current="page" href="/showproduct">shop</a>
+            
+          </li>
+          <li class="nav-item ml-20">
+            <a class="nav-link active" aria-current="page" href="/showoffers">Offers</a>
+            
+          </li>
+        </ul>
+        <form class="d-flex mr-50">
+          <% if (users) { %>
+            <div class="header-wishlist ">
+              <a href="/userwishlist"><i class="fa fa-heart-o fa-lg" aria-hidden="true"></i></a>
+            </div>
+            <div class="header-login ml-40">
+              <a href="/uaseraccount"><i class="fa fa-user fa-lg" aria-hidden="true"></i></a>
+            </div>
+            <div class="header-login ml-40">
+              <a href="/usercart"><i class="fa fa-shopping-cart fa-lg" aria-hidden="true"></i></a>
+            </div>
+            <%} else { %>
+              <div class="header-login ml-40">
+                <a href="/uaseraccount"><i class="fa fa-user fa-lg" aria-hidden="true"></i></a>
+              </div>
+              <% } %>
+          
+        </form>
+      </div>
+    </div>
+  </nav>
+
+
+
+
+  

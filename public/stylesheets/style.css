@@ -8021,6 +8021,9 @@ button, input, optgroup, select, textarea {
 /*-------- 6. Product style ---------*/
 .product-wrap {
   position: relative;
+  height: 500px;
+  width: 300px;
+  margin-left:75px;
 }
 .product-wrap .product-img {
   position: relative;
@@ -8289,18 +8292,18 @@ button, input, optgroup, select, textarea {
 }
 .product-wrap .product-content .price-addtocart .product-price span {
   color: #373737;
-  font-size: 12px;
+  font-size: 18px;
   font-weight: 500;
 }
 .product-wrap .product-content .price-addtocart .product-price span.old {
   font-weight: 300;
-  font-size: 10px;
+  font-size: 18px;
   text-decoration: line-through;
   margin-left: 9px;
 }
 .product-wrap .product-content .price-addtocart .product-price span.old2 {
   font-weight: 500;
-  font-size: 10px;
+  font-size: 18px;
   text-decoration: line-through;
   margin-left: 9px;
 }
@@ -15598,6 +15601,14 @@ img{
         padding-top: 0;
     }
 }
+
+/* .custom-navbar {
+  height: 80px;
+} */
+
+
+
+
 
 
 

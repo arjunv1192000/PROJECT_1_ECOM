@@ -1,155 +1,195 @@
+
 <div class="shop-area pt-90 pb-90">
     <div class="container">
         <div class="row flex-row-reverse">
             <div class="col-lg-9">
-                <div class="shop-topbar-wrapper">
+                <div class="shop-topbar-wrapper bg-light">
+                    <div class="shop-topbar-left">
+                        <div class="view-mode nav">
+                            
+                            <a href="" data-bs-toggle="tab"><i class="fa fa-list-ul" aria-hidden="true"></i></a>
+                        </div>
+                        <p>Showing 1 - 8 of 30 results </p>
+                    </div>
                     <div class="product-sorting-wrapper">
+                        <div class="product-show shorting-style">
+                            <label>Sort by:</label>
+                            <form action="/pricesort" method="post">
+                            <select name="opt">
+                                <option value="default">Default</option>
+                                <option value="name"> Name</option>
+                                <option value="price">price</option>
+                            </select>
+                            <button type="submit" class="btn btn-primary btn-sm ">Sort</button>
+                        </form>
+                        </div>
                     </div>
                 </div>
                 <div class="shop-bottom-area">
                     <div class="tab-content jump">
                         <div id="shop-1" class="tab-pane active">
                             <div class="row">
-                                <% if (showproduct) { %>
-                                    <% showproduct.forEach(function(product, i){ %>
-                                        <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6">
-                                            <div class="product-wrap mb-35">
-                                                <div class="product-img mb-15">
-                                                    <a href="/productdetails/<%= product._id %>"><img
-                                                            src="/product_img1/<%= product._id %>.jpg"
-                                                            alt="product"></a>
-                                                    <div class="product-action">
+                                <% showproduct.forEach(function(product, i){ %>
+                                    <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6">
+                                        <div class="product-wrap mb-35">
+                                            <div class="product-img mb-15">
+                                                <a href="/productdetails/<%= product._id %>"><img
+                                                        src="/product_img1/<%= product._id %>.jpg" alt="product"></a>
+                                                <% if (product.stock) { %>
+                                                    <span class="price-dec font-dec">NEW</span>
+                                                    <% } else { %>
+                                                        <span class="new-stock"><span>Stock <br>Out</span></span>
+                                                        <% } %>
+                                                            <div class="product-action">
+                                                                <a data-bs-toggle="modal"
+                                                                    href="/productdetails/<%= product._id %>"><i
+                                                                        class="fa fa-plus" aria-hidden="true"></i></a>
+                                                                <a title="Wishlist" href="#"><i
+                                                                        class="fa fa-heart-o"></i><button
+                                                                        onclick="addtowishlist('<%= product._id %>')"
+                                                                        type="button" class="btn ">
+                                                                    </button></a>
 
-                                                        <button onclick="addtowishlist('<%= product._id %>')"
-                                                            type="button" class="btn "><i class="fa fa-heart-o"></i>
-                                                        </button>
-
-                                                    </div>
-                                                </div>
-                                                <div class="product-content">
-                                                    <span>
-                                                        <%= product.category %>
-                                                    </span>
-                                                    <h4><a href="/productdetails/<%= product._id %>">
-                                                            <%= product.productname %>
-                                                        </a></h4>
-                                                    <div class="price-addtocart">
-                                                        <% if (product.offerprice) { %>
+                                                            </div>
+                                            </div>
+                                            <div class="product-content">
+                                                <span>
+                                                    <%= product.category %>
+                                                </span>
+                                                <h4><a href="product-details.html">
+                                                        <%= product.productname %>
+                                                    </a></h4>
+                                                <div class="price-addtocart">
+                                                    <% if (product.offerprice) { %>
                                                         <div class="product-price">
-                                                            <span>₹<%= product.offerprice %> </span>
+                                                            <span>₹<%= product.offerprice %></span>
                                                             <span class="old">₹<%= product.price %></span>
                                                         </div>
-                                                        <% } else { %>
+                                                        <% } else if (product.catoffer) { %>
                                                             <div class="product-price">
-                                                                <span class="new-price ">₹<%= product.price %></span>
+                                                                <span>₹<%= product.catoffer%></span>
+                                                                <span class="old">₹<%= product.offerprice %></span>
                                                             </div>
-                                                        <% } %>
-                                                        <div class="product-price">
-                                                            <span></span>
-                                                        </div>
-                                                        <div class="product-addtocart">
-                                                            <% if (product.stock) { %>
-                                                                <button onclick="addtocart('<%= product._id %>')"
-                                                                    class="badge btn-outline-danger btn-rounded"
-                                                                    data-mdb-ripple-color="dark">+ Add To Cart</button>
-                                                                <% } else { %>
-                                                                    <p class="ml-20 text-danger">Sorry, this product is
-                                                                        currently out of stock</p>
+                                                            <% } else { %>
+                                                                <div class="product-price">
+                                                                    <span>₹<%= product.price %></span>
 
-                                                                    <% } %>
+                                                                </div>
+                                                                <% } %>
 
-                                                        </div>
-
-                                                    </div>
+                                                                    <% if (product.stock) { %>
+                                                                        <div class="product-addtocart">
+                                                                            <a title="Add To Cart"> <button
+                                                                                    onclick="addtocart('<%= product._id %>')"
+                                                                                    class="btn btn-outline-danger btn-rounded"
+                                                                                    data-mdb-ripple-color="dark"> + Add
+                                                                                    To Cart</button></a>
+                                                                        </div>
+                                                                        <% } %>
                                                 </div>
                                             </div>
                                         </div>
-                                        <% }); %>
-                                            <%} else { %>
-                                                <div class="container " style=" margin-top:200px">
-                                                    <div class="row">
-                                                        <div class="col-md-12 text-center mt-4">
-                                                            <h1 class="display-4">Product not found</h1>
-                                                            <p class="lead">We couldn't find the product you were
-                                                                looking for. Please try again or go back to the
-                                                                homepage.</p>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-
-
-
-
-                                                <% } %>
+                                    </div>
+                                    <% }); %>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+
             <div class="col-lg-3">
-                <div class="sidebar-wrapper">
+                <div class="sidebar-wrapper bg-light ">
                     <div class="sidebar-widget">
                         <h4 class="sidebar-title">Search </h4>
                         <div class="sidebar-search mb-40 mt-20">
                             <form class="sidebar-search-form" action="">
                                 <input type="text" placeholder="Search here..." id="search-input"
-                                    onkeyup="searchProducts()">
+                                    onkeyup="searchProducts('<%= JSON.stringify(showproduct) %>')">
 
                             </form>
                         </div>
                     </div>
-
-                    <div class="sidebar-widget shop-sidebar-border pt-40">
-                        <h4 class="sidebar-title"></h4>
+                    <div class="sidebar-widget shop-sidebar-border pt-40 ">
+                        <h4 class="sidebar-title">Shop By Categories</h4>
                         <div class="shop-catigory mt-20">
                             <ul id="faq">
-                                <li> <a data-bs-toggle="collapse" href="#shop-catigory-3">Shop By Categories <i
-                                            class="fa fa-angle-down" aria-hidden="true"></i></a>
-                                    <ul id="shop-catigory-3" class="panel-collapse collapse" data-bs-parent="#faq">
-                                        <% catdatas.forEach(function(product, i){ %>
-                                            <a href="">
-                                                <form action="/categoryfilter" method="post">
-                                                    <input type="text" name="name" value="<%= product.name%>" hidden>
+                                <% catdatas.forEach(function(product, i){ %>
+                                    <a href="">
+                                        <form action="/categoryfilter" method="post">
+                                            <input type="text" name="name" value="<%= product.name%>" hidden>
 
-                                                    <button type="submit" class="catbtn">
-                                                        <%= product.name%>
-                                                    </button>
-                                                </form>
-                                            </a>
-                                            <% }); %>
-                                    </ul>
-                                </li>
+                                            <button type="submit" class="catbtn">
+                                                <%= product.name%>
+                                            </button>
+                                        </form>
+                                    </a>
+                                    <% }); %>
                             </ul>
                         </div>
                     </div>
-                    <h4 class="sidebar-title">Filter By Price</h4>
-                    <form id="price-filter" action="/price" method="post">
-                        <label for="min-price">Min price:</label>
-                        <input type="number" name="min" id="min-price" min="0" value="0">
-                        <label for="max-price">Max price:</label>
-                        <input type="number" name="max" id="max-price" min="0" value="10000">
-                        <button type="submit" class="btn btn-primary btn-sm mt-4">Filter</button>
-                    </form>
+                    <div class="shop-price-filter mt-35 shop-sidebar-border pt-40 sidebar-widget">
+                        <h4 class="sidebar-title">Price Filter</h4>
+                        <form id="price-filter" action="/price" method="post">
+                            <label for="min-price">Min price:</label>
+                            <input type="number" name="min" id="min-price" min="0" value="0">
+                            <label for="max-price">Max price:</label>
+                            <input type="number" name="max" id="max-price" min="0" value="10000">
+                            <button type="submit" class="btn btn-primary btn-sm mt-4">Filter</button>
+                        </form>
+                    </div>
+                    <div class="sidebar-widget shop-sidebar-border pt-40 mt-40">
+                        <h4 class="sidebar-title">offers </h4>
+                        <% coupondata.forEach(function(data, i){ %>
+                        <div class="sidebar-widget-list mt-20">
+                                <div class="bg-white p-4 shadow-sm text-center h-100 border-radius">
+                                    <div class="all-coupon">
+                                        <img class="mb-3 user-cou-img" src=""
+                                        alt="Generic placeholder image">
+                                        <h4 class="mt-1 h5 text-gray-900">
+                                            <%= data.discount %>% OFF
+                                        </h4>
+                                        <h6 class="mb-4 mt-3 pb-2 text-secondary font-weight-normal">Get Flat <%=
+                                                data.discount %>% OFF On First Order</h6>
+                                        <h4 class="mt-1 h5 text-gray-900">
+                                            <%= data.CouponCode%>
+                                        </h4>
+                                    </div>
+                                </div> 
+                        </div>
+                        <% }); %>
+
+
+                    </div>
+                </div>
+
+                <div class="sidebar-widget pt-40 mt-40 shop-sidebar-border">
+                    <div class="sidebar-widget-tag mr-50">
+
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
-<div id="overlay-container"
+</div>
+
+
+
+
+<div id="overlay-container" 
     style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(10, 6, 6, 0.7);">
-    <button id="close-button" onclick="closeOverlay()"></button>
-
-
-
+    
 </div>
 <div class="product__pagination mt-5  " style="  margin-left:800px; ">
-  <% for (var i = 0; i < pageCount.length; i++) { %>
-    <button class="btn btn-secondary rounded">
-      <a href="/showproduct?id=<%= pageCount[i] %>" class="text-white"><i class="fa-sharp fa-solid fa-circle-chevron-right text-muted"></i><%= pageCount[i] %></a>
-    </button>
-  <% } %>
-  <a href="#"><i class="fa-sharp fa-solid fa-circle-chevron-right text-muted"></i></a>
+    <% for (var i=0; i < pageCount.length; i++) { %>
+        <button class="btn btn-secondary rounded">
+            <a href="/showproduct?id=<%= pageCount[i] %>" class="text-white"><i
+                    class="fa-sharp fa-solid fa-circle-chevron-right text-muted"></i>
+                <%= pageCount[i] %>
+            </a>
+        </button>
+        <% } %>
+            <a href="#"><i class="fa-sharp fa-solid fa-circle-chevron-right text-muted"></i></a>
 </div>
 
 
@@ -158,69 +198,80 @@
 
 
 
-    function searchProducts() {
 
-        var searchValue = document.getElementById("search-input").value;
+function searchProducts(showproduct) {
+    let data = JSON.parse(showproduct.replace(/[\x00-\x1F\x7F-\x9F]/g, ""));
+    console.log(data);
 
-        $.ajax({
-            url: '/search',
-            data: {
-                searchValue,
-            },
-            method: 'post',
-            success: (data) => {
-                console.log(data);
-                if (data) {
-                    // Show the overlay container
-                    document.getElementById("overlay-container").style.display = "block";
-                    generateOverlayPageHTML(data);
-                } else {
-                    // Hide the overlay container
-                    document.getElementById("overlay-container").style.display = "none";
-                }
+    var search = document.getElementById("search-input").value;
+    console.log(search);
+
+    var filteredProducts = [];
+
+    if (data) {
+        for (var i = 0; i < data.length; i++) {
+            if (data[i].productname.toLowerCase().includes(search.toLowerCase())) {
+                filteredProducts.push(data[i]);
             }
-        });
+        }
     }
+    if (filteredProducts.length > 0) {
+    document.getElementById("overlay-container").style.display = "block";
+    generateOverlayPageHTML(filteredProducts);
+} else {
+    document.getElementById("overlay-container").style.display = "none";
+}
+    console.log(filteredProducts);
+}
+
+
+
+
+    
 
     function closeOverlay() {
         document.getElementById("overlay-container").style.display = "none";
     }
-
-    function generateOverlayPageHTML(data) {
-
-        const html = `
-    <div class="col-xl-3 col-lg-4 col-md-6 ">
-      <div class="product-wrap bg-light  " style="width: 400px; margin-left:600px; margin-top:100px;">
+    
+    function generateOverlayPageHTML(filteredProducts) {
+    let html = "";
+    filteredProducts.forEach(function (item) {
+        html += `
+        
+        <div class="col-xl-3 col-lg-4 col-md-6">
+        <div class="product-wrap" >
         <div class="product-img mb-15">
-          <a href="/productdetails/${data._id}">
-            <img src="/product_img1/${data._id}.jpg" alt="product">
+          <a href="/productdetails/${item._id}">
+            <img src="/product_img1/${item._id}.jpg" alt="product">
           </a>
           <div class="product-action">
           </div>
         </div>
         <div class="product-content">
-          <span>${data.category}</span>
+          <span>${item.category}</span>
           <h4>
-            <a href="/productdetails/${data._id}">${data.productname}</a>
+            <a href="/productdetails/${item._id}">${item.productname}</a>
           </h4>
           <div class="price-addtocart">
             <div class="product-price">
-              <span>₹${data.price}</span>
+              <span>₹${item.price}</span>
             </div>
             <div class="product-addtocart">
-              ${data.stock
-                ? `<button onclick="addtocart('${data._id}')" class="btn btn-outline-danger btn-rounded " data-mdb-ripple-color="dark">+ Add To Cart</button>`
-                : `<p class="h5 text-danger">Sorry, this product is currently out of stock</p>`
-            }
+              ${item.stock
+                ? `<button onclick="addtocart('${item._id}')" class="btn btn-outline-danger btn-rounded " data-mdb-ripple-color="dark">+ Add To Cart</button>`
+                : `<p class="h5 text-danger">Sorry, this product is currently out of stock</p>`}
             </div>
           </div>
         </div>
       </div>
     </div>
   `;
-        // Inject the HTML into the overlay container
-        document.getElementById("overlay-container").innerHTML = html;
-    }
+    });
+    document.getElementById("overlay-container").innerHTML = html;
+    document.getElementById("overlay-container").style.display = "flex";
+
+}
+
 
 
 

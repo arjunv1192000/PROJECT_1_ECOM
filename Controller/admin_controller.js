@@ -16,8 +16,39 @@ module.exports={
 
       adminlog(req, res, next) {
         Adminlogin(req.body).then((admininfo)=>{
+          TotalSales().then((totalS)=>{
+            TodayOrders().then((todayS)=>{
+              ThisWeekOrders().then((weeks)=>{
+                ThisMonthOrders().then((monthS)=>{
+                  ThisYearOrders().then((yearS)=>{
+                    totalRevenue().then((totalR)=>{
+                      TodayRevenue().then((todayR)=>{
+                        weekRevenue().then((weekR)=>{
+                          yearRevenue().then((yearR)=>{
+                            totaluser().then((users)=>{
+                                chartcount().then((data)=>{
+                                  res.render('admin/admindashboard', {user:false,totalS,todayS,weeks,monthS,yearS,totalR,todayR,weekR,yearR,users,data});
+        
+                                })
+                               
+                            })
+                          })
+                        })
+                      })
+        
+                    })
+        
+                  })
+                  
+                })
+            
+              })
+            
+            })
+        
+          })
 
-          res.render('admin/coupon_add',{user:false})
+         
         })
 
         

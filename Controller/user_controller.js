@@ -1,11 +1,19 @@
 const { response } = require('../app');
 require('dotenv').config();
+var paypal = require('paypal-rest-sdk');
 const accountSid = process.env.TWILIO_ACCOUNT_SID;
 const authToken = process.env.TWILIO_TOKEN;
 const serviceToken = process.env.Service_ID;
 const client = require("twilio")(accountSid, authToken, serviceToken);
+const paypalcilent=process.env.PAYPAL_CLIENT_ID;
+const paypalsecret=process.env.PAYPAL_SECRET_ID;
+paypal.configure({
+  'mode': 'sandbox',
+  'client_id':paypalcilent ,
+  'client_secret':paypalsecret
+});
 const { Getcategorydata } = require('../Model/admin_helper');
-const { userSignup, Dologin, showproducts, productAlldetails, Getcategory, filterBycategory, productcart, Getcartproducts, changeproductquantity, removeproduct_cart, gettotalamount, placeorder, getCartproductlist, getorderdetails, Cancelproduct_order, findByNumber, getAllorderproducts, product_wishlist, get_productwishlist, get_userdata, generateRazorpay, verifyPayment, changepaymentStatus, adduseraddress, GetUseraddress, changepassword, getoffers, couponmanagement, getsearchproduct, showproductshome, getPriceFilter, paginatorCount, getTenProducts } = require('../Model/user_helper');
+const { userSignup, Dologin, showproducts, productAlldetails, Getcategory, filterBycategory, productcart, Getcartproducts, changeproductquantity, removeproduct_cart, gettotalamount, placeorder, getCartproductlist, getorderdetails, Cancelproduct_order, findByNumber, getAllorderproducts, product_wishlist, get_productwishlist, get_userdata, generateRazorpay, verifyPayment, changepaymentStatus, adduseraddress, GetUseraddress, changepassword, getoffers, couponmanagement, getsearchproduct, showproductshome, getPriceFilter, paginatorCount, getTenProducts, getPricesort, getsortProducts } = require('../Model/user_helper');
 
 var forgote;
 let usersession;
@@ -154,87 +162,90 @@ module.exports = {
 
     let users = req.session.users
     console.log(users);
-  let  showproduct=await showproducts()
-      let count = 0
+    let showproduct = await showproducts()
+    let count = 0
+    showproduct.forEach(showproduct => {
+      count++
+    });
+    console.log(req.query.id,);
+
+
+    let pageCount = await paginatorCount(count)
+    showproduct = await getTenProducts(req.query.id)
+
+    if (req.query.minimum) {
+      let minimum = req.query.minimum.slice(1)
+      let maximum = req.query.maximum.slice(1)
+      console.log(minimum, maximum);
+      let arr = []
+      showproduct = await showproducts()
+
       showproduct.forEach(showproduct => {
-        count++
+
+        arr.push(showproduct)
+
       });
-      console.log(req.query.id,);
-    
+      showproduct = arr;
+    }
 
-      let pageCount = await paginatorCount(count)
-      showproduct = await getTenProducts(req.query.id)
+    Getcategory().then((catdatas) => {
+      getoffers().then((coupondata) => {
 
-      if (req.query.minimum) {
-        let minimum = req.query.minimum.slice(1)
-        let maximum = req.query.maximum.slice(1)
-        console.log(minimum,maximum);
-        let arr = []
-        showproduct = await showproducts()
+        res.render('user/showproduct', { user: true, showproduct, users, catdatas, pageCount, count, coupondata })
 
-        showproduct.forEach(showproduct => {
-
-          arr.push(showproduct)
-
-        });
-        showproduct = arr;
-      }
-
-      Getcategory().then((catdatas) => {
-
-
-        res.render('user/showproduct', { user: true, showproduct, users, catdatas, pageCount,count })
 
       })
 
 
-     
+
+
+    })
+
+
+
 
 
   },
   async filterproduct(req, res) {
     let users = req.session.users
     let name = req.body;
-   let showproduct=await filterBycategory(name)
-      let count = 0
+    let showproduct = await filterBycategory(name)
+    let count = 0
+    showproduct.forEach(showproduct => {
+      count++
+    });
+
+    let pageCount = await paginatorCount(count)
+    // showproduct = await getTenProducts(req.query.id)
+
+    if (req.query.minimum) {
+      let minimum = req.query.minimum.slice(1)
+      let maximum = req.query.maximum.slice(1)
+      let arr = []
+      showproduct = await showproducts()
+
       showproduct.forEach(showproduct => {
-        count++
+
+        arr.push(showproduct)
+
       });
-
-      let pageCount = await paginatorCount(count)
-      // showproduct = await getTenProducts(req.query.id)
-
-      if (req.query.minimum) {
-        let minimum = req.query.minimum.slice(1)
-        let maximum = req.query.maximum.slice(1)
-        let arr = []
-        showproduct = await showproducts()
-
-        showproduct.forEach(showproduct => {
-
-          arr.push(showproduct)
-
-        });
-        showproduct = arr;
-      }
+      showproduct = arr;
+    }
 
 
-      Getcategory().then((catdatas) => {
+    Getcategory().then((catdatas) => {
+      getoffers().then((coupondata) => {
+
+        res.render('user/showproduct', { user: true, showproduct, users, catdatas, pageCount, count, coupondata })
 
 
-        res.render('user/showproduct', { user: true, showproduct, users, catdatas,pageCount,count })
-
-      })    
-    //   .catch(() => {
-
-    //     res.render('user/showproduct', { user: true, showproduct: false, users, catdatas })
-
-    //   })
+      })
 
 
 
 
-    // })
+    })
+
   },
   cartaddd(req, res) {
     productcart(req.params.id, req.session.users._id).then(() => {
@@ -263,7 +274,15 @@ module.exports = {
     let users = req.session.users
     gettotalamount(req.session.users._id).then((totalprice) => {
       Getcartproducts(req.session.users._id).then((product) => {
-        res.render('user/checkout', { user: true, users, totalprice, product })
+        get_userdata(req.session.users._id).then((userdata) => {
+
+
+          res.render('user/checkout', { user: true, users, totalprice, product,userdata })
+
+
+        })
+        
+       
 
       })
 
@@ -280,33 +299,102 @@ module.exports = {
       finalprice = a;
 
     }
-
-
-
     getCartproductlist(req.body.userId).then((product) => {
       totalprice = gettotalamount(req.body.userId).then((totalprice) => {
         placeorder(req.body, product, finalprice).then((orderId) => {
+          let order=orderId 
           if (req.body['payment_method'] === 'COD') {
-            res.json({ CODsucess: true })
+            res.json( {status:"COD"})
 
-          } else {
+          } else if (req.body['payment_method'] === 'Razorpay') {
             generateRazorpay(orderId, totalprice).then((response) => {
-              res.json(response)
+              res.json({status:"razorpay",response})
+
+            })
+
+          } else if (req.body['payment_method'] === 'paypal') {
+           
+            var create_payment_json = {
+              "intent": "authorize",
+              "payer": {
+                "payment_method": "paypal"
+              },
+              "redirect_urls": {
+                "return_url": "http://localhost:3000/orderplaced",
+                "cancel_url": "http://cancel.url"
+              },
+              "transactions": [{
+                
+                "amount": {
+                  "currency": "USD",
+                  "total": totalprice
+                },
+                "description": "This is the payment description."
+              }]
+            };
+            
+
+
+            paypal.payment.create(create_payment_json, function (error, payment) {
+              if (error) {
+                console.log(error.response);
+                throw error;
+              } else {
+                for (var index = 0; index < payment.links.length; index++) {
+                  //Redirect user to this endpoint for redirect url
+                  if (payment.links[index].rel === 'approval_url') {
+                    console.log(payment.links[index].href);
+                    // res.redirect(payment.links[index].href);
+                    res.json({status:"paypal",forwardLink: payment.links[index].href});
+
+                  }
+                }
+                console.log(payment);
+              }
+            });
+            console.log(order,"???????????????????????????????????????????");
+            changepaymentStatus(order).then(()=>{
 
             })
 
           }
 
-
-
-
         })
       })
     })
-    console.log(req.body);
+   
 
 
   },
+  paypalSucces: (req, res) => {
+    const payerId = req.query.PayerID;
+    const paymentId = req.query.paymentId;
+
+    const execute_payment_json = {
+      "payer_id": payerId,
+      "transactions": [{
+        "amount": {
+          "currency": "USD",
+          "total": totalprice
+        }
+      }]
+    }
+    
+    paypal.payment.execute(paymentId, execute_payment_json, function (err, paymemt) {
+      if (error) {
+        console.log(error.response);
+        throw error;
+      } else {
+        console.log(JSON.stringify(payment));
+        res.redirect('/orderplaced');
+      }
+    })
+
+
+  },
+
+
+
   orders(req, res) {
     let users = req.session.users
     getorderdetails(req.session.users._id).then((orders) => {
@@ -333,6 +421,7 @@ module.exports = {
 
   otp_authentication(req, res) {
     number = req.body.phone;
+
     if (number.substring(0, 3) !== '+91') {
       number = `+91${number}`;
     }
@@ -510,59 +599,105 @@ module.exports = {
 
     })
   },
-   async priceFilter (req, res) {
+  async priceFilter(req, res) {
     console.log(req.body);
     let users = req.session.users
 
 
-   let showproduct=await getPriceFilter (req.body.min, req.body.max)
+    let showproduct = await getPriceFilter(req.body.min, req.body.max)
 
 
-      let count = 0
-      showproduct. forEach (showproduct => {
-        count++
+    let count = 0
+    showproduct.forEach(showproduct => {
+      count++
+    });
+
+    let pageCount = await paginatorCount(count)
+    // showproduct = await getTenProducts(req.query.id)
+
+    if (req.query.minimum) {
+      let minimum = req.query.minimum.slice(1)
+      let maximum = req.query.maximum.slice(1)
+      let arr = []
+      showproduct = await showproducts()
+
+      showproduct.forEach(showproduct => {
+
+        arr.push(showproduct)
+
       });
+      showproduct = arr;
+    }
 
-      let pageCount = await paginatorCount(count)
-      // showproduct = await getTenProducts(req.query.id)
+    Getcategory().then((catdatas) => {
 
-      if (req.query.minimum) {
-        let minimum = req.query.minimum.slice(1)
-        let maximum = req.query.maximum.slice(1)
-        let arr = []
-        showproduct = await showproducts()
+      getoffers().then((coupondata) => {
 
-        showproduct.forEach(showproduct => {
+        res.render('user/showproduct', { user: true, showproduct, users, catdatas, pageCount, count, coupondata })
 
-          arr.push(showproduct)
-
-        });
-        showproduct = arr;
-      }
-
-      Getcategory().then((catdatas) => {
-
-        res.render('user/showproduct', { user: true, showproduct, users, catdatas,pageCount,count })
 
       })
 
-    // }).catch(() => {
-
-    //   Getcategory().then((catdatas) => {
-
-    //     res.render('user/showproduct', { user: true, showproduct: false, users, catdatas })
-
-    //   })
 
 
-    // })
+    })
 
-  }
+
+
+  },
+
+  async pricesorting(req, res) {
+
+
+    let users = req.session.users
+
+
+    let showproduct = await getPricesort()
+   
+
+
+    let count = 0
+    showproduct.forEach(showproduct => {
+      count++
+    });
+
+    let pageCount = await paginatorCount(count)
+    showproduct = await getsortProducts(req.query.id)
+   
+
+    if (req.query.minimum) {
+      let minimum = req.query.minimum.slice(1)
+      let maximum = req.query.maximum.slice(1)
+      let arr = []
+      showproduct = await showproducts()
+
+      showproduct.forEach(showproduct => {
+
+        arr.push(showproduct)
+
+      });
+      showproduct = arr;
+    }
+
+    Getcategory().then((catdatas) => {
+
+      getoffers().then((coupondata) => {
+
+        res.render('user/showproduct', { user: true, showproduct, users, catdatas, pageCount, count, coupondata })
+
+
+      })
+
+
+
+    })
+
+
+
+  },
+ 
 
 
 
 
 }
-
-
-

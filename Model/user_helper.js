@@ -1,4 +1,5 @@
 var db = require('./Connection')
+require('dotenv').config();
 var collections = require('./Collection')
 const bcrypt = require('bcrypt')
 const { ObjectId } = require('mongodb')
@@ -6,7 +7,11 @@ const { response } = require('../app')
 const { Product_Collecction } = require('./Collection')
 const { promiseImpl } = require('ejs')
 const Razorpay = require('razorpay')
-var instance = new Razorpay({ key_id: 'rzp_test_2OQT5vz8WgTGvO', key_secret: 'G6vMKKvkkG7mTw32cfp1ziP3' })
+const razorpaykey=process.env.RAZORPAY_KEY_ID;
+const razorpaysecret=process.env.RAZORPAY_SECRET_ID;
+
+var instance = new Razorpay({ key_id:razorpaykey , key_secret:razorpaysecret  })
+
 
 module.exports = {
 
@@ -73,7 +78,7 @@ module.exports = {
     showproducts: () => {
         return new Promise(async (resolve, reject) => {
 
-            let showproduct =await db.get().collection(collections.Product_Collecction).find().toArray();
+            let showproduct = await db.get().collection(collections.Product_Collecction).find().toArray();
             console.log(showproduct);
             resolve(showproduct)
         })
@@ -591,29 +596,30 @@ module.exports = {
     adduseraddress: (address) => {
         console.log(address);
         return new Promise(async (resolve, reject) => {
-          db.get().collection(collections.USER_Collection).updateOne({ _id: ObjectId(address.userId) },
-            {
-              $push: {
-                'Addresses': {
-                  'Address': address.Address,
-                  'City': address.city,
-                  'State': address.State,
-                  'Postcode': address.Postcode,
-                  'phonenum': address.phonenumber,
-                  'companyname': address.companyname,
-                  'Addemail': address.email,
+            db.get().collection(collections.USER_Collection).updateOne({ _id: ObjectId(address.userId) },
+                {
+                    $push: {
+                        'Addresses': {
+                            'addressId':ObjectId(),
+                            'Address': address.Address,
+                            'City': address.city,
+                            'State': address.State,
+                            'Postcode': address.Postcode,
+                            'phonenum': address.phonenumber,
+                            'companyname': address.companyname,
+                            'Addemail': address.email,
+                        }
+                    }
                 }
-              }
-            }
-          ).then(() => {
-            resolve()
-          }).catch((error) => {
-            reject(error)
-          })
+            ).then(() => {
+                resolve()
+            }).catch((error) => {
+                reject(error)
+            })
         })
-      },
-      
-      
+    },
+
+
     GetUseraddress: (userId) => {
         return new Promise((resolve, reject) => {
             db.get().collection(collections.USER_Collection).findOne({ _id: ObjectId(userId) }).then((userdata) => {
@@ -743,18 +749,18 @@ module.exports = {
     },
     paginatorCount: (count) => {
         return new Promise((resolve, reject) => {
-          if (count < 0) {
-            reject(new Error("Count must be a positive number")); 
-          } else {
-            let pages = Math.ceil(count / 8);
-            let arr = [];
-            for (let i = 1; i <= pages; i++) {
-              arr.push(i);
+            if (count < 0) {
+                reject(new Error("Count must be a positive number"));
+            } else {
+                let pages = Math.ceil(count / 8);
+                let arr = [];
+                for (let i = 1; i <= pages; i++) {
+                    arr.push(i);
+                }
+                resolve(arr);
             }
-            resolve(arr); 
-          }
         });
-      },
+    },
     getTenProducts: (Pageno) => {
         return new Promise(async (resolve, reject) => {
             let val = (Pageno - 1) * 8
@@ -765,6 +771,27 @@ module.exports = {
         })
     },
 
+    getPricesort: () => {
+        return new Promise(async (resolve, reject) => {
+            let sort = await db.get().collection(collections.Product_Collecction).find().sort({ price: 1 }).toArray()
+            console.log(sort, "LLLLLLLLLLLLLLLLllllllllllllllllllllllllllllllllllllllllllllllll");
+
+            resolve(sort)
+        })
+
+    },
+    getsortProducts:(Pageno)=>{
+        return new Promise(async (resolve, reject) => {
+            let val = (Pageno - 1) * 8
+            let AllProducts_ = await db.get().collection(collections.Product_Collecction).find().sort({ _id: -1 }).sort({ price: 1 }).skip(val).limit(8).toArray()
+
+
+            resolve(AllProducts_)
+        })
+
+    }
+   
+   
 
 
 
