@@ -141,15 +141,14 @@
         </form>
     </div>
     <strong class="ml-120">select Address</strong>
-  
     <div class="col-lg-12 col-md-12">
         <div class="container d-flex">
-            <%userdata.Addresses.forEach(function(userdata, i){ %>
+            <% if(userdata.Addresses && userdata.Addresses.length > 0){ %>
+            <% userdata.Addresses.forEach(function(userdata, i){ %>
             <div class="form-check">
                 <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="<%= userdata.addressId%>" onclick="fillAddressData('<%= JSON.stringify(userdata) %>')">
-
-               <label class="form-check-label" for="exampleRadios1">
-                <address>
+                <label class="form-check-label" for="exampleRadios1">
+                    <address>
                         <p><strong><%= userdata.username %></strong></p>
                         <p><%= userdata.companyname %> <br><p> <%= userdata.Address %></p></p>
                         <p>Mobile:<%= userdata.phonenum %></p>
@@ -157,15 +156,16 @@
                         <p>Pincode:<%= userdata.Postcode %></p>
                         <p>City:<%= userdata.City %></p>
                         <p>State:<%= userdata.State %></p>
-                    
-                </address>
-
-               </label>
+                    </address>
+                </label>
             </div>
             <% }); %>
+            <% } else { %>
+            <p>No addresses found.</p>
+            <% } %>
+        </div>
     </div>
-</div>
-
+    
 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>  
 

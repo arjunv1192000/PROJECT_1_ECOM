@@ -14,8 +14,13 @@
                             <div id="lg1" class="tab-pane active">
                                 <div class="login-form-container">
                                     <div class="login-register-form">
+                                        <% if(locals.error) { %>
+                                            <div class="alert alert-danger" role="alert">
+                                                <%= error %>
+                                            </div>
+                                            <% } %>
                                                 <form action="/verifyOTP" method="post">
-                                                    <input type="phone" name="otp" placeholder="enter otp">
+                                                    <input type="tel" name="otp" placeholder="enter otp">
                                                     
                                                     
                                                     <div class="button-box">

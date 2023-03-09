@@ -13,7 +13,7 @@ paypal.configure({
   'client_secret':paypalsecret
 });
 const { Getcategorydata } = require('../Model/admin_helper');
-const { userSignup, Dologin, showproducts, productAlldetails, Getcategory, filterBycategory, productcart, Getcartproducts, changeproductquantity, removeproduct_cart, gettotalamount, placeorder, getCartproductlist, getorderdetails, Cancelproduct_order, findByNumber, getAllorderproducts, product_wishlist, get_productwishlist, get_userdata, generateRazorpay, verifyPayment, changepaymentStatus, adduseraddress, GetUseraddress, changepassword, getoffers, couponmanagement, getsearchproduct, showproductshome, getPriceFilter, paginatorCount, getTenProducts, getPricesort, getsortProducts } = require('../Model/user_helper');
+const { userSignup, Dologin, showproducts, productAlldetails, Getcategory, filterBycategory, productcart, Getcartproducts, changeproductquantity, removeproduct_cart, gettotalamount, placeorder, getCartproductlist, getorderdetails, Cancelproduct_order, findByNumber, getAllorderproducts, product_wishlist, get_productwishlist, get_userdata, generateRazorpay, verifyPayment, changepaymentStatus, adduseraddress, GetUseraddress, changepassword, getoffers, couponmanagement, getsearchproduct, showproductshome, getPriceFilter, paginatorCount, getTenProducts, getPricesort, getsortProducts,getSingleorder,Returnproduct_order } = require('../Model/user_helper');
 
 var forgote;
 let usersession;
@@ -275,9 +275,10 @@ module.exports = {
     gettotalamount(req.session.users._id).then((totalprice) => {
       Getcartproducts(req.session.users._id).then((product) => {
         get_userdata(req.session.users._id).then((userdata) => {
+          console.log(userdata,">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
 
 
-          res.render('user/checkout', { user: true, users, totalprice, product,userdata })
+          res.render('user/checkout', { user: true, users, totalprice, product,userdata})
 
 
         })
@@ -448,7 +449,7 @@ module.exports = {
         });
     })
       .catch((err) => {
-        res.render('user/OTP', { error: err });
+        res.render('user/OTP', { error: 'Invalid phone number' });
       });
 
   },
@@ -472,7 +473,7 @@ module.exports = {
 
         } else {
           console.log('OTP not matched');
-          res.render('user/verificationotp', { error: 'invalied OTP' });
+          res.render('user/verificationotp', { error: 'Invalied OTP' });
         }
       })
   },
@@ -506,6 +507,7 @@ module.exports = {
   userAcdata(req, res) {
     let users = req.session.users
     get_userdata(req.session.users._id).then((userdata) => {
+      console.log(userdata,">>>>>>>>>>>>>>>>>>>>>>>");
 
       getorderdetails(req.session.users._id).then((orders) => {
 
@@ -603,8 +605,9 @@ module.exports = {
     console.log(req.body);
     let users = req.session.users
 
-
     let showproduct = await getPriceFilter(req.body.min, req.body.max)
+
+    console.log(showproduct,"WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW");
 
 
     let count = 0
@@ -695,7 +698,35 @@ module.exports = {
 
 
   },
- 
+
+  shippingdetails(req, res) {
+    let users = req.session.users
+    getAllorderproducts(req.params.id).then((singleproduct) => {
+
+      getSingleorder(req.params.id).then((order)=>{
+
+        res.render('user/shipping_details', { user: true, singleproduct,order, users })
+
+      })
+      
+
+
+     
+
+
+
+    })
+
+  },
+  
+  orderreturn(req,res){
+    Returnproduct_order(req.params.id, req.body.status).then(() => {
+      res.redirect('/userorders')
+
+
+    })
+
+  }
 
 
 

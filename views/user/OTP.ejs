@@ -14,8 +14,13 @@
                             <div id="lg1" class="tab-pane active">
                                 <div class="login-form-container">
                                     <div class="login-register-form">
+                                        <% if(locals.error) { %>
+                                            <div class="alert alert-danger" role="alert">
+                                                <%= error %>
+                                            </div>
+                                            <% } %>
                                                 <form action="/numberverification" method="post">
-                                                    <input type="phone" name="phone" placeholder="">
+                                                    <input type="tel" name="phone" placeholder="">
                                                     
                                                     <div class="button-box">
                                                         <div class="login-toggle-btn">

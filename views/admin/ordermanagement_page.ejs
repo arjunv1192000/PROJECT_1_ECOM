@@ -53,6 +53,8 @@
                         <a href="/admin/orderproduct/<%= data._id %>"><button class="badge btn-success"
                                 id="my-button">Products</button></a>
                     </td>
+
+                    <% if (data.status !=="cancel order") { %>
                     <td><%= data.shippingStatus %>
 
                         <form action="/admin/shippingStatus/<%= data._id %>" method="post">
@@ -65,6 +67,7 @@
                         
                       </td>
                     </form>
+                    <% } %>
                     
                 </tr>
                 <% }); %>

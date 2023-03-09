@@ -46,7 +46,8 @@
                                                         <th>payment</th>
                                                         <th>Total</th>
                                                         <th>Status</th>
-                                                        <th>Action</th>
+                                                        <th>items</th>
+                                                        <th>shipping details</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -58,6 +59,7 @@
                                                         <td><%= data.totaAmount %></td>
                                                         <td><%= data.status %></td>
                                                         <td><a href="/orderproduct/<%= data._id %>" class="check-btn sqr-btn ">View</a></td>
+                                                        <td><a href="/shippment/<%= data._id %>" class="check-btn sqr-btn ">Track your Order</a></td>
                                                     </tr>
                                                     <% }); %>
                                                     
@@ -83,9 +85,9 @@
                                             <p>City:<%= userdata.City %></p>
                                             <p>State:<%= userdata.State %></p>
                                         </address>
-                                        
+                                         
                                     </div>
-                                    <% }); %>
+                                    <% }); %>   
                                 </div>
                                
                             </div>

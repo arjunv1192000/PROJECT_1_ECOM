@@ -60,7 +60,7 @@ module.exports = {
                         if (status) {
                             resolve(user)
                         } else {
-                            reject({ error: "password" })
+                            reject({ error: "Invalid password" })
                         }
 
                     })
@@ -69,7 +69,7 @@ module.exports = {
 
 
             } else {
-                reject({ error: "Email" })
+                reject({ error: "Invalid Email" })
             }
 
 
@@ -322,8 +322,9 @@ module.exports = {
     placeorder: (order, product, total) => {
         return new Promise(async (resolve, reject) => {
             console.log(order, product, total);
-            let status = order['payment_method'] === 'COD' ? 'order placed' : 'order pending'
-            let shippingStatus = 'orderd'
+            let status = order['payment_method'] === 'COD' ? 'Order placed' : 'Order pending'
+            let shippingStatus = 'Orderd'
+            let Return="pending"
             let orderObj = {
                 deliveryDetails: {
                     Name: order.name,
@@ -340,7 +341,8 @@ module.exports = {
                 totaAmount: total,
                 status: status,
                 shippingStatus: shippingStatus,
-                date: new Date()
+                date: new Date(),
+                order_return:Return
             }
             placeorders = await db.get().collection(collections.ORDER_Collection).insertOne(orderObj).then((result) => {
 
@@ -527,9 +529,11 @@ module.exports = {
     get_userdata: (userId) => {
         console.log(userId);
         return new Promise(async (resolve, reject) => {
-            let userdata = await db.get().collection(collections.USER_Collection).findOne({ _id: ObjectId(userId) })
-            console.log(userdata);
-            resolve(userdata)
+            let userdata = await db.get().collection(collections.USER_Collection).findOne({ _id: ObjectId(userId) }).then((userdata)=>{
+                resolve(userdata)
+
+            })
+           
         })
     },
     generateRazorpay: (orderId, totalprice) => {
@@ -663,45 +667,50 @@ module.exports = {
         console.log(total);
         total = parseInt(total)
         return new Promise(async (resolve, reject) => {
-            const coupon = await db.get().collection(collections.COUPON_Collection).aggregate([
-                {
-                    $match: {
-                        $and: [
-                            { CouponCode: code },
-                            { Maximum: { $gte: total } },
-                            { dateofexpired: { $gte: new Date() } },
-                            { dateofpublish: { $lte: new Date() } }
-                        ]
-                    }
-                },
-                {
-                    $project: {
-                        _id: null,
-                        offerAmount: {
-                            $subtract: [
-                                total,
-                                {
-                                    $divide: [
-                                        { $multiply: [total, "$discount"] },
-                                        100
-                                    ]
-                                }
+            try {
+                const coupon = await db.get().collection(collections.COUPON_Collection).aggregate([
+                    {
+                        $match: {
+                            $and: [
+                                { CouponCode: code },
+                                { Maximum: { $gte: total } },
+                                { dateofexpired: { $gte: new Date() } },
+                                { dateofpublish: { $lte: new Date() } }
                             ]
                         }
+                    },
+                    {
+                        $project: {
+                            _id: null,
+                            offerAmount: {
+                                $subtract: [
+                                    total,
+                                    {
+                                        $divide: [
+                                            { $multiply: [total, "$discount"] },
+                                            100
+                                        ]
+                                    }
+                                ]
+                            }
+                        }
                     }
+    
+                ]).toArray()
+                console.log(coupon, ">>>>>>>>>>>>>>>>>>>>>");
+                if (coupon.length != 0) {
+                    resolve(coupon[0]?.offerAmount)
+                } else {
+                    reject()
                 }
-
-            ]).toArray()
-            console.log(coupon, ">>>>>>>>>>>>>>>>>>>>>");
-            if (coupon.length != 0) {
-                resolve(coupon[0]?.offerAmount)
-            } else {
-                reject()
+            } catch (error) {
+                reject(error)
             }
-
+    
         })
-
+        .catch(error => console.log(error))
     },
+    
     getsearchproduct: (value) => {
         console.log(value, ">>>>>>>>>>>>>>>>>>>>>>>>");
         return new Promise((resolve, reject) => {
@@ -789,8 +798,38 @@ module.exports = {
             resolve(AllProducts_)
         })
 
-    }
-   
+    },
+
+    getSingleorder: (orderId) => {
+        return new Promise((resolve, reject) => {
+            db.get().collection(collections.ORDER_Collection).findOne({ _id: ObjectId(orderId) }).then((orderdata) => {
+                resolve(orderdata)
+
+            })
+
+        })
+
+    },
+    Returnproduct_order: (Id, Return) => {
+        console.log(Return);
+        if (Return == 'pending') {
+            Return= 'processing'
+        }
+        return new Promise((resolve, reject) => {
+            db.get().collection(collections.ORDER_Collection).updateOne({ _id: ObjectId(Id) }, {
+                $set: {
+                    order_return:Return
+
+                }
+            }).then((response) => {
+                console.log(response);
+                resolve(response)
+            })
+
+
+        })
+
+    },
    
 
 

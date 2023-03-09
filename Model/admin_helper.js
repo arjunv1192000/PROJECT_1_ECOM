@@ -637,7 +637,7 @@ module.exports = {
         })
     },
     updateshippingstatus: (Id, shipping) => {
-        if (shipping == 'orderd') {
+        if (shipping == 'Orderd') {
             shipping = 'delivered'
         }
         return new Promise((resolve, reject) => {

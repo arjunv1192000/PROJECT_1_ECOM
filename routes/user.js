@@ -1,5 +1,5 @@
 var express = require('express');
-const { usersignup,signup,uselog,homerender,acclog,productpage,sessioncheck,acclogout ,nocache,loginredirect,cartpage,listproductpage,filterproduct,cartaddd,quantityproduct,removeitem,checkout,orderplace,orders,cancelorder,otpnumberpage,otp_authentication,otpverify,userorderproduct,addtowishlist,wishlistpage,userAcdata,sucesspage,paymentVerify,getadd_page,Add_address,gettcurrentAddress,password,offerpage,checkcoupon,searchproduct,priceFilter,pricesorting,paypalSucces} = require('../Controller/user_controller');
+const { usersignup,signup,uselog,homerender,acclog,productpage,sessioncheck,acclogout ,nocache,loginredirect,cartpage,listproductpage,filterproduct,cartaddd,quantityproduct,removeitem,checkout,orderplace,orders,cancelorder,otpnumberpage,otp_authentication,otpverify,userorderproduct,addtowishlist,wishlistpage,userAcdata,sucesspage,paymentVerify,getadd_page,Add_address,gettcurrentAddress,password,offerpage,checkcoupon,searchproduct,priceFilter,pricesorting,shippingdetails,orderreturn} = require('../Controller/user_controller');
 var router = express.Router();
 var user_controller=require('../Controller/user_controller')
 
@@ -73,6 +73,11 @@ router.post('/search',searchproduct)
 router.post('/price',priceFilter)
 
 router.post('/pricesort',pricesorting)
+
+
+router.get('/shippment/:id',shippingdetails)  
+
+router.post('/returnorder/:id',orderreturn)
 
  
 // router.get('/sucess',paypalSucces)
