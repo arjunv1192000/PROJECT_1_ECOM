@@ -28,8 +28,7 @@
                                         <td class="product-name"><a href="#">
                                                 <%= cart.product.productname %>
                                             </a></td>
-                                        <td class="product-price-cart"><span class="amount" id="proprice">₹<%=
-                                                    cart.product.price %>
+                                        <td class="product-price-cart"><span class="amount" id="proprice">₹<%=cart.product.price %>
                                             </span></td>
 
                                         <td class="product-quantity">
@@ -75,7 +74,7 @@
                             <div class="title-wrap">
                                 <h4 class="cart-bottom-title section-bg-gary-cart">Cart Total</h4>
                             </div>
-                            <h5>Total products <span ><%= totalprice %></span></h5>
+                            <h5>Total products <span id="totalprice" ><%= totalprice %></span></h5>
                             <div class="total-shipping">
 
                                 <h4 class="grand-totall-title">Grand Total <span id="totalprice"><%= totalprice %></span> </h4>

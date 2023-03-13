@@ -12,6 +12,7 @@
                                     Dashboard</a>
                                 <a href="#orders" data-bs-toggle="tab"><i class="fa fa-cart-arrow-down"></i> Orders</a>
                                 <a href="#address-edit" data-bs-toggle="tab"><i class="fa fa-map-marker"></i> address</a>
+                                <a href="/userwallet" ><i class="fa fa-map-marker"></i> wallet</a>
                                 <a href="/uselogout"><i class="fa fa-sign-out"></i> Logout</a>
                             </div>
                         </div>
@@ -45,7 +46,6 @@
                                                         <th>Date</th>
                                                         <th>payment</th>
                                                         <th>Total</th>
-                                                        <th>Status</th>
                                                         <th>items</th>
                                                         <th>shipping details</th>
                                                     </tr>
@@ -57,7 +57,7 @@
                                                         <td><%= data.date %></td>
                                                         <td><%= data.paymentMethod %></td>
                                                         <td><%= data.totaAmount %></td>
-                                                        <td><%= data.status %></td>
+                                                        
                                                         <td><a href="/orderproduct/<%= data._id %>" class="check-btn sqr-btn ">View</a></td>
                                                         <td><a href="/shippment/<%= data._id %>" class="check-btn sqr-btn ">Track your Order</a></td>
                                                     </tr>

@@ -1,8 +1,7 @@
 <section class=" ml-300 mt-5" id="footer">
     <div class="btns">
   
-         <a href="/admin/getproductof"> <button class="btn btn-success mt-5">Product</button></a>
-         <a href="/admin/category-page"> <button class="btn btn-success mt-5">Category</button></a>
+         <a href="/admin/getproductof"> <button class="btn btn-success mt-5">Add Product offer</button></a>
     </div>
   
          <table class="table table-bordered" id="example">
@@ -11,6 +10,7 @@
                       <th scope="col">Product ID</th>
                       <th scope="col">Discount</th>
                       <th scope="col">date of expired</th>
+                      <th scope="col">Action</th>
                      
                     </tr>
                   </thead>
@@ -20,12 +20,11 @@
                       
                       <td ><%= product.proId %></td>
                       <td><%= product.proDiscount %></td>
-                      <td><%= product.dateofexpired%></td>
+                      <td><%= product.dateofexpired.toISOString().split('T')[0];%></td>
                      
                      
                       <td>
-                          
-
+                        <a href="/admin/deleteproductoffer/<%=product.proId%>"><button class="badge btn-danger" id="my-button" onclick="return confirm('Are you sure you want to delete this file? This action cannot be undone.')",myFunction(this.id)>Remove</button></a>
                       </td>
                     </tr>
                     <% }); %>
@@ -33,9 +32,48 @@
                  
   
                 </table>
-                
-               
   </section>
+  <section class=" ml-300 mt-5" id="footer">
+    <div class="btns">
+  
+         <a href="/admin/category-page"> <button class="btn btn-success mt-5">Add Category offer</button></a>
+    </div>
+  
+         <table class="table table-bordered" id="example">
+                  <thead>
+                    <tr>
+                      <th scope="col">Category</th>
+                      <th scope="col">Discount</th>
+                      <th scope="col">date of expired</th>
+                      <th scope="col">Action</th>
+                     
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <% catoff.forEach(function(product, i){ %>
+                    <tr >
+                      
+                      <td ><%= product.category %></td>
+                      <td><%= product.proDiscount %></td>
+                      <td><%= product.dateofexpired.toISOString().split('T')[0];%></td>
+                     
+                     
+                      <td>
+                        <a href="/admin/deletecategoryoffer/<%=product.category%>"><button class="badge btn-danger" id="my-button" onclick="return confirm('Are you sure you want to delete this file? This action cannot be undone.')",myFunction(this.id)>Remove</button></a>
+                      </td>
+                    </tr>
+                    <% }); %>
+                  </tbody>
+                 
+  
+                </table>
+  </section>
+  
+
+
+
+
+  
   
 
 

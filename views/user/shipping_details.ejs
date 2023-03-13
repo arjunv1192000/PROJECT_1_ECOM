@@ -14,7 +14,7 @@
                                     </span> </p>
                             </div>
                             <div>
-                                <!-- <h6 class="mb-0"> <a href="#">View Details</a> </h6> -->
+                               
                             </div>
                         </div>
                     </div>
@@ -25,7 +25,7 @@
                                     <h5 class="bold">
                                         <%= product.orders.productname %>
                                     </h5>
-                                    <p class="text-muted"> Qt: 1 item</p>
+                                    <p class="text-muted"> Qt: <%= product.orders.quantity %> item</p>
                                     <h4 class="mb-3"> ₹<%= product.orders.price %> <span class="small text-muted"> via (
                                                 <%= order.paymentMethod %>) </span></h4>
                                     <p class="text-muted">Tracking Status on: <span class="text-body">
@@ -45,12 +45,30 @@
                                     <h1>Order Cancellation Notification</h1>
                                             <p>We're sorry to inform you that your order has been cancelled.</p>
                                             <p>If you have any questions or concerns, please don't hesitate to contact us.</p>
+
+                             <% } else if (order.order_return==="confirm" ) { %>
+                                <header>
+                                    <h1>Order Return Confirmation</h1>
+                                  </header>
+                                  <main>
+                                    <h2>Your return request has been received</h2>
+                                    <p>Thank you for submitting your return request. We have received your request and are processing it. You will receive a confirmation email shortly.</p>
+                                    <h3>Return Details</h3>
+                                    <ul>
+                                      <li>Order Number:<%= order._id %></li>
+                                      <li>Return Reason: Item does not fit</li>
+                                      <li>Return Status: <%= order.shippingStatus %></li>
+                                    </ul>
+                                  </main>
+
+
+                                            
                                     
                                     <% } else { %>
                                         <ul id="progressbar-1" class="mx-0 mt-0 mb-5 px-0 pt-0 pb-4">
                                             <li class="step0 active" id="step1"><span
                                                     style="margin-left: 22px; margin-top: 12px;">PLACED</span></li>
-                                            <li class="step0 active text-center" id="step2"><span>CANCEL</span></li>
+                                            <li class="step0 active text-center" id="step2"><span>SHIPPED</span></li>
                                             <li class="step0 text-muted text-end" id="step3"><span
                                                     style="margin-right: 22px;">DELIVERED</span></li>
                                         </ul>
@@ -70,14 +88,20 @@
                                 <div class="border-start h-100"></div>
                                 <% } else if (order.status==="cancel order" ) { %>
 
+
+
                                 <%} else { %>
-                                    <form action="/returnorder/<%= order._id %>" method="post">
-                                    <input name="status" value="<%= order.order_return %>" hidden>
-                                      <button id="return-order-btn" type="submit" class="badge btn-danger " >Return Order</button>
+                                   
+                                      <form action="/returnorder/<%= order._id %>" method="post">
+                                        <input name="status" value="<%= order.order_return %>" hidden>
+                                        <button type="submit" class="badge btn-danger return-btn">Return Order</button>
+                                    </form>
                                        
-                                  </form>
-                                    <div class="border-start h-100"></div>
-                                    <h5 class="fw-normal mb-0"><a href="#!">view invoice</a></h5>
+
+                                    <form action="/setinvoice/<%= order._id %>" method="post">
+                                        <input name="status" value="<%= order.order_return %>" hidden>
+                                        <button type="submit" class="badge btn-warning return-btn">view invoice</button>
+                                    </form>
                                     <div class="border-start h-100"></div>
                                     <% } %>
                                         
@@ -115,32 +139,6 @@
             step.className = "step0 text-muted text-end";
         }
     }
-
-
-    
-var returnOrderBtn = document.getElementById('return-order-btn');
-
-
-returnOrderBtn.addEventListener('click', function(event) {
-  
-  event.preventDefault();
-
-  
-  Swal.fire({
-    title: 'Are you sure?',
-    text: 'Do you want to return this order?',
-    icon: 'warning',
-    showCancelButton: true,
-    confirmButtonColor: '#d33',
-    cancelButtonColor: '#3085d6',
-    confirmButtonText: 'Yes, return it!'
-  }).then((result) => {
-    // If the user clicked the "Yes" button, submit the form
-    if (result.isConfirmed) {
-      returnOrderBtn.closest('form').submit();
-    }
-  });
-});
 
 
 </script>

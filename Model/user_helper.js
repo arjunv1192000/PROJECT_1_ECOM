@@ -6,7 +6,7 @@ const { ObjectId } = require('mongodb')
 const { response } = require('../app')
 const { Product_Collecction } = require('./Collection')
 const { promiseImpl } = require('ejs')
-const Razorpay = require('razorpay')
+const Razorpay = require('razorpay');
 const razorpaykey=process.env.RAZORPAY_KEY_ID;
 const razorpaysecret=process.env.RAZORPAY_SECRET_ID;
 
@@ -208,30 +208,43 @@ module.exports = {
         prodetail.count = parseInt(prodetail.count)
         prodetail.quantity = parseInt(prodetail.quantity)
 
-        return new Promise((resolve, reject) => {
-            if (prodetail.count == -1 && prodetail.quantity == 1) {
-                db.get().collection(collections.CART_Collection).updateOne({ _id: ObjectId(prodetail.cart) },
-                    {
-                        $pull: { product: { item: ObjectId(prodetail.product) } }
+        return new Promise(async(resolve, reject) => {
+
+            let stock= await db.get().collection(collections.Product_Collecction).findOne({_id:ObjectId(prodetail.product)})
+                    console.log(stock.stocknumber);
+                    stock=stock.stocknumber
+                    if(stock<(prodetail.quantity + prodetail.count)){
+                        console.log("entered reject");
+                        return  reject({error:"this product only Stock",stock})
+                    }else{
+
+                        if (prodetail.count == -1 && prodetail.quantity == 1) {
+                            db.get().collection(collections.CART_Collection).updateOne({ _id: ObjectId(prodetail.cart) },
+                                {
+                                    $pull: { product: { item: ObjectId(prodetail.product) } }
+                                }
+                            ).then((response) => {
+                                resolve({ removeproduct: true })
+            
+                            })
+                        } else {
+                            db.get().collection(collections.CART_Collection).updateOne({ _id: ObjectId(prodetail.cart), 'product.item': ObjectId(prodetail.product) }, { $inc: { 'product.$.quantity': prodetail.count } }
+                            ).then((response) => {
+                                resolve(true)
+                            }).catch(() => {
+                                reject()
+                            })
+            
+                        }
+
                     }
-                ).then((response) => {
-                    resolve({ removeproduct: true })
-
-                })
-            } else {
-                db.get().collection(collections.CART_Collection).updateOne({ _id: ObjectId(prodetail.cart), 'product.item': ObjectId(prodetail.product) }, { $inc: { 'product.$.quantity': prodetail.count } }
-                ).then((response) => {
-                    resolve(true)
-                }).catch(() => {
-                    reject()
-                })
-
-            }
+           
 
 
         })
 
     },
+
     removeproduct_cart: (cartdata) => {
         return new Promise((resolve, reject) => {
             db.get().collection(collections.CART_Collection).updateOne({ _id: ObjectId(cartdata.cart) },
@@ -338,7 +351,7 @@ module.exports = {
                 userId: ObjectId(order.userId),
                 paymentMethod: order['payment_method'],
                 products: product,
-                totaAmount: total,
+                totaAmount:parseInt(total),
                 status: status,
                 shippingStatus: shippingStatus,
                 date: new Date(),
@@ -354,6 +367,22 @@ module.exports = {
                 reject()
             })
 
+        })
+
+
+    },
+    removeCartAfterOrder:(items,userId)=>{
+        return new Promise(async(resolve,reject)=>{
+            for(let i=0;i<items.length;i++){
+                items[i].quantity=Number(items[i].quantity)
+                await db.get().collection(collections.Product_Collecction).updateOne({_id:items[i].prod},{$inc:{stocknumber:-items[i].quantity}})
+                await db.get().collection(collections.Product_Collecction).updateOne({_id:items[i].prod},[{$set:{stock:{$cond:{if:{$lt:["$stocknumber",1]},then:false,else:true}}}}])
+                db.get().collection(collections.CART_Collection).deleteOne({user:ObjectId(userId)}).then(()=>{
+                    resolve()
+                }).catch((error=>{
+                    reject()
+                }))
+            }
         })
 
 
@@ -737,25 +766,30 @@ module.exports = {
 
     },
     getPriceFilter: (min, max) => {
-        console.log(min, max);
+        console.log(`Filtering products by price between ${min} and ${max}...`);
+        let minimum=parseInt(min)
+        let maximum=parseInt(max)
         return new Promise(async (resolve, reject) => {
-            let priceFilter = await db.get().collection(collections.Product_Collecction).aggregate([
-                {
-                    $match: {
-                        price: { $gte: min, $lte: max }
-                    }
-                },
-
-            ]).toArray()
-            if (priceFilter.length != 0) {
-                resolve(priceFilter)
-
+          try {
+            const priceFilter = await db.get().collection(collections.Product_Collecction).aggregate([
+              {
+                $match: {
+                  price: { $gte: minimum, $lte: maximum }
+                }
+              },
+            ]).toArray();
+            console.log(`Found ${priceFilter.length} products matching filter.`);
+            if (priceFilter.length > 0) {
+              resolve(priceFilter);
             } else {
-                reject()
+              reject(new Error('No products found'));
             }
-
-        })
-    },
+          } catch (error) {
+            console.error('Error filtering products by price:', error);
+            reject(new Error('Error filtering products by price'));
+          }
+        });
+      },
     paginatorCount: (count) => {
         return new Promise((resolve, reject) => {
             if (count < 0) {
@@ -783,7 +817,7 @@ module.exports = {
     getPricesort: () => {
         return new Promise(async (resolve, reject) => {
             let sort = await db.get().collection(collections.Product_Collecction).find().sort({ price: 1 }).toArray()
-            console.log(sort, "LLLLLLLLLLLLLLLLllllllllllllllllllllllllllllllllllllllllllllllll");
+            console.log(sort);
 
             resolve(sort)
         })
@@ -812,8 +846,8 @@ module.exports = {
     },
     Returnproduct_order: (Id, Return) => {
         console.log(Return);
-        if (Return == 'pending') {
-            Return= 'processing'
+        if (Return === 'pending') {
+            Return = 'processing'
         }
         return new Promise((resolve, reject) => {
             db.get().collection(collections.ORDER_Collection).updateOne({ _id: ObjectId(Id) }, {

@@ -3,7 +3,7 @@ const multer = require('multer');
 const upload = multer({ dest: './public/product_img/' });
 
 const {  Adminlogin,GetAlluserdata,adminadd,Getproductdata,adminedit,updateproduct,deleteproduct,addcategory,gettcategory,editsubmit,updatecategory,deletecategory, userblock,Getcategorydata,getAlluserorder,getAllorderproducts,productstatus,Cancelproduct_orders,addcoupons, Getcoupondata,updatecoupon,couponupdate,deletecoupon,getbannerTopage,TotalSales,TodayOrders, ThisWeekOrders, ThisMonthOrders,ThisYearOrders,
-  totalRevenue, TodayRevenue,weekRevenue, yearRevenue, totaluser,monthRevenue,chartcount, allSalesreport,updateshippingstatus,addprooffer,Makediscount, getproductoffer, addcatoffer, MakediscountonCat} = require('../Model/admin_helper')
+  totalRevenue, TodayRevenue,weekRevenue, yearRevenue, totaluser,monthRevenue,chartcount, allSalesreport,updateshippingstatus,addprooffer,Makediscount, getproductoffer, addcatoffer, MakediscountonCat,updatereturnstatus,returnorders,getcategoryoffer,deleteproductoffer,removeProductofferprice,deletecategoryoffer,removecategoryofferprice} = require('../Model/admin_helper')
 
 module.exports={
 
@@ -331,7 +331,27 @@ module.exports={
 
 getreportpage(req,res){
   allSalesreport().then((Allsales)=>{
-    res.render('admin/reportpage',{user:false,Allsales})
+
+    TotalSales().then((totalS)=>{
+
+      totalRevenue().then((totalR)=>{
+
+        totaluser().then((users)=>{
+
+
+          returnorders().then((numbers)=>{
+
+
+            res.render('admin/reportpage',{user:false,Allsales,totalS,totalR,users,numbers})
+
+
+          })
+
+        })
+    
+       })
+    })
+   
 
   })
  
@@ -339,6 +359,8 @@ getreportpage(req,res){
 },
 updateshipping(req,res){
   updateshippingstatus(req.params.id,req.body.Shippingstatus).then(()=>{
+
+
 
     res.redirect('/admin/orders')
 
@@ -369,15 +391,14 @@ getadmindashbord(req,res){
                     totaluser().then((users)=>{
 
 
-                      // monthRevenue().then((monthR)=>{
-
+                    
                         chartcount().then((data)=>{
 
 
                           res.render('admin/admindashboard', {user:false,totalS,todayS,weeks,monthS,yearS,totalR,todayR,weekR,yearR,users,data});
 
                         })
-                      // }) 
+                    
                     })
                   })
                 })
@@ -399,7 +420,13 @@ getadmindashbord(req,res){
 },
 getofferpage(req,res){
   getproductoffer().then((offer)=>{
-    res.render('admin/offeraddpage',{user:false,offer})
+
+    getcategoryoffer().then((catoff)=>{
+
+      res.render('admin/offeraddpage',{user:false,offer,catoff})
+  
+    })
+    
 
   })
 
@@ -407,8 +434,7 @@ getofferpage(req,res){
 },
 
 getaddproduct(req,res){
-
-  Getproductdata().then((product,)=>{
+  Getproductdata().then((product)=>{
     res.render('admin/productoffer',{user:false,product})
 
 
@@ -426,13 +452,16 @@ getprosubmit(req,res){
  },
 
  productoffersub(req,res){
-  console.log(req.body,"llllllllllllllllllllllllllllllllllllllll");
+  console.log(req.body);
   addprooffer(req.body).then(()=>{
     Makediscount(req.body).then(()=>{
       getproductoffer(req.body).then((offer)=>{
-        res.render('admin/offeraddpage',{user:false,offer})
+
+        getcategoryoffer().then((catoff)=>{
+        res.render('admin/offeraddpage',{user:false,offer,catoff})
   
       })
+    })
 
       
 
@@ -472,7 +501,44 @@ getprosubmit(req,res){
 
   })
 
- }
+ },
+ 
+ confirmreturn(req,res){
+  console.log(req.body.Shippingstatus);
+  console.log(req.body.order_return);
+  updatereturnstatus(req.params.id,req.body.Shippingstatus,req.body.order_return).then(()=>{
+
+    res.redirect('/admin/orders')
+
+  })
+
+},
+productofferremove(req,res){
+
+  deleteproductoffer(req.params.id).then(()=>{
+
+    removeProductofferprice(req.params.id).then(()=>{
+      res.redirect('/admin/offer-page')
+  
+    })
+   
+
+  })
+
+},
+categoryofferremove(req,res){
+
+  deletecategoryoffer(req.params.id).then(()=>{
+
+    removecategoryofferprice(req.params.id).then(()=>{
+      res.redirect('/admin/offer-page')
+  
+    })
+   
+
+  })
+
+}
 
  
 

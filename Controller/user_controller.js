@@ -13,7 +13,7 @@ paypal.configure({
   'client_secret':paypalsecret
 });
 const { Getcategorydata } = require('../Model/admin_helper');
-const { userSignup, Dologin, showproducts, productAlldetails, Getcategory, filterBycategory, productcart, Getcartproducts, changeproductquantity, removeproduct_cart, gettotalamount, placeorder, getCartproductlist, getorderdetails, Cancelproduct_order, findByNumber, getAllorderproducts, product_wishlist, get_productwishlist, get_userdata, generateRazorpay, verifyPayment, changepaymentStatus, adduseraddress, GetUseraddress, changepassword, getoffers, couponmanagement, getsearchproduct, showproductshome, getPriceFilter, paginatorCount, getTenProducts, getPricesort, getsortProducts,getSingleorder,Returnproduct_order } = require('../Model/user_helper');
+const { userSignup, Dologin, showproducts, productAlldetails, Getcategory, filterBycategory, productcart, Getcartproducts, changeproductquantity, removeproduct_cart, gettotalamount, placeorder, getCartproductlist, getorderdetails, Cancelproduct_order, findByNumber, getAllorderproducts, product_wishlist, get_productwishlist, get_userdata, generateRazorpay, verifyPayment, changepaymentStatus, adduseraddress, GetUseraddress, changepassword, getoffers, couponmanagement, getsearchproduct, showproductshome, getPriceFilter, paginatorCount, getTenProducts, getPricesort, getsortProducts,getSingleorder,Returnproduct_order,removeCartAfterOrder} = require('../Model/user_helper');
 
 var forgote;
 let usersession;
@@ -300,16 +300,53 @@ module.exports = {
       finalprice = a;
 
     }
-    getCartproductlist(req.body.userId).then((product) => {
+    getCartproductlist(req.body.userId).then((products) => {
       totalprice = gettotalamount(req.body.userId).then((totalprice) => {
-        placeorder(req.body, product, finalprice).then((orderId) => {
+        placeorder(req.body, products, finalprice).then((orderId) => {
           let order=orderId 
+          function destruct(products) { 
+            let data =[]
+            for(let i=0;i<products.length;i++){
+              let obj ={}  
+              obj.prod= products[i].item
+              obj.quantity= products[i].quantity
+              data.push(obj)
+            }
+            return data
+          }
+    
           if (req.body['payment_method'] === 'COD') {
-            res.json( {status:"COD"})
 
-          } else if (req.body['payment_method'] === 'Razorpay') {
+            let ids = destruct(products)
+
+          removeCartAfterOrder(ids,req.body.userId).then(()=>{
+          res.json({status:"COD"})
+
+        }).catch(()=>{
+          console.log("error occured while removing from cart after order");
+        })
+
+
+
+            
+
+          }
+
+          
+          else if (req.body['payment_method'] === 'Razorpay') {
             generateRazorpay(orderId, totalprice).then((response) => {
-              res.json({status:"razorpay",response})
+
+              removeCartAfterOrder(ids,req.body.userId).then(()=>{
+
+                res.json({status:"razorpay",response})
+                
+      
+              }).catch(()=>{
+                console.log("error occured while removing from cart after order");
+              })
+
+
+             
 
             })
 
@@ -353,7 +390,7 @@ module.exports = {
                 console.log(payment);
               }
             });
-            console.log(order,"???????????????????????????????????????????");
+            console.log(order);
             changepaymentStatus(order).then(()=>{
 
             })
@@ -406,7 +443,7 @@ module.exports = {
   },
   cancelorder(req, res) {
     Cancelproduct_order(req.params.id, req.body.status).then(() => {
-      res.redirect('/userorders')
+      res.redirect('/uaseraccount')
 
 
     })
@@ -607,7 +644,7 @@ module.exports = {
 
     let showproduct = await getPriceFilter(req.body.min, req.body.max)
 
-    console.log(showproduct,"WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW");
+    console.log(showproduct);
 
 
     let count = 0
@@ -720,11 +757,37 @@ module.exports = {
   },
   
   orderreturn(req,res){
+    console.log(req.body.status);
     Returnproduct_order(req.params.id, req.body.status).then(() => {
-      res.redirect('/userorders')
+      res.redirect('/uaseraccount')
 
 
     })
+
+  },
+  invoicegenerator(req, res) {
+    let users = req.session.users
+    getAllorderproducts(req.params.id).then((singleproduct) => {
+
+      getSingleorder(req.params.id).then((order)=>{
+
+        res.render('user/invoice', { user: true, singleproduct,order, users })
+
+      })
+      
+
+
+     
+
+
+
+    })
+
+  },
+  getwalletpage(req,res){
+    let users = req.session.users
+
+    res.render('user/wallet', { user: true,users})
 
   }
 

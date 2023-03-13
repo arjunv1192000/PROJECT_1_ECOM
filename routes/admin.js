@@ -1,5 +1,5 @@
 var express = require('express');
-const { adminloginpage,adminlog,adminhome,userdata,productdata,productadd,editproduct,addproducts,editsubmit,removeproduct,categorymanage,categoryadd,categoryeditpage,categoryeditsubmit,removecategory,blockmanager,acclogout,userorders,orderproducts,productmanage,cancelorders,couponpage,couponsubmit,coupondata,couponeditpage,couponeditsubmit,couponremove,bannerpage,editbannerpage,submit_banner,getreportpage,updateshipping,getadmindashbord,getofferpage,getaddproduct,getprosubmit,productoffersub,getcatofferform,catoffersubmit} = require('../Controller/admin_controller');
+const { adminloginpage,adminlog,adminhome,userdata,productdata,productadd,editproduct,addproducts,editsubmit,removeproduct,categorymanage,categoryadd,categoryeditpage,categoryeditsubmit,removecategory,blockmanager,acclogout,userorders,orderproducts,productmanage,cancelorders,couponpage,couponsubmit,coupondata,couponeditpage,couponeditsubmit,couponremove,bannerpage,editbannerpage,submit_banner,getreportpage,updateshipping,getadmindashbord,getofferpage,getaddproduct,getprosubmit,productoffersub,getcatofferform,catoffersubmit,confirmreturn,productofferremove,categoryofferremove} = require('../Controller/admin_controller');
 var router = express.Router();
 
 /* GET users listing. */
@@ -80,6 +80,12 @@ router.post('/proOffer_add',productoffersub)
 router.post('/addoffer-category',getcatofferform)
 
 router.post('/catOffer_add',catoffersubmit)
+
+router.post('/return_confirm/:id',confirmreturn)
+
+router.get('/deleteproductoffer/:id',productofferremove)
+
+router.get('/deletecategoryoffer/:id',categoryofferremove)
 
 
 

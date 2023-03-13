@@ -18,8 +18,8 @@
                 <td><%= coupontdata.CouponCode %></td>
                 <td><%= coupontdata.CouponName %></td>
                 <td><%= coupontdata.discount %>%</td>
-                <td><%= coupontdata.dateofpublish %></td> 
-                <td><%= coupontdata.dateofexpired %></td> 
+                <td><%= coupontdata.dateofpublish.toISOString().split('T')[0]; %></td> 
+                <td><%= coupontdata.dateofexpired.toISOString().split('T')[0]; %></td> 
                 <td><%= coupontdata.minimum %></td> 
                 <td><%= coupontdata.Maximum %></td> 
                 

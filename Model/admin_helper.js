@@ -55,9 +55,9 @@ module.exports = {
     Getproductdata: () => {
         return new Promise(async (resolve, reject) => {
             let product = await db.get().collection(collections.Product_Collecction).find().toArray()
-            let category = await db.get().collection(collections.category_Collecction).find().toArray()
-            console.log(product, category);
-            resolve(product, category)
+            
+            console.log(product);
+            resolve(product)
         })
 
     },
@@ -85,7 +85,8 @@ module.exports = {
                     description: prodata.description,
                     category: prodata.category,
                     dateofpublish: prodata.dateofpublish,
-                    price: prodata.price
+                    price: prodata.price,
+                    stocknumber:prodata.stocknumber
 
                 }
             }).then((response) => {
@@ -253,7 +254,7 @@ module.exports = {
     },
     Cancelproduct_orders: (Id, status) => {
         console.log(status);
-        if (status == 'order placed' || status == 'order pending') {
+        if (status == 'Order placed' || status == 'Order pending') {
             status = 'cancel order'
         }
         return new Promise((resolve, reject) => {
@@ -480,6 +481,7 @@ module.exports = {
         });
     },
 
+
     totalRevenue: () => {
         return new Promise(async (resolve, reject) => {
             const sales = await db.get().collection(collections.ORDER_Collection).aggregate([
@@ -561,43 +563,6 @@ module.exports = {
         });
 
     },
-    // monthRevenue: () => {
-    //     return new Promise(async (resolve, reject) => {
-
-    //         const currentDate= new Date();
-    //         // const newDate = currentDate.getDate();
-    //         const monthStart = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
-    //         const monthEnd = new Date(new Date().getDate() - 30);
-
-    //         const monthRevenue = await db.get().collection(collections.ORDER_Collection).aggregate([
-    //             {
-    //                 $match: {
-    //                     date: {
-    //                         $gte: monthStart,
-    //                         $lt: monthEnd
-    //                     }
-    //                 }
-    //             },
-    //             {
-    //                 $group: {
-    //                     _id: null,
-    //                     total: { $sum: '$totalAmount' },
-    //                 }
-    //             }
-    //         ]).toArray();
-
-    //         console.log(monthRevenue[0].total, "monthR");
-    //         if (monthRevenue.length > 0 && monthRevenue[0]) {
-    //             resolve(monthRevenue[0].total)
-    //         } else {
-    //             resolve(0)
-    //         }
-
-
-    //     });
-
-
-    // },
     chartcount: () => {
         return new Promise(async (resolve, reject) => {
             let data = {}
@@ -607,7 +572,7 @@ module.exports = {
             data.RAZORPAY = await db.get().collection(collections.ORDER_Collection).find({ paymentMethod: "Razorpay" }).count()
             data.PLACED = await db.get().collection(collections.ORDER_Collection).find({ status: "placed" }).count()
             data.CANCEL = await db.get().collection(collections.ORDER_Collection).find({ status: "cancel order" }).count()
-            data.PENDING = await db.get().collection(collections.ORDER_Collection).find({ status: "order pending" }).count()
+            data.PENDING = await db.get().collection(collections.ORDER_Collection).find({ shippingStatus: "order returned" }).count()
             data.DELIVERED = await db.get().collection(collections.ORDER_Collection).find({ shippingStatus: "delivered" }).count()
 
             console.log(data, "chart)))))))))))))))))))))))))))))))))))");
@@ -624,14 +589,9 @@ module.exports = {
                 {
                     $match: { shippingStatus: "delivered" }
                 },
-                {
-                    $unwind: '$products'
-                },
-
-
-
+    
             ]).toArray()
-            console.log(salesReport, "))))))))))))))))))))))))))))");
+            console.log(salesReport);
             resolve(salesReport)
 
         })
@@ -706,8 +666,17 @@ module.exports = {
     getproductoffer: () => {
         return new Promise(async (resolve, reject) => {
             let coupons = await db.get().collection(collections.ProOffer_Collection).find().toArray()
-            console.log(coupons);
-            resolve(coupons)
+            let category = await db.get().collection(collections.category_Collecction).find().toArray()
+            console.log(coupons,category);
+            resolve(coupons,category)
+        })
+
+    },
+    getcategoryoffer: () => {
+        return new Promise(async (resolve, reject) => {
+            let category = await db.get().collection(collections.catOffer_Collection).find().toArray()
+            console.log(category);
+            resolve(category)
         })
 
     },
@@ -754,13 +723,91 @@ module.exports = {
               });
         })
 
-    }
+    },
+    updatereturnstatus: (Id, shipping,Return) => {
+        console.log(shipping);
+        console.log(Return);
+        if (shipping == 'delivered' || Return=='delivered' ) {
+            shipping = 'order returned'
+            Return='confirm'
+        }
+        return new Promise((resolve, reject) => {
+            db.get().collection(collections.ORDER_Collection).updateOne({ _id: ObjectId(Id) }, {
+                $set: {
+                    shippingStatus: shipping,
+                    order_return: Return
+                }
+            }).then((response) => {
+                console.log(response);
+                resolve(response)
+            })
+
+
+        })
+
+    },
+
+    returnorders: () => {
+        return new Promise(async (resolve, reject) => {
+            let order_return = await db.get().collection(collections.ORDER_Collection).aggregate([
+                {
+                    $match: { shippingStatus: "order returned" }
+                },
+    
+            ]).toArray()
+            resolve(order_return)
+
+        })
+
+
+},
+deleteproductoffer:(Id)=>{
+    return new Promise((resolve, reject) => {
+        db.get().collection(collections.ProOffer_Collection).deleteOne({ proId :Id }).then((response) => {
+            console.log(response);
+            resolve(response)
+        })
+
+
+    })
+
+},
+removeProductofferprice: (proId) => {
+        return new Promise((resolve, reject) => {
+          db.get().collection(collections.Product_Collecction).updateOne({ _id: ObjectId(proId) },{ $unset: { offerprice: "" } }).then((response) => {
+            console.log(response);
+            resolve(response);
+          }).catch((error) => {
+            reject(error);
+          });
+        });
+      },
 
 
 
+      deletecategoryoffer:(Id)=>{
+        return new Promise((resolve, reject) => {
+            db.get().collection(collections.catOffer_Collection).deleteOne({ category :Id }).then((response) => {
+                console.log(response);
+                resolve(response)
+            })
+    
+    
+        })
+    
+    },
+    removecategoryofferprice: (proId) => {
+            return new Promise((resolve, reject) => {
+              db.get().collection(collections.Product_Collecction).updateOne({ category: proId },{ $unset: { catoffer: "" } }).then((response) => {
+                console.log(response);
+                resolve(response);
+              }).catch((error) => {
+                reject(error);
+              });
+            });
+          }
 
-
-
+      
 
 }
 
