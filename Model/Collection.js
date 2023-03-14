@@ -10,6 +10,7 @@ module.exports={
     BANNER_Collection:'banner_data',
     ProOffer_Collection:'productoffer_data',
     catOffer_Collection:'categoryoffer_data',
+    Wallet_collection:'wallet_data',
 
    
 

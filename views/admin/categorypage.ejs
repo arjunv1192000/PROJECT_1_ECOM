@@ -12,7 +12,9 @@
 
             </div>
         </div>
-        <p class="error"></p>
+        <% if(locals.error) { %>
+        <p class="text-center"> <%= error %></p>
+        <% } %>
     </form>
     <table class="table table-bordered">
         <thead>

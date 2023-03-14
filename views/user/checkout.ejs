@@ -128,6 +128,11 @@
                                         <label for="payment-method-4">paypal<img alt=""
                                                 src="assets/images/icon-img/payment.png"></label>
                                     </div>
+                                    <div class="pay-top sin-payment">
+                                        <input id="payment-method-3" class="input-radio" type="radio" value="wallet"
+                                            name="payment_method">
+                                        <label for="payment-method-3">wallet </label>
+                                    </div>
                                 </div>
                             </div>
                             <div class="Place-order mt-40">
@@ -252,13 +257,34 @@
                 }else if(response.status=="paypal"){
                     window.location = response.forwardLink
 
+                }else if (response.status=="wallet") {
+                    location.href = '/orderplaced'
                 }
 
-            }
+
+            },
+            error: function (xhr, status, error) {
+                    console.log(error);
+                    if (xhr.status === 400 && xhr.responseJSON && xhr.responseJSON.error === "Stock limit Exceeded") {
+                        
+                        swal({
+                        title: "insufficient fund in the wallet",
+
+                        icon: "warning",
+
+                        dangerMode: true,
+                    })
+                        
+
+
+                    } else {
+                        $('#error').text(error);
+                    }
+                }
         })
     })
     function checkCoupon() {
-        console.log("sknssdsddsdkdck");
+       
             var codes= document.getElementById('code').value
             var total = document.getElementById('price').value
             console.log(codes)
@@ -270,16 +296,33 @@
                      
                 },
                 method: 'post',
-                success: (response => {
+                success: (response )=>{
                     if (response) {
                         document.getElementById('offer').innerHTML = "₹"+response
                         document.getElementById("offeramount").value=response
                     } else {
-                        document.getElementById('error').innerHTML = 'Enter valied  coupon code'
+                       
                     }
-                })
+
+                },
+                error: function (xhr, status, error) {
+                    console.log("sknssdsddsdkdck");
+                    console.log(error);
+                    if (xhr.status === 400 && xhr.responseJSON && xhr.responseJSON.error === "Enter valied coupon code") {
+                        document.getElementById('error').innerHTML = xhr.responseJSON.error
+                        
+                        setTimeout(function () {
+                            document.getElementById('error').innerHTML = "";
+                        }, 5000);
+
+
+                    } else {
+                        $('#error').text(error);
+                    }
+                }
             })
         }
+        
 
   function fillAddressData(userdata) {
    

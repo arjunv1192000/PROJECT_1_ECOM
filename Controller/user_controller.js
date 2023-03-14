@@ -5,19 +5,19 @@ const accountSid = process.env.TWILIO_ACCOUNT_SID;
 const authToken = process.env.TWILIO_TOKEN;
 const serviceToken = process.env.Service_ID;
 const client = require("twilio")(accountSid, authToken, serviceToken);
-const paypalcilent=process.env.PAYPAL_CLIENT_ID;
-const paypalsecret=process.env.PAYPAL_SECRET_ID;
+const paypalcilent = process.env.PAYPAL_CLIENT_ID;
+const paypalsecret = process.env.PAYPAL_SECRET_ID;
 paypal.configure({
   'mode': 'sandbox',
-  'client_id':paypalcilent ,
-  'client_secret':paypalsecret
+  'client_id': paypalcilent,
+  'client_secret': paypalsecret
 });
 const { Getcategorydata } = require('../Model/admin_helper');
-const { userSignup, Dologin, showproducts, productAlldetails, Getcategory, filterBycategory, productcart, Getcartproducts, changeproductquantity, removeproduct_cart, gettotalamount, placeorder, getCartproductlist, getorderdetails, Cancelproduct_order, findByNumber, getAllorderproducts, product_wishlist, get_productwishlist, get_userdata, generateRazorpay, verifyPayment, changepaymentStatus, adduseraddress, GetUseraddress, changepassword, getoffers, couponmanagement, getsearchproduct, showproductshome, getPriceFilter, paginatorCount, getTenProducts, getPricesort, getsortProducts,getSingleorder,Returnproduct_order,removeCartAfterOrder} = require('../Model/user_helper');
+const { userSignup, Dologin, showproducts, productAlldetails, Getcategory, filterBycategory, productcart, Getcartproducts, changeproductquantity, removeproduct_cart, gettotalamount, placeorder, getCartproductlist, getorderdetails, Cancelproduct_order, findByNumber, getAllorderproducts, product_wishlist, get_productwishlist, get_userdata, generateRazorpay, verifyPayment, changepaymentStatus, adduseraddress, GetUseraddress, changepassword, getoffers, couponmanagement, getsearchproduct, showproductshome, getPriceFilter, paginatorCount, getTenProducts, getPricesort, getsortProducts, getSingleorder, Returnproduct_order, removeCartAfterOrder, getwalletAmount, changeThewalletamount } = require('../Model/user_helper');
 
 var forgote;
 let usersession;
-// var otpnum=number;
+
 
 
 module.exports = {
@@ -251,6 +251,10 @@ module.exports = {
     productcart(req.params.id, req.session.users._id).then(() => {
       res.json({ status: true })
 
+    }).catch(() => {
+      const error = "Stock limit Exceeded";
+      res.status(400).json({ error: error });
+
     })
 
   },
@@ -261,7 +265,10 @@ module.exports = {
 
     }).catch(() => {
 
+      const error = "Stock limit Exceeded";
+      res.status(400).json({ error: error });
     })
+
   },
 
   removeitem(req, res) {
@@ -275,15 +282,15 @@ module.exports = {
     gettotalamount(req.session.users._id).then((totalprice) => {
       Getcartproducts(req.session.users._id).then((product) => {
         get_userdata(req.session.users._id).then((userdata) => {
-          console.log(userdata,">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+          console.log(userdata, ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
 
 
-          res.render('user/checkout', { user: true, users, totalprice, product,userdata})
+          res.render('user/checkout', { user: true, users, totalprice, product, userdata })
 
 
         })
-        
-       
+
+
 
       })
 
@@ -303,55 +310,60 @@ module.exports = {
     getCartproductlist(req.body.userId).then((products) => {
       totalprice = gettotalamount(req.body.userId).then((totalprice) => {
         placeorder(req.body, products, finalprice).then((orderId) => {
-          let order=orderId 
-          function destruct(products) { 
-            let data =[]
-            for(let i=0;i<products.length;i++){
-              let obj ={}  
-              obj.prod= products[i].item
-              obj.quantity= products[i].quantity
+          let order = orderId
+          function destruct(products) {
+            let data = []
+            for (let i = 0; i < products.length; i++) {
+              let obj = {}
+              obj.prod = products[i].item
+              obj.quantity = products[i].quantity
               data.push(obj)
             }
             return data
           }
-    
+
           if (req.body['payment_method'] === 'COD') {
 
             let ids = destruct(products)
 
-          removeCartAfterOrder(ids,req.body.userId).then(()=>{
-          res.json({status:"COD"})
+            removeCartAfterOrder(ids, req.body.userId).then(() => {
+              res.json({ status: "COD" })
 
-        }).catch(()=>{
-          console.log("error occured while removing from cart after order");
-        })
-
-
-
-            
+            }).catch(() => {
+              console.log("error occured while removing from cart after order");
+            })
 
           }
 
-          
+
           else if (req.body['payment_method'] === 'Razorpay') {
             generateRazorpay(orderId, totalprice).then((response) => {
 
-              removeCartAfterOrder(ids,req.body.userId).then(()=>{
+              removeCartAfterOrder(ids, req.body.userId).then(() => {
 
-                res.json({status:"razorpay",response})
-                
-      
-              }).catch(()=>{
+                res.json({ status: "razorpay", response })
+
+
+              }).catch(() => {
                 console.log("error occured while removing from cart after order");
               })
 
 
-             
+
 
             })
 
           } else if (req.body['payment_method'] === 'paypal') {
-           
+
+            let ids = destruct(products)
+
+            removeCartAfterOrder(ids, req.body.userId).then(() => {
+              res.json({ status: "paypal" })
+
+            }).catch(() => {
+              console.log("error occured while removing from cart after order");
+            })
+
             var create_payment_json = {
               "intent": "authorize",
               "payer": {
@@ -362,7 +374,7 @@ module.exports = {
                 "cancel_url": "http://cancel.url"
               },
               "transactions": [{
-                
+
                 "amount": {
                   "currency": "USD",
                   "total": totalprice
@@ -370,7 +382,7 @@ module.exports = {
                 "description": "This is the payment description."
               }]
             };
-            
+
 
 
             paypal.payment.create(create_payment_json, function (error, payment) {
@@ -383,7 +395,7 @@ module.exports = {
                   if (payment.links[index].rel === 'approval_url') {
                     console.log(payment.links[index].href);
                     // res.redirect(payment.links[index].href);
-                    res.json({status:"paypal",forwardLink: payment.links[index].href});
+                    res.json({ status: "paypal", forwardLink: payment.links[index].href });
 
                   }
                 }
@@ -391,16 +403,41 @@ module.exports = {
               }
             });
             console.log(order);
-            changepaymentStatus(order).then(()=>{
+            changepaymentStatus(order).then(() => {
 
             })
+
+          } else if (req.body['payment_method'] === 'wallet') {
+
+            let ids = destruct(products)
+
+
+            changeThewalletamount(req.body.userId,finalprice)
+              .then(() => {
+                console.log("change working");
+                removeCartAfterOrder(ids, req.body.userId)
+                  .then(() => {
+                    res.json({ status: "wallet" });
+                  })
+                  .catch(() => {
+                    const error = "Error occurred while removing from cart after order";
+                    res.status(400).json({ error: error });
+                    console.log(error);
+                  });
+              })
+              .catch(() => {
+                const error = "Stock limit Exceeded";
+                res.status(400).json({ error: error });
+                console.log(error);
+              });
+
 
           }
 
         })
       })
     })
-   
+
 
 
   },
@@ -417,7 +454,7 @@ module.exports = {
         }
       }]
     }
-    
+
     paypal.payment.execute(paymentId, execute_payment_json, function (err, paymemt) {
       if (error) {
         console.log(error.response);
@@ -456,7 +493,6 @@ module.exports = {
     }
     res.render('user/OTP')
   },
-
   otp_authentication(req, res) {
     number = req.body.phone;
 
@@ -544,23 +580,22 @@ module.exports = {
   userAcdata(req, res) {
     let users = req.session.users
     get_userdata(req.session.users._id).then((userdata) => {
-      console.log(userdata,">>>>>>>>>>>>>>>>>>>>>>>");
-
+      console.log(userdata, ">>>>>>>>>>>>>>>>>>>>>>>");
       getorderdetails(req.session.users._id).then((orders) => {
-
-        res.render('user/myaccountpage', { user: true, userdata, orders, users })
-
-      })
-
-
-
-
-
-    })
-
-
-
+  
+        getwalletAmount(req.session.users._id).then((wallet) => {
+          res.render('user/myaccountpage', { user: true, userdata, orders, wallet, users })
+        }).catch((error) => {
+          console.error(error);
+          const defaultWallet = { Totalamount: 0 }; // provide a default wallet object with Totalamount set to 0
+          res.render('user/myaccountpage', { user: true, userdata, orders, wallet: defaultWallet, users });
+        });
+  
+      });
+  
+    });
   },
+  
 
   sucesspage(req, res) {
     let users = req.session.users
@@ -627,6 +662,10 @@ module.exports = {
     couponmanagement(req.body.data, req.body.total).then((response) => {
       res.json(response)
 
+    }).catch(()=>{
+      const error = "Enter valied coupon code";
+      res.status(400).json({ error: error });
+      console.log(error);
     })
 
   },
@@ -638,53 +677,113 @@ module.exports = {
 
     })
   },
+  // async priceFilter(req, res) {
+  //   console.log(req.body);
+  //   let users = req.session.users
+
+  //   let showproduct = await getPriceFilter(req.body.min, req.body.max)
+
+  //   console.log(showproduct);
+
+
+  //   let count = 0
+  //   showproduct.forEach(showproduct => {
+  //     count++
+  //   });
+
+  //   let pageCount = await paginatorCount(count)
+  //   // showproduct = await getTenProducts(req.query.id)
+
+  //   if (req.query.minimum) {
+  //     let minimum = req.query.minimum.slice(1)
+  //     let maximum = req.query.maximum.slice(1)
+  //     let arr = []
+  //     showproduct = await showproducts()
+
+  //     showproduct.forEach(showproduct => {
+
+  //       arr.push(showproduct)
+
+  //     });
+  //     showproduct = arr;
+  //   }
+
+  //   Getcategory().then((catdatas) => {
+  //     let users = req.session.users
+
+  //     getoffers().then((coupondata) => {
+
+  //       res.render('user/showproduct', { user: true, showproduct, users, catdatas, pageCount, count, coupondata, users })
+
+
+  //     }).catch((error)=>{
+  //       error = 'product not found';
+  //       res.render('user/showproduct', { user: true, showproduct, users, catdatas, pageCount, count, coupondata, users,error })
+
+  //     })
+
+
+
+  //   })
+
+
+
+  // },
   async priceFilter(req, res) {
     console.log(req.body);
     let users = req.session.users
-
-    let showproduct = await getPriceFilter(req.body.min, req.body.max)
-
-    console.log(showproduct);
-
-
-    let count = 0
-    showproduct.forEach(showproduct => {
-      count++
-    });
-
-    let pageCount = await paginatorCount(count)
-    // showproduct = await getTenProducts(req.query.id)
-
-    if (req.query.minimum) {
-      let minimum = req.query.minimum.slice(1)
-      let maximum = req.query.maximum.slice(1)
-      let arr = []
-      showproduct = await showproducts()
-
+  
+    try {
+      let showproduct = await getPriceFilter(req.body.min, req.body.max)
+  
+      console.log(showproduct);
+  
+      let count = 0
       showproduct.forEach(showproduct => {
-
-        arr.push(showproduct)
-
+        count++
       });
-      showproduct = arr;
-    }
-
-    Getcategory().then((catdatas) => {
-
-      getoffers().then((coupondata) => {
-
-        res.render('user/showproduct', { user: true, showproduct, users, catdatas, pageCount, count, coupondata })
-
-
+  
+      let pageCount = await paginatorCount(count)
+      // showproduct = await getTenProducts(req.query.id)
+  
+      if (req.query.minimum) {
+        let minimum = req.query.minimum.slice(1)
+        let maximum = req.query.maximum.slice(1)
+        let arr = []
+        showproduct = await showproducts()
+  
+        showproduct.forEach(showproduct => {
+  
+          arr.push(showproduct)
+  
+        });
+        showproduct = arr;
+      }
+  
+      Getcategory().then((catdatas) => {
+        let users = req.session.users
+  
+        getoffers().then((coupondata) => {
+  
+          res.render('user/showproduct', { user: true, showproduct, users, catdatas, pageCount, count, coupondata, users })
+  
+        }).catch((error)=>{
+          console.error('Error fetching coupon data:', error);
+          error = 'product not found';
+          res.render('user/showproduct', { user: true, showproduct, users, catdatas, pageCount, count, coupondata, users, error })
+  
+        })
+  
       })
-
-
-
-    })
-
-
-
+  
+    } catch (error) {
+      console.error('Error filtering products by price:', error);
+      error = 'product not found';
+      res.render('user/showproduct', { user: true,showproduct: [], users, catdatas: [], pageCount: 0, count: 0, coupondata: [], error })
+    }
+  
   },
+  
 
   async pricesorting(req, res) {
 
@@ -693,7 +792,7 @@ module.exports = {
 
 
     let showproduct = await getPricesort()
-   
+
 
 
     let count = 0
@@ -703,7 +802,7 @@ module.exports = {
 
     let pageCount = await paginatorCount(count)
     showproduct = await getsortProducts(req.query.id)
-   
+
 
     if (req.query.minimum) {
       let minimum = req.query.minimum.slice(1)
@@ -740,23 +839,23 @@ module.exports = {
     let users = req.session.users
     getAllorderproducts(req.params.id).then((singleproduct) => {
 
-      getSingleorder(req.params.id).then((order)=>{
+      getSingleorder(req.params.id).then((order) => {
 
-        res.render('user/shipping_details', { user: true, singleproduct,order, users })
+        res.render('user/shipping_details', { user: true, singleproduct, order, users })
 
       })
-      
 
 
-     
+
+
 
 
 
     })
 
   },
-  
-  orderreturn(req,res){
+
+  orderreturn(req, res) {
     console.log(req.body.status);
     Returnproduct_order(req.params.id, req.body.status).then(() => {
       res.redirect('/uaseraccount')
@@ -769,27 +868,22 @@ module.exports = {
     let users = req.session.users
     getAllorderproducts(req.params.id).then((singleproduct) => {
 
-      getSingleorder(req.params.id).then((order)=>{
+      getSingleorder(req.params.id).then((order) => {
 
-        res.render('user/invoice', { user: true, singleproduct,order, users })
+        res.render('user/invoice', { user: true, singleproduct, order, users })
 
       })
-      
 
 
-     
+
+
 
 
 
     })
 
   },
-  getwalletpage(req,res){
-    let users = req.session.users
 
-    res.render('user/wallet', { user: true,users})
-
-  }
 
 
 

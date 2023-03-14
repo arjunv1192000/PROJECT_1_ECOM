@@ -2,6 +2,7 @@ var db = require('../Model/Connection')
 var collections = require('../Model/Collection')
 const bcrypt = require('bcrypt')
 const { ObjectId } = require('mongodb')
+const { response } = require('../app')
 module.exports = {
 
     Adminlogin: (admininfo) => {
@@ -38,6 +39,8 @@ module.exports = {
     },
     adminadd(product) {
         product.stock = true
+        product.stocknumber=parseInt(product.stocknumber)
+        product.price=parseInt(product.price)
         return new Promise(async (resolve, reject) => {
             var item = await db.get().collection(collections.Product_Collecction).insertOne(product)
             let data = {
@@ -75,8 +78,7 @@ module.exports = {
 
     updateproduct: (Id, prodata) => {
         return new Promise((resolve, reject) => {
-            console.log(Id);
-            console.log(prodata, '>>>>>>>>>>>>>>>>>>>>>>>>>>');
+            
             db.get().collection(collections.Product_Collecction).updateOne({ _id: ObjectId(Id) }, {
                 $set: {
                     productname: prodata.productname,
@@ -85,8 +87,8 @@ module.exports = {
                     description: prodata.description,
                     category: prodata.category,
                     dateofpublish: prodata.dateofpublish,
-                    price: prodata.price,
-                    stocknumber:prodata.stocknumber
+                    price:parseInt(prodata.price) ,
+                    stocknumber:parseInt(prodata.stocknumber) 
 
                 }
             }).then((response) => {
@@ -104,15 +106,30 @@ module.exports = {
 
         })
     },
-    addcategory: (Catdata) => {
-        return new Promise(async (resolve, reject) => {
-            var category = await db.get().collection(collections.category_Collecction).insertOne(Catdata).then((category) => {
-                resolve(category)
-            })
-
+    addcategory:(addcategory)=>{
+    
+        return new Promise(async(resolve,reject)=>{
+    
+     let category = await db.get().collection(collections.category_Collecction).findOne({name:addcategory.name})
+     console.log(category,"PPPPP))((");
+     if(!category){
+    
+        db.get().collection(collections.category_Collecction).insertOne(addcategory).then((addcategory)=>{
+    
+            resolve(addcategory)
         })
-
-    },
+     }else{
+    
+        reject({error:'Category Already use'})
+     }
+         
+    
+    
+        })
+           
+    
+        },
+    
     gettcategory: () => {
         return new Promise(async (resolve, reject) => {
             let catdatas = await db.get().collection(collections.category_Collecction).find().toArray()
@@ -785,7 +802,7 @@ removeProductofferprice: (proId) => {
 
 
 
-      deletecategoryoffer:(Id)=>{
+deletecategoryoffer:(Id)=>{
         return new Promise((resolve, reject) => {
             db.get().collection(collections.catOffer_Collection).deleteOne({ category :Id }).then((response) => {
                 console.log(response);
@@ -796,7 +813,7 @@ removeProductofferprice: (proId) => {
         })
     
     },
-    removecategoryofferprice: (proId) => {
+ removecategoryofferprice: (proId) => {
             return new Promise((resolve, reject) => {
               db.get().collection(collections.Product_Collecction).updateOne({ category: proId },{ $unset: { catoffer: "" } }).then((response) => {
                 console.log(response);
@@ -805,7 +822,84 @@ removeProductofferprice: (proId) => {
                 reject(error);
               });
             });
-          }
+          },
+orderproductlist:(orderId)=>{
+    return new Promise((resolve, reject) => {
+        let cart = db.get().collection(collections.ORDER_Collection).findOne({ _id: ObjectId(orderId) }).then((order) => {
+            resolve(order.products)
+
+        })
+
+    })
+
+},
+stockIncrementAfterReturn:(item)=>{
+
+    console.log("this is order",item);
+
+    return new Promise(async(resolve,reject)=>{
+
+        for(let i=0;i<item.length;i++){
+
+            // item[i].quantity=Number(item[i].quantity)
+        
+            await db.get().collection(collections.Product_Collecction).updateOne({_id:item[i].prod},{
+        
+                $inc:{stocknumber:+item[i].quantity}
+            })
+        
+           await db.get().collection(collections.Product_Collecction).updateOne({_id:item[i].prod},[{
+        
+           $set:{stock:{$cond:{if:{$gt:["$stocknumber",1]},then:false,else:true}}},  
+            
+           }]).then(()=>{
+        
+            resolve()
+        
+           }).catch((error)=>{
+        
+            reject()
+           })
+        }
+
+
+    })
+  },
+  getorderdetails:(orderId)=>{
+    return new Promise((resolve, reject) => {
+        let cart = db.get().collection(collections.ORDER_Collection).findOne({ _id: ObjectId(orderId) }).then((order) => {
+            resolve(order)
+
+        })
+
+    })
+
+  },
+  returnordersamountaddWallet:(userId,total)=>{
+    return new Promise(async(resolve,reject)=>{
+        let wallet=await db.get().collection(collections.Wallet_collection).findOne({userId:ObjectId(userId)})
+        if(wallet){
+            db.get().collection(collections.Wallet_collection).updateOne({userId:ObjectId(userId)},[{$set:{Totalamount:{$add:["$Totalamount",total]}}}]).then(()=>{
+                resolve()
+            }).catch(()=>{
+                reject()
+            })
+
+        }else{
+            let walletobj={
+                userId:ObjectId(userId),
+                Totalamount:total
+            }
+            db.get().collection(collections.Wallet_collection).insertOne(walletobj).then((response)=>{
+                resolve()
+            })
+        }
+    })
+
+  }
+
+
+  
 
       
 

@@ -1,5 +1,5 @@
 <div class="catpage" id="footer">
-    <table class="table table-bordered">
+    <table class="table table-bordered" id="example">
         <thead>
             <tr>
                 <th scope="col">Name</th>
@@ -55,43 +55,57 @@
                                 id="my-button">Products</button></a>
                     </td>
 
-                    <% if (data.status !=="cancel order") { %>
-                    <td><%= data.shippingStatus %>
-
-                        <form action="/admin/shippingStatus/<%= data._id %>" method="post">
-                            <input name="Shippingstatus" value="<%= data.shippingStatus %>" hidden>
-                            <button type="submit" class="badge btn-success btn-sm">ChangeStatus</button>
-
-                        </form>
-                        
-
-                        
-                      </td>
-                    </form>
-                    <% } %>
-                    <% if (data.order_return==="processing") { %>
+                    <% if (data.status !=="cancel order" ) { %>
                         <td>
-                            <form action="/admin/return_confirm/<%= data._id %>" method="post" id="return-form">
-                                <input name="Shippingstatus" value="<%= data.shippingStatus %>" hidden>
-                                <input name="Return" value="<%= data.order_return %>" hidden>
-                                <button type="submit" class="badge btn-success btn-sm" id="return-btn">Confirm</button>
-                            </form>
-                            
-                          </td>
+                            <%= data.shippingStatus %>
+
+                                <form action="/admin/shippingStatus/<%= data._id %>" method="post">
+                                    <input name="Shippingstatus" value="<%= data.shippingStatus %>" hidden>
+                                    <button type="submit" class="badge btn-success btn-sm">ChangeStatus</button>
+
+                                </form>
+
+
+
+                        </td>
                         </form>
                         <% } %>
-                    
+                            <% if (data.order_return==="processing" ) { %>
+                                <td>
+                                    <form action="/admin/return_confirm/<%= data._id %>" method="post" id="return-form">
+                                        <input name="Shippingstatus" value="<%= data.shippingStatus %>" hidden>
+                                        <input name="Return" value="<%= data.order_return %>" hidden>
+                                        <button type="submit" class="badge btn-success btn-sm"
+                                            id="return-btn">Confirm</button>
+                                    </form>
+
+                                </td>
+                                </form>
+                                <% } %>
+
                 </tr>
                 <% }); %>
         </tbody>
     </table>
 </div>
+<script src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.1/js/dataTables.bootstrap4.min.js"></script>
+
 
 <script>
-    document.getElementById('return-btn').addEventListener('click', function(e) {
-        e.preventDefault(); 
+
+$(document).ready(function () {
+        $('#example').DataTable({
+
+
+        });
+    });
+    document.getElementById('return-btn').addEventListener('click', function (e) {
+        e.preventDefault();
         if (confirm('Are you sure you want to confirm this return?')) {
-            document.getElementById('return-form').submit(); 
+            document.getElementById('return-form').submit();
         }
     });
+
+  
 </script>

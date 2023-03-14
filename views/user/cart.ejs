@@ -28,7 +28,8 @@
                                         <td class="product-name"><a href="#">
                                                 <%= cart.product.productname %>
                                             </a></td>
-                                        <td class="product-price-cart"><span class="amount" id="proprice">₹<%=cart.product.price %>
+                                        <td class="product-price-cart"><span class="amount" id="proprice">₹
+                                                <%=cart.product.price %>
                                             </span></td>
 
                                         <td class="product-quantity">
@@ -37,7 +38,7 @@
                                                     <button class="incbtn"
                                                         onclick="changequantity('<%= cart._id %>','<%= cart.product._id %>','<%= totalprice %>','<%=cart.product.price %>',-1) ">-</button>
                                                 </div>
-                                                <span  id="<%= cart.product._id %>">
+                                                <span id="<%= cart.product._id %>">
                                                     <%= cart.quantity %>
                                                 </span>
                                                 <div class="inc qtybutton">
@@ -45,8 +46,8 @@
                                                         onclick="changequantity('<%= cart._id %>','<%= cart.product._id %>','<%= totalprice %>','<%=cart.product.price %>',1 ) ">+</button>
                                                 </div>
                                             </div>
+                                            <span id="error"></span>
                                         </td>
-                                        <!-- <td class="product-subtotal"> <span id="<%= cart.product._id %>">₹<%=cart.product.price %></span></td> -->
                                         <td class="product-remove">
                                             <button type="button" class="btn btn-danger"
                                                 onclick="remove('<%= cart._id %>','<%= cart.product._id %>',) ">remove</button>
@@ -74,10 +75,14 @@
                             <div class="title-wrap">
                                 <h4 class="cart-bottom-title section-bg-gary-cart">Cart Total</h4>
                             </div>
-                            <h5>Total products <span id="totalprice" ><%= totalprice %></span></h5>
+                            <h5>Total products <span id="totalprice">
+                                    <%= totalprice %>
+                                </span></h5>
                             <div class="total-shipping">
 
-                                <h4 class="grand-totall-title">Grand Total <span id="totalprice"><%= totalprice %></span> </h4>
+                                <h4 class="grand-totall-title">Grand Total <span id="totalprice">
+                                        <%= totalprice %>
+                                    </span> </h4>
                                 <a href="/checkout_order">Proceed to Checkout</a>
                             </div>
                         </div>
@@ -88,13 +93,13 @@
     </div>
 
     <script>
-        function changequantity(cartId, proId,totalprice,price,count) {
+        function changequantity(cartId, proId, totalprice, price, count) {
             let quantity = parseInt(document.getElementById(proId).innerHTML)
-           let carttotal= document.getElementById('totalprice').innerHTML
+            let carttotal = document.getElementById('totalprice').innerHTML
 
-           console.log(carttotal);
-          
-            
+            console.log(carttotal);
+
+
 
             count = parseInt(count)
             $.ajax({
@@ -114,21 +119,34 @@
 
                     } else {
                         document.getElementById(proId).innerHTML = quantity + count
-                        document.getElementById('totalprice').innerHTML= parseInt(carttotal)+(count*price)
-                        
-                        
-
-                        
-
-
-
-
-
-
+                        document.getElementById('totalprice').innerHTML = parseInt(carttotal) + (count * price)
 
                     }
 
+                },
+                error: function (xhr, status, error) {
+                    console.log(error);
+                    if (xhr.status === 400 && xhr.responseJSON && xhr.responseJSON.error === "Stock limit Exceeded") {
+                        document.getElementById('error').innerHTML = xhr.responseJSON.error
+                        // alert("Stock limit Exceeded")
+                        swal({
+                        title: "Stock Limit Exceeded",
+
+                        icon: "warning",
+
+                        dangerMode: true,
+                    })
+                        setTimeout(function () {
+                            document.getElementById('error').innerHTML = "";
+                        }, 5000);
+
+
+                    } else {
+                        $('#error').text(error);
+                    }
                 }
+
+
             })
         }
         function remove(cartId, proId) {

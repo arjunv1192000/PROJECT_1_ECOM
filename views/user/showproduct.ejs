@@ -92,6 +92,9 @@
                         </div>
                     </div>
                 </div>
+                <% if(locals.error) { %>
+                    <p class="text-center"> <%= error %></p>
+                    <% } %>
             </div>
 
             <div class="col-lg-3">
@@ -106,6 +109,7 @@
                             </form>
                         </div>
                     </div>
+                    <a class="nav-link active" aria-current="page" href="/showproduct">All products</a>
                     <div class="sidebar-widget shop-sidebar-border pt-40 ">
                         <h4 class="sidebar-title">Shop By Categories</h4>
                         <div class="shop-catigory mt-20">
@@ -190,9 +194,8 @@
 
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 <script>
-
-
 
 
     function searchProducts(showproduct) {
@@ -280,8 +283,25 @@
             success: (response) => {
                 swal("Add to Cart", "", "success");
 
+            },
+            error: function (xhr, status, error) {
+                console.log(error);
+                if (xhr.status === 400 && xhr.responseJSON && xhr.responseJSON.error === "Stock limit Exceeded") {
+                    // alert("Stock limit Exceeded")
+                    swal({
+                        title: "Stock Limit Exceeded",
+
+                        icon: "warning",
+
+                        dangerMode: true,
+                    })
 
 
+
+
+                } else {
+                    $('#error').text(error);
+                }
             }
         })
     }

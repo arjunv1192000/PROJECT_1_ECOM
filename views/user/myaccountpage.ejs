@@ -11,8 +11,9 @@
                                 <a href="#dashboad" class="active" data-bs-toggle="tab"><i class="fa fa-dashboard"></i>
                                     Dashboard</a>
                                 <a href="#orders" data-bs-toggle="tab"><i class="fa fa-cart-arrow-down"></i> Orders</a>
-                                <a href="#address-edit" data-bs-toggle="tab"><i class="fa fa-map-marker"></i> address</a>
-                                <a href="/userwallet" ><i class="fa fa-map-marker"></i> wallet</a>
+                                <a href="#address-edit" data-bs-toggle="tab"><i class="fa fa-map-marker"></i>
+                                    address</a>
+                                <a href="#wallet" data-bs-toggle="tab"><i class="fa fa-map-marker"></i> wallet</a>
                                 <a href="/uselogout"><i class="fa fa-sign-out"></i> Logout</a>
                             </div>
                         </div>
@@ -25,9 +26,15 @@
                                     <div class="myaccount-content">
                                         <h3>Dashboard</h3>
                                         <div class="welcome">
-                                            <p>Hello,  <strong><%= userdata.username %></strong></p>
-                                            <p>Email:  <strong><%= userdata.useremail %></strong></p>
-                                            <p>Phone:  <strong><%= userdata.userphone %></strong></p>
+                                            <p>Hello, <strong>
+                                                    <%= userdata.username %>
+                                                </strong></p>
+                                            <p>Email: <strong>
+                                                    <%= userdata.useremail %>
+                                                </strong></p>
+                                            <p>Phone: <strong>
+                                                    <%= userdata.userphone %>
+                                                </strong></p>
                                         </div>
 
                                         <!-- <p class="mb-0">From your account dashboard. you can easily check & view your recent orders, manage your shipping and billing addresses and edit your password and account details.</p> -->
@@ -52,17 +59,27 @@
                                                 </thead>
                                                 <tbody>
                                                     <% orders.forEach(function(data, i){ %>
-                                                    <tr>
-                                                        <td><%= data._id %></td>
-                                                        <td><%= data.date %></td>
-                                                        <td><%= data.paymentMethod %></td>
-                                                        <td><%= data.totaAmount %></td>
-                                                        
-                                                        <td><a href="/orderproduct/<%= data._id %>" class="check-btn sqr-btn ">View</a></td>
-                                                        <td><a href="/shippment/<%= data._id %>" class="check-btn sqr-btn ">Track your Order</a></td>
-                                                    </tr>
-                                                    <% }); %>
-                                                    
+                                                        <tr>
+                                                            <td>
+                                                                <%= data._id %>
+                                                            </td>
+                                                            <td>
+                                                                <%= data.date %>
+                                                            </td>
+                                                            <td>
+                                                                <%= data.paymentMethod %>
+                                                            </td>
+                                                            <td>
+                                                                <%= data.totaAmount %>
+                                                            </td>
+
+                                                            <td><a href="/orderproduct/<%= data._id %>"
+                                                                    class="check-btn sqr-btn ">View</a></td>
+                                                            <td><a href="/shippment/<%= data._id %>"
+                                                                    class="check-btn sqr-btn ">Track your Order</a></td>
+                                                        </tr>
+                                                        <% }); %>
+
                                                 </tbody>
                                             </table>
                                         </div>
@@ -70,26 +87,62 @@
                                 </div>
                                 <!-- Single Tab Content End -->
                                 <!-- Single Tab Content Start -->
-                               
+
                                 <div class="tab-pane fade" id="address-edit" role="tabpanel">
-                                    <a href="/add_address" class="check-btn sqr-btn "><i class="fa fa-edit"></i> ADD Address</a>
+                                    <a href="/add_address" class="check-btn sqr-btn "><i class="fa fa-edit"></i> ADD
+                                        Address</a>
                                     <%userdata.Addresses.forEach(function(userdata, i){ %>
-                                    <div class="myaccount-content">
-                                        <h3>Billing Address</h3>
-                                        <address>
-                                            <p><strong><%= userdata.username %></strong></p>
-                                            <p><%= userdata.companyname %> <br><p> <%= userdata.Address %></p></p>
-                                            <p>Mobile:<%= userdata.phonenum %></p>
-                                            <p>Email:<%= userdata.Addemail %></p>
-                                            <p>Pincode:<%= userdata.Postcode %></p>
-                                            <p>City:<%= userdata.City %></p>
-                                            <p>State:<%= userdata.State %></p>
-                                        </address>
-                                         
-                                    </div>
-                                    <% }); %>   
+                                        <div class="myaccount-content">
+                                            <h3>Billing Address</h3>
+                                            <address>
+                                                <p><strong>
+                                                        <%= userdata.username %>
+                                                    </strong></p>
+                                                <p>
+                                                    <%= userdata.companyname %> <br>
+                                                        <p>
+                                                            <%= userdata.Address %>
+                                                        </p>
+                                                </p>
+                                                <p>Mobile:<%= userdata.phonenum %>
+                                                </p>
+                                                <p>Email:<%= userdata.Addemail %>
+                                                </p>
+                                                <p>Pincode:<%= userdata.Postcode %>
+                                                </p>
+                                                <p>City:<%= userdata.City %>
+                                                </p>
+                                                <p>State:<%= userdata.State %>
+                                                </p>
+                                            </address>
+
+                                        </div>
+                                        <% }); %>
                                 </div>
-                               
+                                <div class="tab-pane fade" id="wallet" role="tabpanel">
+                                        <div class="container py-5">
+                                          <div class="row justify-content-center">
+                                            <div class="col-md-8 col-lg-6 col-xl-4">
+                                              <div class="card text-black">
+                                                <i class="fa fa-money" aria-hidden="true"></i>
+                                                <div class="card-body">
+                                                  <div class="text-center">
+                                                    <h2 class="card-title">wallet</h2>
+                                                    <p class="text-muted mb-4"></p>
+                                                  </div>
+                                                  <div>
+                                                  </div>
+                                                  <div class="d-flex justify-content-between total font-weight-bold mt-4">
+                                                    <span>Total Balance :</span><span> <%= wallet.Totalamount %></span>
+                                                  </div>
+                                                </div>
+                                              </div>
+                                            </div>
+                                          </div>
+                                        </div>
+
+                                </div>
+
                             </div>
                         </div> <!-- My Account Tab Content End -->
                     </div>

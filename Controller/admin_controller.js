@@ -3,7 +3,7 @@ const multer = require('multer');
 const upload = multer({ dest: './public/product_img/' });
 
 const {  Adminlogin,GetAlluserdata,adminadd,Getproductdata,adminedit,updateproduct,deleteproduct,addcategory,gettcategory,editsubmit,updatecategory,deletecategory, userblock,Getcategorydata,getAlluserorder,getAllorderproducts,productstatus,Cancelproduct_orders,addcoupons, Getcoupondata,updatecoupon,couponupdate,deletecoupon,getbannerTopage,TotalSales,TodayOrders, ThisWeekOrders, ThisMonthOrders,ThisYearOrders,
-  totalRevenue, TodayRevenue,weekRevenue, yearRevenue, totaluser,monthRevenue,chartcount, allSalesreport,updateshippingstatus,addprooffer,Makediscount, getproductoffer, addcatoffer, MakediscountonCat,updatereturnstatus,returnorders,getcategoryoffer,deleteproductoffer,removeProductofferprice,deletecategoryoffer,removecategoryofferprice} = require('../Model/admin_helper')
+  totalRevenue, TodayRevenue,weekRevenue, yearRevenue, totaluser,monthRevenue,chartcount, allSalesreport,updateshippingstatus,addprooffer,Makediscount, getproductoffer, addcatoffer, MakediscountonCat,updatereturnstatus,returnorders,getcategoryoffer,deleteproductoffer,removeProductofferprice,deletecategoryoffer,removecategoryofferprice,orderproductlist,stockIncrementAfterReturn,getorderdetails,returnordersamountaddWallet} = require('../Model/admin_helper')
 
 module.exports={
 
@@ -183,6 +183,13 @@ module.exports={
   categoryadd(req,res){
     addcategory(req.body).then(()=>{
       res.redirect('/admin/category-page')
+
+
+    }).catch((error)=>{
+      gettcategory().then((catdatas)=>{
+        res.render('admin/categorypage',{user:false,catdatas,error:`${error.error}`})
+  
+      })
 
 
     })
@@ -508,7 +515,40 @@ getprosubmit(req,res){
   console.log(req.body.order_return);
   updatereturnstatus(req.params.id,req.body.Shippingstatus,req.body.order_return).then(()=>{
 
-    res.redirect('/admin/orders')
+    orderproductlist(req.params.id).then((product)=>{
+      console.log(product,"return product");
+      function destruct(product) { 
+        let data =[]
+        for(let i=0;i<product.length;i++){
+          let obj ={}  
+          obj.prod= product[i].item
+          obj.quantity= product[i].quantity
+          data.push(obj)
+        }
+        return data
+      }
+      let ids=destruct(product)
+      stockIncrementAfterReturn(ids).then(()=>{
+
+        getorderdetails(req.params.id).then((order)=>{
+
+          returnordersamountaddWallet(order.userId,order.totaAmount).then(()=>{
+
+            res.redirect('/admin/orders')
+
+          })
+
+
+        })
+
+       
+
+      })
+
+
+    })
+
+   
 
   })
 

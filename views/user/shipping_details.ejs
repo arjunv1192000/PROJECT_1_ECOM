@@ -87,8 +87,11 @@
                                   </form>
                                 <div class="border-start h-100"></div>
                                 <% } else if (order.status==="cancel order" ) { %>
-
-
+                                    <form action="/setinvoice/<%= order._id %>" method="post">
+                                        <input name="status" value="<%= order.order_return %>" hidden>
+                                        <button type="submit" class="badge btn-warning return-btn">view invoice</button>
+                                    </form>
+                                    <div class="border-start h-100"></div>
 
                                 <%} else { %>
                                    

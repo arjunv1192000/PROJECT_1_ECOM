@@ -78,10 +78,13 @@
                 <% } %>
                   <div class="pro-details-compare-wishlist">
                     <div class="purchase-info">
-                      <button type="button" onclick="addtocart('<%= productDATA._id %>')" class="btn">Add to Cart <i
-                          class="fa fa-cart-arrow-down" aria-hidden="true"></i></button>
-                      <button onclick="addtowishlist('<%= productDATA._id %>')" type="button" class="btn "><i
-                          class="fa fa-heart-o"></i>
+                      <% if ( productDATA.stock) { %>
+                      <button type="button" onclick="addtocart('<%= productDATA._id %>')" class="btn">Add to Cart <i class="fa fa-cart-arrow-down" aria-hidden="true"></i></button>
+                      <% } else { %>
+                        <p class="h5 text-danger">Sorry, this product is currently out of stock</p>
+                        
+                      <% } %>
+                      <button onclick="addtowishlist('<%= productDATA._id %>')" type="button" class="btn "><i class="fa fa-heart-o"></i>
                       </button>
                     </div>
                   </div>
@@ -185,9 +188,25 @@
       method: 'get',
       success: (response) => {
         swal("Good job!", "You clicked the button!", "success");
-        location.reload()
+        
 
-      }
+      },
+      error: function (xhr, status, error) {
+                console.log(error);
+                if (xhr.status === 400 && xhr.responseJSON && xhr.responseJSON.error === "Stock limit Exceeded") {
+                    alert("Stock limit Exceeded")
+                    // swal({
+                    //     title: "Stock Limit Exceeded",
+
+                    //     icon: "warning",
+
+                    //     dangerMode: true,
+                    // })
+
+                } else {
+                    $('#error').text(error);
+                }
+            }
     })
   }
 
