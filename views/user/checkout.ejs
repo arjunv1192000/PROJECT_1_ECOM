@@ -128,11 +128,16 @@
                                         <label for="payment-method-4">paypal<img alt=""
                                                 src="assets/images/icon-img/payment.png"></label>
                                     </div>
+                                    <% if (walletAmount && walletAmount.Totalamount && walletAmount.Totalamount > 0 && walletAmount.Totalamount >= totalprice) { %>
                                     <div class="pay-top sin-payment">
                                         <input id="payment-method-3" class="input-radio" type="radio" value="wallet"
                                             name="payment_method">
                                         <label for="payment-method-3">wallet </label>
                                     </div>
+                                    <% } else { %>
+                                        <p style="color: red;">You don't have the cash in your wallet to buy this product. That's why you can't use the wallet amount, sorry.</p>
+                                        
+                                    <% } %>
                                 </div>
                             </div>
                             <div class="Place-order mt-40">
@@ -262,25 +267,7 @@
                 }
 
 
-            },
-            error: function (xhr, status, error) {
-                    console.log(error);
-                    if (xhr.status === 400 && xhr.responseJSON && xhr.responseJSON.error === "Stock limit Exceeded") {
-                        
-                        swal({
-                        title: "insufficient fund in the wallet",
-
-                        icon: "warning",
-
-                        dangerMode: true,
-                    })
-                        
-
-
-                    } else {
-                        $('#error').text(error);
-                    }
-                }
+            }            
         })
     })
     function checkCoupon() {

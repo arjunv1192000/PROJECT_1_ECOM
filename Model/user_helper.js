@@ -879,7 +879,7 @@ module.exports = {
             if (walletdata) {
               resolve(walletdata);
             } else {
-              reject("No wallet data found for user");
+                reject();
             }
           }).catch((error) => {
             reject(error);
@@ -911,7 +911,20 @@ module.exports = {
         
 
 
-    }
+    },
+    WalletAmount:(userID)=>{
+         
+        return new Promise(async(resolve,reject)=>{
+
+            let WalletAmount =await db.get().collection(collections.Wallet_collection).findOne({userId:ObjectId(userID)})
+
+            console.log("walletAmount",WalletAmount);
+
+            resolve(WalletAmount)
+        })
+
+    },
+
    
 
 

@@ -13,7 +13,7 @@ paypal.configure({
   'client_secret': paypalsecret
 });
 const { Getcategorydata } = require('../Model/admin_helper');
-const { userSignup, Dologin, showproducts, productAlldetails, Getcategory, filterBycategory, productcart, Getcartproducts, changeproductquantity, removeproduct_cart, gettotalamount, placeorder, getCartproductlist, getorderdetails, Cancelproduct_order, findByNumber, getAllorderproducts, product_wishlist, get_productwishlist, get_userdata, generateRazorpay, verifyPayment, changepaymentStatus, adduseraddress, GetUseraddress, changepassword, getoffers, couponmanagement, getsearchproduct, showproductshome, getPriceFilter, paginatorCount, getTenProducts, getPricesort, getsortProducts, getSingleorder, Returnproduct_order, removeCartAfterOrder, getwalletAmount, changeThewalletamount } = require('../Model/user_helper');
+const { userSignup, Dologin, showproducts, productAlldetails, Getcategory, filterBycategory, productcart, Getcartproducts, changeproductquantity, removeproduct_cart, gettotalamount, placeorder, getCartproductlist, getorderdetails, Cancelproduct_order, findByNumber, getAllorderproducts, product_wishlist, get_productwishlist, get_userdata, generateRazorpay, verifyPayment, changepaymentStatus, adduseraddress, GetUseraddress, changepassword, getoffers, couponmanagement, getsearchproduct, showproductshome, getPriceFilter, paginatorCount, getTenProducts, getPricesort, getsortProducts, getSingleorder, Returnproduct_order, removeCartAfterOrder, getwalletAmount, changeThewalletamount,WalletAmount } = require('../Model/user_helper');
 
 var forgote;
 let usersession;
@@ -277,25 +277,44 @@ module.exports = {
 
     })
   },
-  checkout(req, res) {
-    let users = req.session.users
-    gettotalamount(req.session.users._id).then((totalprice) => {
-      Getcartproducts(req.session.users._id).then((product) => {
-        get_userdata(req.session.users._id).then((userdata) => {
-          console.log(userdata, ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
-
-
-          res.render('user/checkout', { user: true, users, totalprice, product, userdata })
-
-
-        })
-
-
-
+  checkout: (req, res) => {
+    let users = req.session.users;
+  
+    gettotalamount(req.session.users._id)
+      .then((totalprice) => {
+        let product = Getcartproducts(req.session.users._id);
+        let userdata = get_userdata(req.session.users._id);
+        let walletAmount = WalletAmount(req.session.users._id);
+  
+        Promise.all([product, userdata, walletAmount])
+          .then(([product, userdata, walletAmount]) => {
+            if (!walletAmount) {
+              walletAmount = { Totalamount: 0 };
+            }
+  
+            console.log(walletAmount.Totalamount, "tttttttttttttttttttttttttttt");
+            console.log(totalprice, "tttttttttttttttttttttttttttt");
+  
+            res.render("user/checkout", {
+              user: true,
+              users,
+              totalprice,
+              product,
+              userdata,
+              walletAmount,
+            });
+          })
+          .catch((error) => {
+            console.log(error);
+            res.redirect("/");
+          });
       })
-
-    })
+      .catch((error) => {
+        console.log(error);
+        res.redirect("/");
+      });
   },
+
   orderplace(req, res) {
     let users = req.session.users
     let finalprice
@@ -391,10 +410,8 @@ module.exports = {
                 throw error;
               } else {
                 for (var index = 0; index < payment.links.length; index++) {
-                  //Redirect user to this endpoint for redirect url
                   if (payment.links[index].rel === 'approval_url') {
                     console.log(payment.links[index].href);
-                    // res.redirect(payment.links[index].href);
                     res.json({ status: "paypal", forwardLink: payment.links[index].href });
 
                   }
@@ -553,7 +570,6 @@ module.exports = {
   userorderproduct(req, res) {
     let users = req.session.users
     getAllorderproducts(req.params.id).then((singleproduct) => {
-
       res.render('user/order_productdetails', { user: true, singleproduct, users })
 
 
@@ -580,14 +596,12 @@ module.exports = {
   userAcdata(req, res) {
     let users = req.session.users
     get_userdata(req.session.users._id).then((userdata) => {
-      console.log(userdata, ">>>>>>>>>>>>>>>>>>>>>>>");
       getorderdetails(req.session.users._id).then((orders) => {
-  
         getwalletAmount(req.session.users._id).then((wallet) => {
           res.render('user/myaccountpage', { user: true, userdata, orders, wallet, users })
         }).catch((error) => {
           console.error(error);
-          const defaultWallet = { Totalamount: 0 }; // provide a default wallet object with Totalamount set to 0
+          const defaultWallet = { Totalamount: 0 }; 
           res.render('user/myaccountpage', { user: true, userdata, orders, wallet: defaultWallet, users });
         });
   
@@ -670,65 +684,12 @@ module.exports = {
 
   },
   searchproduct(req, res) {
-    console.log(req.body.searchValue, "+++++++++++++++++++++++++++");
     getsearchproduct(req.body.searchValue).then((data) => {
-      console.log(data, "////////////////////////");
       res.json(data)
 
     })
   },
-  // async priceFilter(req, res) {
-  //   console.log(req.body);
-  //   let users = req.session.users
-
-  //   let showproduct = await getPriceFilter(req.body.min, req.body.max)
-
-  //   console.log(showproduct);
-
-
-  //   let count = 0
-  //   showproduct.forEach(showproduct => {
-  //     count++
-  //   });
-
-  //   let pageCount = await paginatorCount(count)
-  //   // showproduct = await getTenProducts(req.query.id)
-
-  //   if (req.query.minimum) {
-  //     let minimum = req.query.minimum.slice(1)
-  //     let maximum = req.query.maximum.slice(1)
-  //     let arr = []
-  //     showproduct = await showproducts()
-
-  //     showproduct.forEach(showproduct => {
-
-  //       arr.push(showproduct)
-
-  //     });
-  //     showproduct = arr;
-  //   }
-
-  //   Getcategory().then((catdatas) => {
-  //     let users = req.session.users
-
-  //     getoffers().then((coupondata) => {
-
-  //       res.render('user/showproduct', { user: true, showproduct, users, catdatas, pageCount, count, coupondata, users })
-
-
-  //     }).catch((error)=>{
-  //       error = 'product not found';
-  //       res.render('user/showproduct', { user: true, showproduct, users, catdatas, pageCount, count, coupondata, users,error })
-
-  //     })
-
-
-
-  //   })
-
-
-
-  // },
+  
   async priceFilter(req, res) {
     console.log(req.body);
     let users = req.session.users

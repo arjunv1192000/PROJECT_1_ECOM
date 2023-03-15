@@ -43,11 +43,15 @@
 
                         <%= data.status %>
 
+                        <% if (data.shippingStatus !=="delivered"&&data.status !=="cancel order" ) { %>
                             <form action="/admin/cancelorders/<%= data._id %>" method="post">
                                 <input name="status" value="<%= data.status %>" hidden>
                                 <button type="submit" class="badge btn-danger btn-sm">Cancel</button>
 
                             </form>
+                        <% } else { %>
+                                
+                        <% } %>
 
                     </td>
                     <td>
@@ -55,7 +59,7 @@
                                 id="my-button">Products</button></a>
                     </td>
 
-                    <% if (data.status !=="cancel order" ) { %>
+                      <% if (data.status !=="cancel order" ) { %>
                         <td>
                             <%= data.shippingStatus %>
 
@@ -70,6 +74,7 @@
                         </td>
                         </form>
                         <% } %>
+                        
                             <% if (data.order_return==="processing" ) { %>
                                 <td>
                                     <form action="/admin/return_confirm/<%= data._id %>" method="post" id="return-form">
@@ -81,7 +86,8 @@
 
                                 </td>
                                 </form>
-                                <% } %>
+                        <% } %>
+                     
 
                 </tr>
                 <% }); %>

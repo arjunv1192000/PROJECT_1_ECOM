@@ -194,14 +194,13 @@
       error: function (xhr, status, error) {
                 console.log(error);
                 if (xhr.status === 400 && xhr.responseJSON && xhr.responseJSON.error === "Stock limit Exceeded") {
-                    alert("Stock limit Exceeded")
-                    // swal({
-                    //     title: "Stock Limit Exceeded",
+                    swal({
+                        title: "Stock Limit Exceeded",
 
-                    //     icon: "warning",
+                        icon: "warning",
 
-                    //     dangerMode: true,
-                    // })
+                        dangerMode: true,
+                    })
 
                 } else {
                     $('#error').text(error);
