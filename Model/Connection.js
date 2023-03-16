@@ -5,7 +5,7 @@ const state={
 }
 
 module.exports.connect=function(done){
-    const url="mongodb://localhost:27017"
+    const url="mongodb+srv://arjun:yGE6AlIUqvefgj5A@cluster0.1pk2z1h.mongodb.net/?retryWrites=true&w=majority"
     const dbname='project_ecom'
 
     mongoClient.connect(url,(err,data)=>{

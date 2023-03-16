@@ -306,12 +306,37 @@ module.exports = {
                     }
                 },
                 {
+                    $set: {
+                      final: {
+                        $switch: {
+                          branches:
+                          [{
+                            case: { $and: ['$product.offerprice'] },
+                            then: '$product.offerprice',
+                          },
+                          {
+                            case: { $and: ['$product.catoffer'] },
+                            then: '$product.catoffer',
+                           
+                          },
+                          {
+                            case: { $and: ['$product.price'] },
+                            then: '$product.price',
+                           
+                          },
+                          ],
+                          default: '',
+                        },
+                      },
+                    },
+                  },
+                {
                     $group: {
 
                         _id: null, totalprice: {
                             $sum: {
                                 $multiply: [{ $toDouble: "$quantity" },
-                                { $toDouble: "$product.price" }]
+                                { $toDouble: "$final" }]
                             }
                         }
                     }

@@ -13,7 +13,7 @@ paypal.configure({
   'client_secret': paypalsecret
 });
 const { Getcategorydata } = require('../Model/admin_helper');
-const { userSignup, Dologin, showproducts, productAlldetails, Getcategory, filterBycategory, productcart, Getcartproducts, changeproductquantity, removeproduct_cart, gettotalamount, placeorder, getCartproductlist, getorderdetails, Cancelproduct_order, findByNumber, getAllorderproducts, product_wishlist, get_productwishlist, get_userdata, generateRazorpay, verifyPayment, changepaymentStatus, adduseraddress, GetUseraddress, changepassword, getoffers, couponmanagement, getsearchproduct, showproductshome, getPriceFilter, paginatorCount, getTenProducts, getPricesort, getsortProducts, getSingleorder, Returnproduct_order, removeCartAfterOrder, getwalletAmount, changeThewalletamount,WalletAmount } = require('../Model/user_helper');
+const { userSignup, Dologin, showproducts, productAlldetails, Getcategory, filterBycategory, productcart, Getcartproducts, changeproductquantity, removeproduct_cart, gettotalamount, placeorder, getCartproductlist, getorderdetails, Cancelproduct_order, findByNumber, getAllorderproducts, product_wishlist, get_productwishlist, get_userdata, generateRazorpay, verifyPayment, changepaymentStatus, adduseraddress, GetUseraddress, changepassword, getoffers, couponmanagement, getsearchproduct, showproductshome, getPriceFilter, paginatorCount, getTenProducts, getPricesort, getsortProducts, getSingleorder, Returnproduct_order, removeCartAfterOrder, getwalletAmount, changeThewalletamount, WalletAmount } = require('../Model/user_helper');
 
 var forgote;
 let usersession;
@@ -279,22 +279,22 @@ module.exports = {
   },
   checkout: (req, res) => {
     let users = req.session.users;
-  
+
     gettotalamount(req.session.users._id)
       .then((totalprice) => {
         let product = Getcartproducts(req.session.users._id);
         let userdata = get_userdata(req.session.users._id);
         let walletAmount = WalletAmount(req.session.users._id);
-  
+
         Promise.all([product, userdata, walletAmount])
           .then(([product, userdata, walletAmount]) => {
             if (!walletAmount) {
               walletAmount = { Totalamount: 0 };
             }
-  
+
             console.log(walletAmount.Totalamount, "tttttttttttttttttttttttttttt");
             console.log(totalprice, "tttttttttttttttttttttttttttt");
-  
+
             res.render("user/checkout", {
               user: true,
               users,
@@ -358,6 +358,8 @@ module.exports = {
           else if (req.body['payment_method'] === 'Razorpay') {
             generateRazorpay(orderId, totalprice).then((response) => {
 
+              let ids = destruct(products)
+
               removeCartAfterOrder(ids, req.body.userId).then(() => {
 
                 res.json({ status: "razorpay", response })
@@ -377,7 +379,7 @@ module.exports = {
             let ids = destruct(products)
 
             removeCartAfterOrder(ids, req.body.userId).then(() => {
-              res.json({ status: "paypal" })
+              
 
             }).catch(() => {
               console.log("error occured while removing from cart after order");
@@ -403,22 +405,25 @@ module.exports = {
             };
 
 
-
+            console.log("working");
             paypal.payment.create(create_payment_json, function (error, payment) {
               if (error) {
-                console.log(error.response);
+                console.log(error.response, 'paypal errorrr');
                 throw error;
+                
+
               } else {
                 for (var index = 0; index < payment.links.length; index++) {
                   if (payment.links[index].rel === 'approval_url') {
                     console.log(payment.links[index].href);
                     res.json({ status: "paypal", forwardLink: payment.links[index].href });
-
                   }
                 }
                 console.log(payment);
               }
             });
+
+
             console.log(order);
             changepaymentStatus(order).then(() => {
 
@@ -429,7 +434,7 @@ module.exports = {
             let ids = destruct(products)
 
 
-            changeThewalletamount(req.body.userId,finalprice)
+            changeThewalletamount(req.body.userId, finalprice)
               .then(() => {
                 console.log("change working");
                 removeCartAfterOrder(ids, req.body.userId)
@@ -439,13 +444,14 @@ module.exports = {
                   .catch(() => {
                     const error = "Error occurred while removing from cart after order";
                     res.status(400).json({ error: error });
-                    console.log(error);
+                    console.log(error, 'wal');
+
                   });
               })
               .catch(() => {
                 const error = "Stock limit Exceeded";
                 res.status(400).json({ error: error });
-                console.log(error);
+                console.log(error, 'walletttt');
               });
 
 
@@ -473,11 +479,11 @@ module.exports = {
     }
 
     paypal.payment.execute(paymentId, execute_payment_json, function (err, paymemt) {
-      if (error) {
-        console.log(error.response);
-        throw error;
+      if (err) {
+        console.log(err.response);
+        throw err;
       } else {
-        console.log(JSON.stringify(payment));
+        console.log(JSON.stringify(paymemt));
         res.redirect('/orderplaced');
       }
     })
@@ -601,15 +607,15 @@ module.exports = {
           res.render('user/myaccountpage', { user: true, userdata, orders, wallet, users })
         }).catch((error) => {
           console.error(error);
-          const defaultWallet = { Totalamount: 0 }; 
+          const defaultWallet = { Totalamount: 0 };
           res.render('user/myaccountpage', { user: true, userdata, orders, wallet: defaultWallet, users });
         });
-  
+
       });
-  
+
     });
   },
-  
+
 
   sucesspage(req, res) {
     let users = req.session.users
@@ -676,7 +682,7 @@ module.exports = {
     couponmanagement(req.body.data, req.body.total).then((response) => {
       res.json(response)
 
-    }).catch(()=>{
+    }).catch(() => {
       const error = "Enter valied coupon code";
       res.status(400).json({ error: error });
       console.log(error);
@@ -689,62 +695,62 @@ module.exports = {
 
     })
   },
-  
+
   async priceFilter(req, res) {
     console.log(req.body);
     let users = req.session.users
-  
+
     try {
       let showproduct = await getPriceFilter(req.body.min, req.body.max)
-  
+
       console.log(showproduct);
-  
+
       let count = 0
       showproduct.forEach(showproduct => {
         count++
       });
-  
+
       let pageCount = await paginatorCount(count)
       // showproduct = await getTenProducts(req.query.id)
-  
+
       if (req.query.minimum) {
         let minimum = req.query.minimum.slice(1)
         let maximum = req.query.maximum.slice(1)
         let arr = []
         showproduct = await showproducts()
-  
+
         showproduct.forEach(showproduct => {
-  
+
           arr.push(showproduct)
-  
+
         });
         showproduct = arr;
       }
-  
+
       Getcategory().then((catdatas) => {
         let users = req.session.users
-  
+
         getoffers().then((coupondata) => {
-  
+
           res.render('user/showproduct', { user: true, showproduct, users, catdatas, pageCount, count, coupondata, users })
-  
-        }).catch((error)=>{
+
+        }).catch((error) => {
           console.error('Error fetching coupon data:', error);
           error = 'product not found';
           res.render('user/showproduct', { user: true, showproduct, users, catdatas, pageCount, count, coupondata, users, error })
-  
+
         })
-  
+
       })
-  
+
     } catch (error) {
       console.error('Error filtering products by price:', error);
       error = 'product not found';
-      res.render('user/showproduct', { user: true,showproduct: [], users, catdatas: [], pageCount: 0, count: 0, coupondata: [], error })
+      res.render('user/showproduct', { user: true, showproduct: [], users, catdatas: [], pageCount: 0, count: 0, coupondata: [], error })
     }
-  
+
   },
-  
+
 
   async pricesorting(req, res) {
 

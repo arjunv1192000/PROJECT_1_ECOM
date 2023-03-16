@@ -11,6 +11,7 @@
                                     <th>Image</th>
                                     <th>Product Name</th>
                                     <th>Until Price</th>
+                                    <th>Offer Price</th>
                                     <th>Qty</th>
                                     <!-- <th>Subtotal</th> -->
                                     <th>action</th>
@@ -31,27 +32,41 @@
                                         <td class="product-price-cart"><span class="amount" id="proprice">₹
                                                 <%=cart.product.price %>
                                             </span></td>
+                                        <% if (cart.product.offerprice) { %>
+                                            <td class="product-price-cart"><span class="amount" id="proprice">₹
+                                                    <%=cart.product.offerprice %>
+                                                </span></td>
+                                            <% } else if (cart.product.catoffer ) { %>
+                                                <td class="product-price-cart"><span class="amount" id="proprice">₹
+                                                        <%=cart.product.catoffer %>
+                                                    </span></td>
+                                                <%} else { %>
+                                                    <td class="product-price-cart"><span class="amount" id="proprice">₹
+                                                            <%=cart.product.price %>
+                                                        </span></td>
 
-                                        <td class="product-quantity">
-                                            <div class="cart-plus-minus">
-                                                <div class="dec qtybutton">
-                                                    <button class="incbtn"
-                                                        onclick="changequantity('<%= cart._id %>','<%= cart.product._id %>','<%= totalprice %>','<%=cart.product.price %>',-1) ">-</button>
-                                                </div>
-                                                <span id="<%= cart.product._id %>">
-                                                    <%= cart.quantity %>
-                                                </span>
-                                                <div class="inc qtybutton">
-                                                    <button class="incbtn"
-                                                        onclick="changequantity('<%= cart._id %>','<%= cart.product._id %>','<%= totalprice %>','<%=cart.product.price %>',1 ) ">+</button>
-                                                </div>
-                                            </div>
-                                            <span id="error"></span>
-                                        </td>
-                                        <td class="product-remove">
-                                            <button type="button" class="btn btn-danger"
-                                                onclick="remove('<%= cart._id %>','<%= cart.product._id %>',) ">remove</button>
-                                        </td>
+                                                    <% } %>
+
+                                                        <td class="product-quantity">
+                                                            <div class="cart-plus-minus">
+                                                                <div class="dec qtybutton">
+                                                                    <button class="incbtn"
+                                                                        onclick="changequantity('<%= cart._id %>','<%= cart.product._id %>','<%= totalprice %>','<%=cart.product.price %>',-1) ">-</button>
+                                                                </div>
+                                                                <span id="<%= cart.product._id %>">
+                                                                    <%= cart.quantity %>
+                                                                </span>
+                                                                <div class="inc qtybutton">
+                                                                    <button class="incbtn"
+                                                                        onclick="changequantity('<%= cart._id %>','<%= cart.product._id %>','<%= totalprice %>','<%=cart.product.price %>',1 ) ">+</button>
+                                                                </div>
+                                                            </div>
+                                                            <span id="error"></span>
+                                                        </td>
+                                                        <td class="product-remove">
+                                                            <button type="button" class="btn btn-danger"
+                                                                onclick="remove('<%= cart._id %>','<%= cart.product._id %>',) ">remove</button>
+                                                        </td>
                                     </tr>
                                     <% }); %>
                             </tbody>
@@ -120,6 +135,7 @@
                     } else {
                         document.getElementById(proId).innerHTML = quantity + count
                         document.getElementById('totalprice').innerHTML = parseInt(carttotal) + (count * price)
+                        location.reload()
 
                     }
 
@@ -128,14 +144,13 @@
                     console.log(error);
                     if (xhr.status === 400 && xhr.responseJSON && xhr.responseJSON.error === "Stock limit Exceeded") {
                         document.getElementById('error').innerHTML = xhr.responseJSON.error
-                        // alert("Stock limit Exceeded")
                         swal({
-                        title: "Stock Limit Exceeded",
+                            title: "Stock Limit Exceeded",
 
-                        icon: "warning",
+                            icon: "warning",
 
-                        dangerMode: true,
-                    })
+                            dangerMode: true,
+                        })
                         setTimeout(function () {
                             document.getElementById('error').innerHTML = "";
                         }, 5000);
