@@ -10,25 +10,25 @@
                                 <div class="col-lg-6 col-md-6">
                                     <div class="billing-info mb-20">
                                         <label> Name <abbr class="required" title="required">*</abbr></label>
-                                        <input type="text" name="name" id="use" value="">
+                                        <input type="text" name="name" id="use" value="" required>
                                     </div>
                                 </div>
                                 <div class="col-lg-12">
                                     <div class="billing-info mb-20">
                                         <label>Company Name <abbr class="required" title="required">*</abbr></label>
-                                        <input type="text" name="companyname" id="com" value="">
+                                        <input type="text" name="companyname" id="com" value="" required>
                                     </div>
                                 </div>
                                 <div class="col-lg-12">
                                     <div class="billing-info mb-20">
                                         <label>Street Address <abbr class="required" title="required">*</abbr></label>
-                                        <input placeholder="Apartment, suite, unit etc." type="text" name="Address" id="add">
+                                        <input placeholder="Apartment, suite, unit etc." type="text" name="Address" id="add" required>
                                     </div>
                                 </div>
                                 <div class="col-lg-12">
                                     <div class="billing-info mb-20">
                                         <label>Town / City <abbr class="required" title="required">*</abbr></label>
-                                        <input type="text" name="city" id="city">
+                                        <input type="text" name="city" id="city" required>
                                         <input type="text" name="userId" id="" value="<%= users._id %>" hidden>
                                         <input type="text" name="offerdata" id="offeramount" value="" hidden>
                                     </div>
@@ -36,25 +36,25 @@
                                 <div class="col-lg-12 col-md-12">
                                     <div class="billing-info mb-20">
                                         <label>State / County <abbr class="required" title="required">*</abbr></label>
-                                        <input type="text" name="State" id="Addstate">
+                                        <input type="text" name="State" id="Addstate" required>
                                     </div>
                                 </div>
                                 <div class="col-lg-12 col-md-12">
                                     <div class="billing-info mb-20">
                                         <label>Postcode / ZIP <abbr class="required" title="required">*</abbr></label>
-                                        <input type="text" name="Postcode" id="pin">
+                                        <input type="text" name="Postcode" id="pin" required>
                                     </div>
                                 </div>
                                 <div class="col-lg-12 col-md-12">
                                     <div class="billing-info mb-20">
                                         <label>Phone<abbr class="required" title="required">*</abbr></label>
-                                        <input type="number" name="phonenumber" id="Addphone">
+                                        <input type="number" name="phonenumber" id="Addphone" required>
                                     </div>
                                 </div>
                                 <div class="col-lg-12 col-md-12">
                                     <div class="billing-info mb-20">
                                         <label>Email Address <abbr class="required" title="required">*</abbr></label>
-                                        <input type="text" name="email" id="mail">
+                                        <input type="text" name="email" id="mail" required>
                                     </div>
                                 </div>
                                 
@@ -246,23 +246,6 @@
     $("#checkout-form").submit((e) => {
         e.preventDefault()
 
-    var name=$("[name='name']:checked").val()
-    var company=$("[name='companyname']:checked").val()
-    var add=$("[name='Address']:checked").val()
-    var city=$("[name='city']:checked").val()
-    var state=$("[name='state']:checked").val()
-    var post=$("[name='name']:checked").val()
-    var phone=$("[name='name']:checked").val()
-    var email=$("[name='name']:checked").val()
-    if(!name ||!company||!add||!city||!state||!post||!phone||!email){
-        swal({
-                        title: "Address is required",
-
-                        icon: "warning",
-
-                        dangerMode: true,
-                    })
-    }else{
         $.ajax({
             url: '/place-order',
             method: 'post',
@@ -288,7 +271,7 @@
             }            
         })
         
-    }
+    
       
     })
     function checkCoupon() {
