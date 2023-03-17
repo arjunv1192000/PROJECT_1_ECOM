@@ -245,6 +245,24 @@
 
     $("#checkout-form").submit((e) => {
         e.preventDefault()
+
+    var name=$("[name='name']:checked").val()
+    var company=$("[name='companyname']:checked").val()
+    var add=$("[name='Address']:checked").val()
+    var city=$("[name='city']:checked").val()
+    var state=$("[name='state']:checked").val()
+    var post=$("[name='name']:checked").val()
+    var phone=$("[name='name']:checked").val()
+    var email=$("[name='name']:checked").val()
+    if(!name ||!company||!add||!city||!state||!post||!phone||!email){
+        swal({
+                        title: "Address is required",
+
+                        icon: "warning",
+
+                        dangerMode: true,
+                    })
+    }else{
         $.ajax({
             url: '/place-order',
             method: 'post',
@@ -269,6 +287,9 @@
 
             }            
         })
+        
+    }
+      
     })
     function checkCoupon() {
        
@@ -287,6 +308,7 @@
                     if (response) {
                         document.getElementById('offer').innerHTML = "₹"+response
                         document.getElementById("offeramount").value=response
+                        swal("coupon Added successfully", "", "success");
                     } else {
                        
                     }

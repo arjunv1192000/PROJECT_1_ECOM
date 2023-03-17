@@ -18,7 +18,7 @@
          <% orders.forEach(function(data, i){ %>
             <tr>
                 <td><%= data._id %></td>
-                <td><%= data.date %></td>
+                <td><%= data.date.toISOString().split('T')[0]; %></td>
                 <td><%= data.deliveryDetails.address%></td>
                 <td><%= data.deliveryDetails.Postcode %></td>
                 <td><%= data.deliveryDetails.phone  %></td>
