@@ -391,7 +391,7 @@ module.exports = {
                 "payment_method": "paypal"
               },
               "redirect_urls": {
-                "return_url": "http://localhost:3000/orderplaced",
+                "return_url": "http://woodcraft.fyi/orderplaced",
                 "cancel_url": "http://cancel.url"
               },
               "transactions": [{
